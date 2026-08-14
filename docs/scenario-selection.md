@@ -24,6 +24,20 @@ Sources referenced below:
 - FHIR package [`nictiz.fhir.nl.stu3.zib2017` 2.3.2][pkg], which the Test Sets
   declare in `properties.json`
 
+## Current state
+
+| | |
+|---|---|
+| Dataplatform | 1.1, 1.2, 1.3, 1.4, 1.5, 2.1, 2.2, 2.3, 2.4 built from FSH, eighteen TestScripts |
+| DVA-Client | 1.1, 1.2, 1.3, 1.4, 2.2 built from FSH, five TestScripts |
+| Kept as imported XML | Dataplatform 2.5, because it is optional rather than out of scope |
+| Removed | Dataplatform 3.1 and 3.2, DVA-Client 2.1, 3.1 and 3.2 |
+
+Everything converted was compared with its Nictiz original and is identical, so
+the set can be run as it stands, without GUPZ specific changes. Removed
+scenarios remain available through the tag `nictiz-baseline-2026.30` and the
+`nictiz` remote.
+
 ## The deciding constraints
 
 Three properties of the GUPZ data platform determine the selection. All three
