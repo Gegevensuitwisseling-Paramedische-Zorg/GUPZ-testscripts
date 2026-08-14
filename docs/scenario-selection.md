@@ -126,8 +126,10 @@ indicating the resource is not supported. Which status code and which
 OperationOutcome that is, is not written anywhere: the imported scripts expect
 HTTP 404 with an OperationOutcome, and that expectation comes from the Nictiz
 TestScript rather than from a specification. [`pdfa.md`][pdfa] states that Find
-Document Manifest is not supported but says nothing about how to answer. Worth
-recording in open-GUPZ, one way or the other.
+Document Manifest is not supported but says nothing about how to answer. Raised
+as [#72 Respons op een verzoek op DocumentManifest][i72], with the suggestion to
+adopt what the qualification scripts already expect, so that they stay usable
+unchanged.
 
 **`status=current` is already covered.** All Nictiz search scenarios query
 `?status=current`, which lines up with the requirement in [`pdfa.md`][pdfa] that
@@ -147,6 +149,7 @@ validator will actually check. Related:
 [i61]: https://github.com/Gegevensuitwisseling-Paramedische-Zorg/open-GUPZ/issues/61
 [i64]: https://github.com/Gegevensuitwisseling-Paramedische-Zorg/open-GUPZ/issues/64
 [i66]: https://github.com/Gegevensuitwisseling-Paramedische-Zorg/open-GUPZ/issues/66
+[i72]: https://github.com/Gegevensuitwisseling-Paramedische-Zorg/open-GUPZ/issues/72
 [pdfa]: https://github.com/Gegevensuitwisseling-Paramedische-Zorg/open-GUPZ/blob/main/docs/api/pdfa.md
 [medmij]: https://github.com/Gegevensuitwisseling-Paramedische-Zorg/open-GUPZ/blob/main/docs/architecture/medmij.md
 [fo]: https://informatiestandaarden.nictiz.nl/wiki/MedMij:V2020.01/OntwerpPDFA
