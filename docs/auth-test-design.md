@@ -81,6 +81,61 @@ certificate, a TestScript cannot produce that situation. Nor does it cover
 `GUPZ-TR-004`, the certificate profile: those live in the handshake, which a
 TestScript never sees.
 
+## Why this set uses no stubs
+
+Conformancelab can mock an endpoint with a WireMock stub and the `stub`
+operation code: it registers the stub, waits for the system under test to call
+it, and asserts on the request that arrives. That is how our earlier OAuth proof
+of concept tested a client, by playing the authorization server and the token
+endpoint.
+
+None of that applies here, and the reason is worth writing down because it is
+easy to mistake for an omission.
+
+**There is no flow on this interface to mock.** The data platform is a resource
+server, not an authorization server. It has no `/authorize` and no `/token`
+endpoint. According to [`security.md`][sec-tokensec] the calling system creates
+the token itself, signs it with its own private key, encrypts it with the
+platform's public key and sends it on every call; the platform decrypts,
+validates and answers. Obtaining a token happens between a PGO, a DVA and the
+DVA's own authorization server, all of which sit outside this interface. A stub
+would have nothing to stand in for.
+
+**A stub only works when the system under test calls us.** Conformancelab hosts
+its stubs on its own `/cl/{organizationId}/` route. In a server aimed test the
+traffic runs the other way, so there is nothing for a stub to catch.
+
+What follows from this is a real limitation, not a gap in the test set: these
+cases prove what the platform does with a token, never that a caller can produce
+one correctly. Token production is a property of the caller and belongs in a
+client aimed test.
+
+### Where stubs do belong
+
+Three places, none of them in this set today.
+
+**Testing a DVA.** When the calling party is the system under test,
+Conformancelab has to be the counterparty: mock the authorization and token
+endpoints, let the DVA run the flow against them, and assert on the requests it
+sends. That is the client aimed set, and the mechanics are proven.
+
+**A JWKS fetch by the platform.** This is the one moment where the data platform
+would call out during authentication: to retrieve the public signing key of the
+caller so it can verify the signature, or to publish its own encryption key.
+Conformancelab could host that JWKS as a stub, which would make it testable
+whether the platform fetches the key set, picks the key that matches the `kid`
+in the token header, and follows a rotation. It is not built because the
+mechanism is not specified: [`security.md`][sec-rot] says only that JWKS key
+rotation is used and flags the subject as still to be worked out, and
+[#27][i27] is the open discussion.
+
+**Obtaining a token dynamically.** Conformancelab has an authentication script
+concept that runs a token flow before a test set and hands the result to the
+tests that follow. If GUPZ ever wants the token fetched rather than pasted, that
+is the mechanism, and it would need stubbed or real endpoints to fetch from. For
+now pasting is deliberate: the tokens come from GUPZ and the engine cannot
+produce a JWE anyway.
+
 ## Test data GUPZ needs to supply
 
 Every case below needs a prepared token. They can be produced with the
