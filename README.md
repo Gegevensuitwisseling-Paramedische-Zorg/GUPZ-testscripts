@@ -50,12 +50,10 @@ built.
   model, with the requirement each case tests and the open points that block
   some of them, is in [docs/auth-test-design.md](docs/auth-test-design.md).
 
-### Which scenarios we run
-
-Not every imported scenario applies to GUPZ. Which ones are in scope, which are
-not and on what grounds is recorded in
-[docs/scenario-selection.md](docs/scenario-selection.md), with references to the
-issues and specification sections that the decisions rest on.
+Not every imported scenario applies to GUPZ, and not every requirement can be
+tested from a TestScript. Both documents record what is in scope, what is not
+and on what grounds, with references to the issues and specification sections
+the decisions rest on.
 
 ### Converting a Nictiz script
 
