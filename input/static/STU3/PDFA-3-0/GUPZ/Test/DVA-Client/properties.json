@@ -1,0 +1,13 @@
+
+  { "goal" : "Test",
+    "fhirVersion" : "STU3",
+    "informationStandard" : "GUPZ PDF\/A 3.x",
+    "usecase" : "GUPZ",
+    "role" :
+    { "name" : "DVA-Client",
+      "description" : "The party calling the GUPZ data platform, which in a MedMij context is the DVA. Imported from the Nictiz PHR-Client scripts." },
+    "fhirPackage" :
+    [
+      { "name" : "nictiz.fhir.nl.stu3.zib2017",
+        "version" : "2.3.2" } ],
+    "serverAlias" : "gupz" }
