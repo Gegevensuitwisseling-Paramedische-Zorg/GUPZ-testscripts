@@ -102,12 +102,12 @@ priority: the connectathon of 22 September 2026 is about the data platform.
 ## Coming change: how the system under test is marked
 
 Today `Interoplab-CL-ext-SUT` on `origin` and `destination` marks which side is
-under test, and that is what the imported scripts use. Interoplab will replace
-it with a profile on `origin.profile` and `destination.profile`. The
-specification does not exist yet and the extension keeps working for now, so
-nothing changes in this repository at the moment. When it lands, the change is
-confined to `input/fsh/components/origin-destination.fsh`, which is the only
-place where the extension is written.
+under test, and that is what the imported scripts use. In a future version of
+Conformancelab that role moves to a profile on `origin.profile` and
+`destination.profile`. The extension applies until then, so nothing changes in
+this repository at the moment. When the switch comes, it is confined to
+`input/fsh/components/origin-destination.fsh`, the only place where the
+extension is written.
 
 ## What the declared FHIR package already enforces
 

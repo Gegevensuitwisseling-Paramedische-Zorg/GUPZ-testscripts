@@ -46,8 +46,8 @@ above: situation 2, where the traffic runs towards Conformancelab, and situation
 
 **Transport sits outside Conformancelab in every row.** mTLS, the TLS version,
 the cipher suites and the certificate profile all live in the handshake, and a
-TestScript never sees it. On the assumption that Conformancelab presents a
-pre-configured client certificate, any case that succeeds does prove an mTLS
+TestScript never sees it. Because Conformancelab presents a client certificate
+that is configured per instance, any case that succeeds does prove an mTLS
 connection was established, but the other half, that a caller without a valid
 certificate is refused, cannot be produced from a TestScript. That check has to
 happen alongside the scripts.

@@ -71,13 +71,11 @@ script with access to request, response and FHIRPath. If we ever need to inspect
 a token or decode base64, that is where it would happen. Not needed for the
 model below.
 
-**Conformancelab presents a client certificate, pre-configured.** Nothing in the
-Conformancelab guide or in any Interoplab TestScript repository mentions client
-certificates, but Interoplab confirms the engine can present one and that it is
-configured per instance rather than per TestScript. That has one useful
-consequence for this set: every case that succeeds proves an mTLS connection was
-established, because without an accepted client certificate there would be no
-response at all. `GUPZ-TR-001` is therefore covered implicitly by AUTH-01.
+**Conformancelab presents a client certificate, configured per instance rather
+than per TestScript.** That has one useful consequence for this set: every case
+that succeeds proves an mTLS connection was established, because without an
+accepted client certificate there would be no response at all. `GUPZ-TR-001` is
+therefore covered implicitly by AUTH-01.
 
 It does not cover the other half of that requirement, that the platform refuses
 a caller without a valid client certificate. If the engine always presents its

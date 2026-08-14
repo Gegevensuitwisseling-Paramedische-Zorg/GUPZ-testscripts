@@ -4,11 +4,11 @@
 // acts as the client. clientAimed is the mirror image, used by the DVA-Client
 // scripts.
 //
-// Interoplab-CL-ext-SUT is on its way out. Interoplab will replace it with a
-// profile on origin.profile and destination.profile. That specification does
-// not exist yet and the extension keeps working in the meantime. These two
-// RuleSets are the only place where the extension is written, so the migration
-// is a change to this one file.
+// In a future version of Conformancelab, marking the system under test moves
+// from Interoplab-CL-ext-SUT to a profile on origin.profile and
+// destination.profile. The extension applies until then. These two RuleSets are
+// the only place where it is written, so that switch is a change to this one
+// file.
 
 RuleSet: serverAimed
 * origin.extension.url = $CL-ext-SUT
