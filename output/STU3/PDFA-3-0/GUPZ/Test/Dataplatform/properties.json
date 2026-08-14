@@ -1,0 +1,13 @@
+
+  { "goal" : "Test",
+    "fhirVersion" : "STU3",
+    "informationStandard" : "GUPZ PDF\/A 3.x",
+    "usecase" : "GUPZ",
+    "role" :
+    { "name" : "Dataplatform",
+      "description" : "Het GUPZ dataplatform als MHD Document Responder. Overgenomen van de Nictiz-variant voor servers zonder DocumentManifest-ondersteuning; deze scripts testen ook of een verzoek op DocumentManifest netjes wordt afgehandeld." },
+    "fhirPackage" :
+    [
+      { "name" : "nictiz.fhir.nl.stu3.zib2017",
+        "version" : "2.3.2" } ],
+    "serverAlias" : "gupz" }
