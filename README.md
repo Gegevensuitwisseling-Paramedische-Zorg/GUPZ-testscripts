@@ -21,7 +21,9 @@ build.sh             runs sushi build and installs the results into output/
 input/fsh/
   aliases.fsh
   components/        reusable RuleSets
-  Dataplatform/      one file per scenario, producing the JSON and XML variant
+  Dataplatform/      PDF/A, server aimed. One file per scenario, two variants
+  DVA-Client/        PDF/A, client aimed
+  Auth/              token and authentication, one file per case
 scripts/             helpers, see below
 ```
 
@@ -41,14 +43,15 @@ and would otherwise be stored in the repository twice.
 
 ### Test sets
 
-Two sets are planned. The PDF/A set exists; the auth set is modelled but not
-built.
+Three Test Sets, all of them built.
 
-- **PDF/A**, testing the document interface. Which scenarios are in scope and
-  why is in [docs/scenario-selection.md](docs/scenario-selection.md).
-- **Auth**, testing the token and authentication part of the interface. The
-  model, with the requirement each case tests and the open points that block
-  some of them, is in [docs/auth-test-design.md](docs/auth-test-design.md).
+- **PDF/A Dataplatform** and **PDF/A DVA-Client**, testing the document
+  interface from either side. Which scenarios are in scope and why is in
+  [docs/scenario-selection.md](docs/scenario-selection.md).
+- **Auth Dataplatform**, testing the token and authentication part of the
+  interface. The model, with the requirement each case tests and the open
+  points that still limit some of them, is in
+  [docs/auth-test-design.md](docs/auth-test-design.md).
 
 [docs/auth-situations.md](docs/auth-situations.md) places both in the wider
 picture: which authentication situations exist on this interface at all, who is
@@ -106,6 +109,8 @@ output/STU3/PDFA-3-0/GUPZ/Test/
   DVA-Client/        client aimed: the calling party is the system under test
   _reference/        fixtures (resources) and Groovy rules
   _LoadResources/    provisioning script that loads the fixtures onto a server
+output/STU3/Auth/GUPZ/Test/
+  Dataplatform/      server aimed: token and authentication behaviour
 ```
 
 TestScripts refer to `../_reference/...`, so a Test Set directory has to stay
