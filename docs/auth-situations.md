@@ -56,13 +56,17 @@ happen alongside the scripts.
 Vecozo deviates on five points, ZorgDomein has a profile of its own and for a
 NIS nothing is written down at all. What "the GUPZ token" is therefore depends
 on who is calling, and no single test set covers the interface: it takes one per
-counterparty. The table above had to be assembled from three documents, which is
-why [#74][i74] asks for that overview to live in the specification, along with
-the question it raises: is the generic profile a baseline the others deviate
-from, or a fallback for callers without a profile of their own? The same reading shows how one sided the current coverage is.
-Everything that exists tests the data platform. The party that produces the
-token, and so decides whether anything secure actually happens, is not tested at
-all today; that is situation 2, and it is the largest gap in this table.
+counterparty.
+
+The table above had to be assembled from three documents, which is why
+[#74][i74] asks for that overview to live in the specification, together with
+the question it raises: is the generic profile a baseline that the others
+deviate from, or a fallback for callers without a profile of their own?
+
+The same reading shows how one sided the current coverage is. Everything that
+exists tests the data platform. The party that produces the token, and so
+decides whether anything secure actually happens, is not tested at all today.
+That is situation 2, and it is the largest gap in this table.
 
 [psa-soc]: https://github.com/Gegevensuitwisseling-Paramedische-Zorg/open-GUPZ/blob/main/docs/PSA.md#seperation-of-concerns
 [mm-rol]: https://github.com/Gegevensuitwisseling-Paramedische-Zorg/open-GUPZ/blob/main/docs/architecture/medmij.md#rol-in-het-medmij-afsprakenstelsel
