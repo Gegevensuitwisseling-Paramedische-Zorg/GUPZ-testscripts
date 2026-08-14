@@ -59,9 +59,15 @@ The source is configured as a read-only remote:
 
 ```
 git remote add nictiz https://github.com/Nictiz/Nictiz-testscripts.git   # once
-git fetch nictiz main
+git config remote.nictiz.tagOpt --no-tags                                # once
+git fetch --no-tags nictiz main
 git diff nictiz-baseline-2026.30 nictiz/main -- output/STU3/PDFA-3-0/MedMij/Cert
 ```
+
+Always fetch without tags. A plain `git fetch` also brings in the Nictiz release
+tags, which then look like tags of this repository; a later `git push --tags`
+would publish them, along with a large part of the Nictiz history, into this
+repository.
 
 Be aware that the `output/` directory at Nictiz is **generated** from
 `src/PDFA-3-0/`, where the scripts are written in a DRY form using
