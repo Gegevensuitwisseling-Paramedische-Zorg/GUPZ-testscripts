@@ -33,6 +33,13 @@ daarna aangepast voor GUPZ. Zie [UPSTREAM.md](UPSTREAM.md) voor de exacte bron,
 de commit waarvan is overgenomen, de licentiesituatie en de manier waarop
 wijzigingen van Nictiz zijn over te nemen of aan Nictiz zijn terug te leveren.
 
+## Over deze documentatie
+
+De documentatie in deze repository wordt met behulp van AI geschreven. Elke
+tekst wordt voor het samenvoegen door een mens gelezen en waar nodig
+gecorrigeerd; de inhoudelijke verantwoordelijkheid ligt bij de auteurs. Kom je
+toch een fout tegen, meld die dan als issue.
+
 ## Werkwijze
 
 Wijzigingen via een branch en een pull request, niet rechtstreeks op `main`.
