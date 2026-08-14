@@ -50,6 +50,11 @@ built.
   model, with the requirement each case tests and the open points that block
   some of them, is in [docs/auth-test-design.md](docs/auth-test-design.md).
 
+[docs/auth-situations.md](docs/auth-situations.md) places both in the wider
+picture: which authentication situations exist on this interface at all, who is
+the system under test in each, and where each situation is described in
+open-GUPZ.
+
 Not every imported scenario applies to GUPZ, and not every requirement can be
 tested from a TestScript. Both documents record what is in scope, what is not
 and on what grounds, with references to the issues and specification sections

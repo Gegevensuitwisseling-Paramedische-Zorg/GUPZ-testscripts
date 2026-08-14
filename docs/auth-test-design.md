@@ -12,6 +12,11 @@ and the operator pastes it when setting up the run.
 
 ## Scope
 
+This set covers one of the seven authentication situations on this interface,
+situation 1 in [auth-situations.md](auth-situations.md), which also explains who
+is the system under test in the other six and why most of them need something
+this set does not.
+
 Server aimed: the data platform is the system under test and Conformancelab is
 the caller. The mirror image, testing a DVA as the calling party, is out of
 scope for now, for the same reason as with the PDF/A set: the connectathon of
