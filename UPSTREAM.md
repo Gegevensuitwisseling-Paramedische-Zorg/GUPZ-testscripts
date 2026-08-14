@@ -1,72 +1,74 @@
-# Herkomst van de overgenomen TestScripts
+# Provenance of the imported TestScripts
 
-De PDF/A TestScripts in deze repository zijn overgenomen uit de
-kwalificatiematerialen van Nictiz. Dit bestand legt vast wat er precies is
-overgenomen, zodat onze wijzigingen altijd te scheiden zijn van het origineel en
-we later kunnen bijwerken of terugleveren.
+The PDF/A TestScripts in this repository were taken from the qualification
+material published by Nictiz. This file records exactly what was imported, so
+that our changes can always be separated from the original and so that we can
+update from Nictiz or offer changes back to them later.
 
-## Wat is overgenomen
+## What was imported
 
-| Kenmerk | Waarde |
+| Property | Value |
 |---|---|
-| Bron | <https://github.com/Nictiz/Nictiz-testscripts> |
-| Pad | `output/STU3/PDFA-3-0/MedMij/Cert` |
-| Commit | `0b6d8975441ab2a429dc907b55ae6adfb04f0d37` (`main`, 21 juli 2026) |
+| Source | <https://github.com/Nictiz/Nictiz-testscripts> |
+| Path | `output/STU3/PDFA-3-0/MedMij/Cert` |
+| Commit | `0b6d8975441ab2a429dc907b55ae6adfb04f0d37` (`main`, 21 July 2026) |
 | Release | patchrelease 2026.30 |
-| Overgenomen op | 14 augustus 2026 |
-| Omvang | 64 bestanden, ongeveer 13 MB |
+| Imported on | 14 August 2026 |
+| Size | 64 files, roughly 13 MB |
 
-Overgenomen submappen:
+Imported subdirectories:
 
-- `XIS-Server-NoManifest` - server-aimed scripts voor servers zonder
-  DocumentManifest-ondersteuning; dit is de variant die voor GUPZ van toepassing
-  is (zie open-GUPZ issue #61)
-- `PHR-Client` - client-aimed scripts
+- `XIS-Server-NoManifest` - server aimed scripts for servers without support for
+  the DocumentManifest resource; this is the variant that applies to GUPZ (see
+  open-GUPZ issue #61)
+- `PHR-Client` - client aimed scripts
 - `_reference` - fixtures (Binary, Bundle, DocumentReference, DocumentManifest,
-  Patient) en de Groovy-rule `assert_response_queryParamsInSelfLink.groovy`
-- `_LoadResources` - provisioningscript om de fixtures op een server te zetten
+  Patient) and the Groovy rule `assert_response_queryParamsInSelfLink.groovy`
+- `_LoadResources` - provisioning script that loads the fixtures onto a server
 
-Bewust niet overgenomen: de map `Test` (een exact duplicaat van `Cert`) en de
-varianten `XIS-Server` en `XIS-Server-Nictiz-intern`. Die zijn alsnog op te
-halen via de remote hieronder.
+Deliberately not imported: the `Test` directory (an exact duplicate of `Cert`)
+and the `XIS-Server` and `XIS-Server-Nictiz-intern` variants. Those can still be
+retrieved through the remote described below.
 
-## Licentie
+## Licence
 
-Nictiz-testscripts heeft geen licentiebestand. De repository is openbaar en
-forken staat aan, maar formeel zijn alle rechten voorbehouden. De CC0-licentie
-van deze repository geldt daarom **niet** voor de bestanden onder
-`output/STU3/PDFA-3-0/MedMij/`, alleen voor het eigen werk van GUPZ. Afstemming
-met Nictiz over hergebruik en over het terugleveren van wijzigingen loopt via
-het GUPZ programma.
+Nictiz-testscripts carries no licence file. The repository is public and forking
+is enabled, but formally all rights are reserved. The CC0 licence of this
+repository therefore does **not** apply to the files that originate from Nictiz,
+only to the work produced by GUPZ. Agreement with Nictiz on reuse and on
+offering changes back is handled by the GUPZ programme.
 
-## Werkwijze: onze wijzigingen apart houden
+## Keeping our changes separable
 
-De eerste commit met deze bestanden is een ongewijzigde kopie. Daardoor levert
-
-```
-git diff <sha-van-die-commit> HEAD -- output/STU3/PDFA-3-0/
-```
-
-altijd precies de GUPZ-wijzigingen op, en dat is meteen de patch die aan Nictiz
-kan worden aangeboden. Houd die eigenschap in stand: geen opschoonacties in de
-vendor-commit achteraf.
-
-## Bijwerken vanaf Nictiz
-
-De bron staat als read-only remote geconfigureerd:
+The first commit containing these files is an unmodified copy, tagged
+`nictiz-baseline-2026.30`. That means
 
 ```
-git remote add nictiz https://github.com/Nictiz/Nictiz-testscripts.git   # eenmalig
+git diff nictiz-baseline-2026.30 HEAD -- output/STU3/PDFA-3-0/
+```
+
+always yields precisely the GUPZ changes, which is also the patch that could be
+offered to Nictiz. Note that this textual comparison loses its value for every
+script that has been converted to FSH, because the generated JSON no longer
+resembles the original XML line by line. For those, use
+`scripts/compare-testscript.py`, which compares content rather than text.
+
+## Updating from Nictiz
+
+The source is configured as a read-only remote:
+
+```
+git remote add nictiz https://github.com/Nictiz/Nictiz-testscripts.git   # once
 git fetch nictiz main
-git diff <onze-vendor-sha> nictiz/main -- output/STU3/PDFA-3-0/MedMij/Cert
+git diff nictiz-baseline-2026.30 nictiz/main -- output/STU3/PDFA-3-0/MedMij/Cert
 ```
 
-Let op: de map `output/` bij Nictiz is **gegenereerd** uit `src/PDFA-3-0/`, waar
-de scripts DRY zijn opgeschreven met `nts:include`-macro's en waar met
-`nts:in-targets` de varianten (`#default`, `NoManifest`, `Nictiz-intern`) uit
-een bronbestand worden afgeleid. Nictiz herschrijft de hele output bij elke
-patchrelease. Twee gevolgen:
+Be aware that the `output/` directory at Nictiz is **generated** from
+`src/PDFA-3-0/`, where the scripts are written in a DRY form using
+`nts:include` macros and where `nts:in-targets` derives the variants
+(`#default`, `NoManifest`, `Nictiz-intern`) from a single source file. Nictiz
+rewrites the whole output directory on every patch release. Two consequences:
 
-1. Een update overnemen is een gerichte vergelijking, geen merge.
-2. Wijzigingen die we structureel willen terugleveren aan Nictiz horen in hun
-   `src/`, niet in hun `output/`.
+1. Taking over an update is a targeted comparison, not a merge.
+2. Changes we want to contribute back to Nictiz belong in their `src/`, not in
+   their `output/`.

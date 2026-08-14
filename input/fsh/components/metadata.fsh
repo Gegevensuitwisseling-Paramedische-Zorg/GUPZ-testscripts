@@ -1,9 +1,9 @@
-// Metadata die op elk TestScript hetzelfde is.
+// Metadata that is identical on every TestScript.
 //
-// LET OP: url, version, publisher en contact zijn in deze fase nog die van
-// Nictiz, zodat de gegenereerde JSON een-op-een te vergelijken is met het
-// origineel. Het vaststellen van de GUPZ-canonical en het eigen publisher- en
-// contactgegeven is een aparte stap.
+// NOTE: url, version, publisher and contact still carry the Nictiz values, so
+// that the generated JSON can be compared one to one against the original.
+// Deciding on the GUPZ canonical and on our own publisher and contact details
+// is a separate step.
 
 RuleSet: metadataNictiz(id)
 * id = "{id}"

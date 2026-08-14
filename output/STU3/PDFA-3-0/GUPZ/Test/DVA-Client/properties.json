@@ -5,7 +5,7 @@
     "usecase" : "GUPZ",
     "role" :
     { "name" : "DVA-Client",
-      "description" : "De aanroepende partij richting het GUPZ dataplatform, in MedMij-context de DVA. Overgenomen van de Nictiz PHR-Client scripts." },
+      "description" : "The party calling the GUPZ data platform, which in a MedMij context is the DVA. Imported from the Nictiz PHR-Client scripts." },
     "fhirPackage" :
     [
       { "name" : "nictiz.fhir.nl.stu3.zib2017",

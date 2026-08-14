@@ -1,9 +1,8 @@
-// Variabelen die de operator bij de testopzet kan overschrijven.
+// Variables the operator can override when setting up a test run.
 //
-// Het token is bewust een gewone variabele met een default en geen door
-// Conformancelab gegenereerd token. Daarmee kan een vooraf aangeleverd,
-// getekend GUPZ-token worden ingeplakt zonder dat de engine iets hoeft te
-// ondertekenen.
+// The token is deliberately a plain variable with a default rather than a token
+// minted by Conformancelab. That way a pre-signed GUPZ token can be pasted in
+// without the engine having to sign anything.
 
 RuleSet: variablePatientToken(patient, token)
 * variable[+].name = "patient-token-{patient}"
@@ -15,8 +14,8 @@ RuleSet: variableCorrelationId
 * variable[=].defaultValue = "${UUID}"
 * variable[=].description = "X-Correlation-ID, by default a UUID following the MedMij Afsprakenstelsel. Does not have to be edited, see https://nictiz.atlassian.net/browse/MM-5132 for more information"
 
-// Validatieprofiel waar een assert met validateProfileId naar verwijst. De
-// canonical staat op het element zelf, het id is de sleutel voor de assert.
+// Validation profile that an assert refers to through validateProfileId. The
+// canonical sits on the element itself, the id is the key used by the assert.
 RuleSet: profileToValidate(profileId, canonical)
 * profile[+] = "{canonical}"
 * profile[=].id = "{profileId}"

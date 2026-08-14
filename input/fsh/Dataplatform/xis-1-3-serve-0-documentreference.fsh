@@ -1,8 +1,8 @@
-// Scenario 1.3 - een zoekvraag met een onjuiste syntax moet netjes een
-// OperationOutcome met status 400 opleveren.
+// Scenario 1.3 - a search with invalid syntax must be answered gracefully with
+// an OperationOutcome and status 400.
 //
-// Eén bron, twee instances: de JSON- en de XML-variant verschillen alleen in
-// id, url, name, title en operation.accept.
+// One source, two instances: the JSON and the XML variant differ only in id,
+// url, name, title and operation.accept.
 
 RuleSet: scenario1-3(format, formatLabel)
 * insert metadataNictiz(xis-1-3-serve-0-documentreference-NoManifest-{format})

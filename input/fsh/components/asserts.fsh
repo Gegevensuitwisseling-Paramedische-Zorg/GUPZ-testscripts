@@ -1,7 +1,7 @@
-// Asserts op de response van de server onder test.
+// Asserts on the response from the server under test.
 //
-// stopTestOnFail en warningOnly staan overal expliciet. In R5 is
-// stopTestOnFail 1..1, dus weglaten levert een bouwfout op.
+// stopTestOnFail and warningOnly are always set explicitly. In R5
+// stopTestOnFail is 1..1, so leaving it out produces a build error.
 
 RuleSet: assertResponseCode(code, meaning)
 * test[=].action[+].assert

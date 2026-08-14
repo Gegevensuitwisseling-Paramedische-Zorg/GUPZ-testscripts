@@ -1,7 +1,8 @@
-// Wie is het systeem onder test.
+// Which side is the system under test.
 //
-// serverAimed: het dataplatform is de server onder test, Conformancelab is de
-// client. clientAimed is het spiegelbeeld, voor de DVA-Client scripts.
+// serverAimed: the data platform is the server under test and Conformancelab
+// acts as the client. clientAimed is the mirror image, used by the DVA-Client
+// scripts.
 
 RuleSet: serverAimed
 * origin.extension.url = $CL-ext-SUT

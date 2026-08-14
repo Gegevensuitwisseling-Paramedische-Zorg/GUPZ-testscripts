@@ -1,9 +1,9 @@
-"""Vergelijk een FHIR TestScript in XML met dezelfde resource in JSON.
+"""Compare a FHIR TestScript in XML with the same resource in JSON.
 
-Beide worden platgeslagen tot pad -> waarde. Enkelvoud en array worden gelijk
-behandeld (alles krijgt een index), zodat het verschil in FHIR-serialisatie
-tussen XML en JSON geen ruis oplevert. Onderstrepingssleutels in JSON (_profile)
-worden samengevoegd met hun gewone tegenhanger.
+Both sides are flattened to path -> value. A single value and an array are
+treated the same way (everything gets an index), so the difference in FHIR
+serialisation between XML and JSON does not show up as noise. Underscore keys
+in JSON (_profile) are merged with their regular counterpart.
 """
 import json
 import sys
@@ -24,7 +24,7 @@ def flatten_xml(elem, prefix=""):
         path = f"{prefix}{tag}[{idx}]"
         if "value" in child.attrib:
             out[path] = child.attrib["value"]
-        # attributen krijgen dezelfde [0]-notatie als de JSON-kant
+        # attributes get the same [0] notation as the JSON side
         if "id" in child.attrib:
             out[f"{path}.id[0]"] = child.attrib["id"]
         if "url" in child.attrib:
@@ -64,17 +64,16 @@ def normalise(flat):
 xml_flat = normalise(flatten_xml(ET.parse(sys.argv[1]).getroot()))
 json_flat = normalise(flatten_json(json.load(open(sys.argv[2]))))
 
-# resource.id staat in XML als <id value="..."/>, in JSON als "id": "..."
 only_xml = {k: v for k, v in xml_flat.items() if json_flat.get(k) != v}
 only_json = {k: v for k, v in json_flat.items() if xml_flat.get(k) != v}
 
 if not only_xml and not only_json:
-    print(f"IDENTIEK ({len(xml_flat)} elementen vergeleken)")
+    print(f"IDENTICAL ({len(xml_flat)} elements compared)")
     sys.exit(0)
 
-print(f"VERSCHILLEN ({len(xml_flat)} in XML, {len(json_flat)} in JSON)\n")
+print(f"DIFFERENCES ({len(xml_flat)} in XML, {len(json_flat)} in JSON)\n")
 for key in sorted(set(only_xml) | set(only_json)):
     print(f"  {key}")
-    print(f"    XML : {only_xml.get(key, '<afwezig>')}")
-    print(f"    JSON: {only_json.get(key, '<afwezig>')}")
+    print(f"    XML : {only_xml.get(key, '<absent>')}")
+    print(f"    JSON: {only_json.get(key, '<absent>')}")
 sys.exit(1)

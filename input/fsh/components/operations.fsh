@@ -1,8 +1,8 @@
-// Operaties richting de server onder test.
+// Operations directed at the server under test.
 //
-// De standaardheaders staan in een eigen RuleSet zonder parameters, omdat de
-// waarden Conformancelab-placeholders als ${UUID} bevatten. Die accolades
-// mogen niet door de parametersubstitutie van SUSHI worden aangeraakt.
+// The standard headers live in their own RuleSet without parameters, because
+// their values contain Conformancelab placeholders such as ${UUID}. Those
+// braces must not be touched by SUSHI parameter substitution.
 
 RuleSet: operationSearch(resource, params, format)
 * test[=].action[+].operation.type = $restful-interaction#search
@@ -14,8 +14,8 @@ RuleSet: operationSearch(resource, params, format)
 * test[=].action[=].operation.origin = 1
 * test[=].action[=].operation.params = "{params}"
 
-// Authorization, MedMij-Request-ID en X-Correlation-ID zoals het MedMij
-// Afsprakenstelsel ze op elk resource-request verlangt.
+// Authorization, MedMij-Request-ID and X-Correlation-ID, as the MedMij
+// Afsprakenstelsel requires them on every resource request.
 RuleSet: requestHeadersBaltus
 * test[=].action[=].operation.requestHeader[+].field = "Authorization"
 * test[=].action[=].operation.requestHeader[=].value = "${patient-token-XXX_Baltus}"

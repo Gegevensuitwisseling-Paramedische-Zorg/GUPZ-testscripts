@@ -1,12 +1,12 @@
-# SUSHI-configuratie voor de GUPZ TestScripts.
+# SUSHI configuration for the GUPZ TestScripts.
 #
-# De TestScript-resources zelf zijn R5; dat staat los van de FHIR-versie van het
-# materiaal dat ermee getest wordt (STU3). Conformancelab ondersteunt officieel
-# alleen TestScript R5. Zie https://fhir.interoplab.eu/ig/authoring.html
+# The TestScript resources themselves are R5, which is independent of the FHIR
+# version of the material they test (STU3). Conformancelab only officially
+# supports TestScript R5. See https://fhir.interoplab.eu/ig/authoring.html
 #
-# FSHOnly staat aan: we bouwen geen ImplementationGuide, alleen resources.
-# De canonical wordt nu nergens gebruikt omdat elke Instance zijn eigen url
-# zet; die moet nog worden vastgesteld door GUPZ.
+# FSHOnly is enabled: we do not build an ImplementationGuide, only resources.
+# The canonical below is currently unused because every Instance sets its own
+# url; GUPZ still has to decide on the definitive value.
 
 id: eu.gupz.testscripts
 canonical: https://gegevensuitwisseling-paramedische-zorg.github.io/GUPZ-testscripts

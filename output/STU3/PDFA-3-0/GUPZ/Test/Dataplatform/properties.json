@@ -5,7 +5,7 @@
     "usecase" : "GUPZ",
     "role" :
     { "name" : "Dataplatform",
-      "description" : "Het GUPZ dataplatform als MHD Document Responder. Overgenomen van de Nictiz-variant voor servers zonder DocumentManifest-ondersteuning; deze scripts testen ook of een verzoek op DocumentManifest netjes wordt afgehandeld." },
+      "description" : "The GUPZ data platform acting as an MHD Document Responder. Imported from the Nictiz variant for servers without DocumentManifest support; these scripts also test whether a request on DocumentManifest is handled gracefully." },
     "fhirPackage" :
     [
       { "name" : "nictiz.fhir.nl.stu3.zib2017",

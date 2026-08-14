@@ -1,103 +1,109 @@
 # GUPZ-testscripts
 
-FHIR TestScripts voor het testen van het GUPZ dataplatform op
-[Conformancelab](https://fhir.interoplab.eu/ig/), de TestScript-engine van
-Interoplab. Eerste doel is de connectathon van 22 september 2026.
+FHIR TestScripts for testing the GUPZ data platform on
+[Conformancelab](https://fhir.interoplab.eu/ig/), the TestScript engine built by
+Interoplab. The first target is the connectathon of 22 September 2026.
+
+## Language
+
+Everything in this repository is written in English: documentation, comments,
+commit messages and the TestScripts themselves.
 
 ## Authoring in FSH
 
-De TestScripts worden geschreven in [FHIR Shorthand](https://fshschool.org) en
-met SUSHI gebouwd. `input/fsh` is de bron, `output/` is gegenereerd en is wat
-Conformancelab leest.
+TestScripts are written in [FHIR Shorthand](https://fshschool.org) and built
+with SUSHI. `input/fsh` is the source, `output/` is generated and is what
+Conformancelab reads.
 
 ```
-sushi-config.yaml    SUSHI-configuratie, FHIR R5, FSHOnly
-build.sh             sushi build en de resultaten naar output/
+sushi-config.yaml    SUSHI configuration, FHIR R5, FSHOnly
+build.sh             runs sushi build and installs the results into output/
 input/fsh/
   aliases.fsh
-  components/        herbruikbare RuleSets
-  Dataplatform/      per scenario één bestand, dat de JSON- en XML-variant maakt
-scripts/             hulpmiddelen, zie hieronder
+  components/        reusable RuleSets
+  Dataplatform/      one file per scenario, producing the JSON and XML variant
+scripts/             helpers, see below
 ```
 
-Bouwen met `./build.sh`. Dat draait SUSHI, ruimt eerder gegenereerde
-`TestScript-*.json` op en plaatst de nieuwe in de juiste Test Set op basis van
-het id van de Instance.
+Build with `./build.sh`. It runs SUSHI, removes previously generated
+`TestScript-*.json` files and installs the new ones into the right Test Set
+based on the id of the Instance.
 
-De TestScript-resources zijn **R5**, ook al testen ze STU3-materiaal. Dat is
-losgekoppeld: Conformancelab ondersteunt officieel alleen TestScript R5. De
-FHIR-versie van het materiaal onder test staat in `properties.json`.
+The TestScript resources are **R5**, even though the material under test is
+STU3. Those two are independent: Conformancelab only officially supports
+TestScript R5. The FHIR version of the material under test is declared in
+`properties.json`.
 
-Niet in de build: `_reference/` (fixtures en Groovy-rules) en de
-`properties.json` bestanden. Die worden met de hand in `output/` onderhouden,
-zoals ook in de ntv-testscripts van Interoplab gebeurt. De fixtures zijn samen
-ruim 12 MB en zouden anders twee keer in de repository staan.
+Not part of the build: `_reference/` (fixtures and Groovy rules) and the
+`properties.json` files. Those are maintained by hand in `output/`, the same way
+Interoplab does it in ntv-testscripts. The fixtures add up to more than 12 MB
+and would otherwise be stored in the repository twice.
 
-### Omzetting van de Nictiz-scripts
+### Converting the Nictiz scripts
 
-De omzetting van de overgenomen XML naar FSH gebeurt per scenario. Als steiger
-is [GoFSH](https://fshschool.org/docs/gofsh/) bruikbaar:
-
-```
-gofsh <map-met-xml> -t xml-only -u 5.0.0 --indent -o <uitvoermap>
-```
-
-GoFSH is daarbij een hulpmiddel en geen vertaalmachine: het laat op deze
-bestanden aantoonbaar twee dingen vallen. `stopTestOnFail` verdwijnt volledig,
-ook waar de waarde `false` is (dat valt op, want in R5 is het element 1..1 en
-weigert SUSHI de build), en bij een `profile` met een element-id blijft alleen
-het id over en verdwijnt de canonical (dat valt niet op). Controleer daarom elk
-omgezet script tegen het origineel:
+Conversion of the imported XML to FSH is done scenario by scenario.
+[GoFSH](https://fshschool.org/docs/gofsh/) is useful as a scaffold:
 
 ```
-python3 scripts/compare-testscript.py <origineel.xml> fsh-generated/resources/TestScript-<id>.json
+gofsh <directory-with-xml> -t xml-only -u 5.0.0 --indent -o <output-directory>
 ```
 
-Dat script slaat beide kanten plat tot pad en waarde en negeert het verschil
-tussen enkelvoud en array, zodat alleen echte inhoudelijke verschillen
-overblijven.
+Treat GoFSH as a helper, not as a translator: on these files it demonstrably
+drops two things. `stopTestOnFail` disappears entirely, including where the
+value is `false` (you will notice, because the element is 1..1 in R5 and SUSHI
+refuses to build), and for a `profile` carrying an element id only the id
+survives while the canonical is lost (you will not notice). So verify every
+converted script against its original:
 
-## Indeling
+```
+python3 scripts/compare-testscript.py <original.xml> fsh-generated/resources/TestScript-<id>.json
+```
 
-Conformancelab zoekt in de repository naar mappen met een `properties.json`.
-Zo'n map is een Test Set: een groep TestScripts voor een rol binnen een
-informatiestandaard. De mapnaam boven de Test Set is vrij; de inhoud van
-`properties.json` bepaalt wat er in de gebruikersinterface verschijnt.
+That script flattens both sides to path and value and ignores the difference
+between a single value and an array, so only real differences in content remain.
+
+## Layout
+
+Conformancelab scans the repository for directories containing a
+`properties.json`. Such a directory is a Test Set: a group of TestScripts for
+one role within an information standard. The name of the directory above the
+Test Set is free; the contents of `properties.json` determine what appears in
+the user interface.
 
 ```
 output/STU3/PDFA-3-0/GUPZ/Test/
-  Dataplatform/      server-aimed: het dataplatform is het systeem onder test
-  DVA-Client/        client-aimed: de aanroepende partij is het systeem onder test
-  _reference/        fixtures (resources) en Groovy-rules
-  _LoadResources/    provisioningscript om de fixtures klaar te zetten
+  Dataplatform/      server aimed: the data platform is the system under test
+  DVA-Client/        client aimed: the calling party is the system under test
+  _reference/        fixtures (resources) and Groovy rules
+  _LoadResources/    provisioning script that loads the fixtures onto a server
 ```
 
-TestScripts verwijzen naar `../_reference/...`, dus een Test Set-map moet één
-niveau onder `_reference` blijven staan.
+TestScripts refer to `../_reference/...`, so a Test Set directory has to stay
+exactly one level below `_reference`.
 
-Alleen de default branch (`main`) is voor gewone gebruikers zichtbaar in
-Conformancelab; andere branches zijn alleen voor beheerders. Om deze repository
-aan een Conformancelab-instantie toe te voegen loopt het verzoek via Interoplab.
+Only the default branch (`main`) is visible to regular users in Conformancelab;
+other branches are available to administrators only. Adding this repository to a
+Conformancelab instance is arranged through Interoplab.
 
-## Herkomst
+## Provenance
 
-De PDF/A scripts zijn overgenomen uit de kwalificatiematerialen van Nictiz en
-daarna aangepast voor GUPZ. Zie [UPSTREAM.md](UPSTREAM.md) voor de exacte bron,
-de commit waarvan is overgenomen, de licentiesituatie en de manier waarop
-wijzigingen van Nictiz zijn over te nemen of aan Nictiz zijn terug te leveren.
+The PDF/A scripts were imported from the qualification material published by
+Nictiz and adapted for GUPZ. See [UPSTREAM.md](UPSTREAM.md) for the exact
+source, the commit that was imported, the licensing situation and how to pull in
+changes from Nictiz or offer changes back to them.
 
-## Over deze documentatie
+## About this documentation
 
-De documentatie in deze repository wordt met behulp van AI geschreven. Elke
-tekst wordt voor het samenvoegen door een mens gelezen en waar nodig
-gecorrigeerd; de inhoudelijke verantwoordelijkheid ligt bij de auteurs. Kom je
-toch een fout tegen, meld die dan als issue.
+The documentation in this repository is written with the help of AI. Every text
+is read by a human before it is merged and corrected where needed;
+responsibility for the content rests with the authors. If you do find a mistake,
+please report it as an issue.
 
-## Werkwijze
+## How we work
 
-Wijzigingen via een branch en een pull request, niet rechtstreeks op `main`.
-Branchnaam: issuenummer plus korte beschrijving in kebab-case, of `noref-` als
-er geen issue is.
+Changes go through a branch and a pull request, never straight onto `main`.
+Branch name: issue number plus a short description in kebab-case, or `noref-`
+when there is no issue.
 
-De licentie van deze repository (CC0 1.0) geldt voor het eigen werk van GUPZ,
-niet voor de overgenomen Nictiz-bestanden.
+The licence of this repository (CC0 1.0) covers the work produced by GUPZ, not
+the imported Nictiz files.
