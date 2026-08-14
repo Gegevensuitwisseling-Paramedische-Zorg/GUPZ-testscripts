@@ -1,12 +1,14 @@
 # Auth test set: model
 
-A model for the second Test Set, covering the token and authentication part of
-the interface between a calling party and the GUPZ data platform. It is written
-before any TestScript, so that we agree on what is being tested and against
-which requirement, and so that it is clear which cases cannot be built yet and
-why.
+The model behind the second Test Set, covering the token and authentication part
+of the interface between a calling party and the GUPZ data platform. It was
+written before any TestScript, so that the scope and the requirement behind each
+case were agreed first, and it stays here as the record of what each case tests
+and what is still open.
 
-Nothing in here is implemented. See "Before we build" at the end.
+All eleven cases are built and sit in `output/STU3/Auth/GUPZ/Test/Dataplatform`.
+What is not there is the test data: every case needs a token that GUPZ supplies,
+and the operator pastes it when setting up the run.
 
 ## Scope
 
@@ -17,10 +19,11 @@ scope for now, for the same reason as with the PDF/A set: the connectathon of
 
 The requirement identifiers used below (`GUPZ-TR-001`, `GUPZ-VAL-002` and so on)
 come from the Interoplab requirements inventory for token and authentication.
-That inventory is not public, so it is not linked here; every row instead points
-at the section of the open-GUPZ specification that the requirement was derived
-from, which is the authoritative source. Open-GUPZ issue
-[#71][i71] is the public index of the open points that came out of it.
+That inventory is not public yet; it is expected to be published later, and this
+page will link to it once it is. Until then every row points at the section of
+the open-GUPZ specification the requirement was derived from, which is the
+authoritative source anyway. Open-GUPZ issue [#71][i71] is the public index of
+the open points that came out of the inventory.
 
 ## What the specification asks
 
@@ -45,9 +48,10 @@ All of it comes from [`docs/api/security.md`][sec] unless stated otherwise.
 
 ## What Conformancelab can and cannot do here
 
-**The token is operator input.** A TestScript variable with a default value, sent
-as `Authorization: Bearer ${...}`. That is the same mechanism the Nictiz PDF/A
-scripts already use, so it is proven on this engine. It also means GUPZ can
+**The token is operator input.** A TestScript variable, sent as
+`Authorization: Bearer ${token}`. The variable deliberately has no default: the
+operator pastes the token the case describes. This is the same mechanism the
+Nictiz PDF/A scripts use for their tokens, so it is proven on this engine. It also means GUPZ can
 supply pre-signed tokens without the engine having to sign anything, which
 matters because Conformancelab cannot produce a JWE at all.
 
@@ -62,11 +66,20 @@ script with access to request, response and FHIRPath. If we ever need to inspect
 a token or decode base64, that is where it would happen. Not needed for the
 model below.
 
-**mTLS is not covered.** Nothing in the Conformancelab guide, and nothing in any
-of the Interoplab TestScript repositories, mentions client certificates,
-keystores or mTLS. Whether the engine can present a client certificate at all is
-an open question with Interoplab. Until that is answered, `GUPZ-TR-001` through
-`GUPZ-TR-004` cannot be tested from a TestScript.
+**Conformancelab presents a client certificate, pre-configured.** Nothing in the
+Conformancelab guide or in any Interoplab TestScript repository mentions client
+certificates, but Interoplab confirms the engine can present one and that it is
+configured per instance rather than per TestScript. That has one useful
+consequence for this set: every case that succeeds proves an mTLS connection was
+established, because without an accepted client certificate there would be no
+response at all. `GUPZ-TR-001` is therefore covered implicitly by AUTH-01.
+
+It does not cover the other half of that requirement, that the platform refuses
+a caller without a valid client certificate. If the engine always presents its
+certificate, a TestScript cannot produce that situation. Nor does it cover
+`GUPZ-TR-002` and `GUPZ-TR-003`, the TLS version and cipher suites, or
+`GUPZ-TR-004`, the certificate profile: those live in the handshake, which a
+TestScript never sees.
 
 ## Test data GUPZ needs to supply
 
@@ -113,24 +126,27 @@ those asserts can be added later without restructuring.
 | AUTH-08 | Search with token T6, unknown issuer | Refused | GUPZ-VAL-002 | [#27][i27] on which issuers are trusted, [#70][i70] |
 | AUTH-09 | Search with token T7, broken signature | Refused | GUPZ-VAL-001 | [#67][i67] on the algorithm, [#70][i70] |
 | AUTH-10 | Search with token T8, wrong encryption key | Refused | GUPZ-VAL-001 | [#68][i68] on the JWE profile, [#70][i70] |
-| AUTH-11 | Search with token T9, other patient than the request | Refused | not specified | See below |
+| AUTH-11 | Search with token T9, other patient than the request | Refused | not specified | [#73][i73], case is advisory |
 
 AUTH-11 is the case worth arguing about. `security.md` describes `patient` as the
 BSN of the patient whose data is being requested, but nowhere does it say that
 the platform must refuse a request for a different patient than the one in the
 token. As an authorisation rule that is arguably the single most important check
-in the whole interface, and it is not written down. Recommend raising it in
-open-GUPZ before building the case.
+in the whole interface, and it is not written down. Raised as [#73][i73]. The
+case is built with both asserts on warning only, so it reports what a platform
+does without being able to fail it while the question is open.
 
 ## What this set does not cover
 
-**Transport.** `GUPZ-TR-001` through `GUPZ-TR-004` need a client certificate and
-a TLS handshake inspection, neither of which a TestScript does. Proposal: check
-these out of band on the day, with a TLS scanner against the endpoint and a
-manual check that a connection without a client certificate is refused. That
-does need a written expectation, which for the connectathon is complicated by
-the fact that one mail says self-signed certificates and a later one says
-self-signed is undesirable and proposes a hosted CA.
+**Transport beyond the connection itself.** `GUPZ-TR-002`, `GUPZ-TR-003` and
+`GUPZ-TR-004` need inspection of the handshake and of the certificates, which a
+TestScript does not do, and the refusal half of `GUPZ-TR-001` cannot be produced
+by an engine that always presents its certificate. Proposal: check these out of
+band on the day, with a TLS scanner against the endpoint and a manual attempt to
+connect without a client certificate. That does need a written expectation,
+which for the connectathon is complicated by the fact that one mail says
+self-signed certificates and a later one says self-signed is undesirable and
+proposes a hosted CA.
 
 **Token structure.** `GUPZ-TOK-002`, `GUPZ-JWS-001`, `GUPZ-CRY-001` and
 `GUPZ-PAY-001` describe what the caller produces. In a server aimed set they can
@@ -145,16 +161,17 @@ discovery and trust, which is [#27][i27]. Not for this connectathon.
 and [#52][i52]. Until those are settled, a test on the presence of `patient`,
 `aud` or `scope` would test an assumption.
 
-## Before we build
+## What still has to happen
 
-1. Confirm the case list, in particular whether AUTH-11 is in scope and whether
-   it should be raised in open-GUPZ first.
-2. Get the tokens T1 to T9, or agree who produces them and when.
-3. Decide what "plain" means for T3.
-4. Answer with Interoplab whether Conformancelab can present a client
-   certificate, and if not, how transport gets checked on the day.
-5. Agree the minimal assert for a refused request, so the negative cases can be
-   built before [#70][i70] is resolved.
+1. Get the tokens T1 to T9, or agree who produces them and when. This is the
+   critical path: the scripts run, but without tokens they prove nothing.
+2. Decide what "plain" means for T3, otherwise AUTH-03 cannot be prepared.
+3. Tighten the negative asserts once [#70][i70] lands. Each refusal case now
+   only asserts that the response is not 200, with the expected 401 or 403 as a
+   warning. Those become hard asserts as soon as the response is specified.
+4. Arrange the out of band transport check described above.
+5. Revisit AUTH-11 when [#73][i73] is decided. If the check becomes a
+   requirement, the two warnings become hard asserts.
 
 [sec]: https://github.com/Gegevensuitwisseling-Paramedische-Zorg/open-GUPZ/blob/main/docs/api/security.md
 [sec-tls]: https://github.com/Gegevensuitwisseling-Paramedische-Zorg/open-GUPZ/blob/main/docs/api/security.md#transport-level-security
@@ -173,3 +190,4 @@ and [#52][i52]. Until those are settled, a test on the presence of `patient`,
 [i69]: https://github.com/Gegevensuitwisseling-Paramedische-Zorg/open-GUPZ/issues/69
 [i70]: https://github.com/Gegevensuitwisseling-Paramedische-Zorg/open-GUPZ/issues/70
 [i71]: https://github.com/Gegevensuitwisseling-Paramedische-Zorg/open-GUPZ/issues/71
+[i73]: https://github.com/Gegevensuitwisseling-Paramedische-Zorg/open-GUPZ/issues/73

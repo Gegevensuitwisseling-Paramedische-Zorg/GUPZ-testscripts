@@ -1,0 +1,109 @@
+{
+  "resourceType": "TestScript",
+  "id": "auth-01-signed-and-encrypted-token",
+  "url": "https://gegevensuitwisseling-paramedische-zorg.github.io/GUPZ-testscripts/TestScript/auth-01-signed-and-encrypted-token",
+  "origin": [
+    {
+      "extension": [
+        {
+          "url": "http://fhir.interoplab.eu/fhir/StructureDefinition/Interoplab-CL-ext-SUT",
+          "valueBoolean": false
+        }
+      ],
+      "index": 1,
+      "profile": {
+        "code": "FHIR-Client",
+        "system": "http://terminology.hl7.org/CodeSystem/testscript-profile-origin-types"
+      }
+    }
+  ],
+  "destination": [
+    {
+      "extension": [
+        {
+          "url": "http://fhir.interoplab.eu/fhir/StructureDefinition/Interoplab-CL-ext-SUT",
+          "valueBoolean": true
+        }
+      ],
+      "index": 1,
+      "profile": {
+        "code": "FHIR-Server",
+        "system": "http://terminology.hl7.org/CodeSystem/testscript-profile-destination-types"
+      }
+    }
+  ],
+  "variable": [
+    {
+      "name": "token",
+      "description": "T1: valid, signed and encrypted for the test patient."
+    },
+    {
+      "name": "X-Correlation-ID",
+      "defaultValue": "${UUID}",
+      "description": "X-Correlation-ID, by default a UUID following the MedMij Afsprakenstelsel. Does not have to be edited, see https://nictiz.atlassian.net/browse/MM-5132 for more information"
+    }
+  ],
+  "test": [
+    {
+      "action": [
+        {
+          "operation": {
+            "requestHeader": [
+              {
+                "field": "Authorization",
+                "value": "Bearer ${token}"
+              },
+              {
+                "field": "MedMij-Request-ID",
+                "value": "${UUID}"
+              },
+              {
+                "field": "X-Correlation-ID",
+                "value": "${X-Correlation-ID}"
+              }
+            ],
+            "type": {
+              "code": "search",
+              "system": "http://hl7.org/fhir/restful-interaction"
+            },
+            "resource": "DocumentReference",
+            "description": "Search for current DocumentReference resources.",
+            "accept": "json",
+            "destination": 1,
+            "encodeRequestUrl": true,
+            "origin": 1,
+            "params": "?status=current"
+          }
+        },
+        {
+          "assert": {
+            "description": "Confirm that the operation was successful.",
+            "direction": "response",
+            "operator": "in",
+            "responseCode": "200,201",
+            "stopTestOnFail": true,
+            "warningOnly": false
+          }
+        },
+        {
+          "assert": {
+            "description": "Confirm that the returned resource type is Bundle.",
+            "direction": "response",
+            "resource": "Bundle",
+            "stopTestOnFail": false,
+            "warningOnly": false
+          }
+        }
+      ],
+      "id": "01",
+      "name": "AUTH-01",
+      "description": "A signed and encrypted token is accepted"
+    }
+  ],
+  "version": "0.1.0",
+  "status": "active",
+  "publisher": "GUPZ",
+  "name": "Auth_01_signed_and_encrypted_token",
+  "title": "AUTH-01 - A signed and encrypted token is accepted",
+  "description": "The happy flow. A correctly formed token, signed and then encrypted as security.md prescribes, must be accepted."
+}

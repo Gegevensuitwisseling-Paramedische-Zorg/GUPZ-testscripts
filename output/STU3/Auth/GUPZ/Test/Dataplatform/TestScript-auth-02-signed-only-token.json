@@ -1,0 +1,109 @@
+{
+  "resourceType": "TestScript",
+  "id": "auth-02-signed-only-token",
+  "url": "https://gegevensuitwisseling-paramedische-zorg.github.io/GUPZ-testscripts/TestScript/auth-02-signed-only-token",
+  "origin": [
+    {
+      "extension": [
+        {
+          "url": "http://fhir.interoplab.eu/fhir/StructureDefinition/Interoplab-CL-ext-SUT",
+          "valueBoolean": false
+        }
+      ],
+      "index": 1,
+      "profile": {
+        "code": "FHIR-Client",
+        "system": "http://terminology.hl7.org/CodeSystem/testscript-profile-origin-types"
+      }
+    }
+  ],
+  "destination": [
+    {
+      "extension": [
+        {
+          "url": "http://fhir.interoplab.eu/fhir/StructureDefinition/Interoplab-CL-ext-SUT",
+          "valueBoolean": true
+        }
+      ],
+      "index": 1,
+      "profile": {
+        "code": "FHIR-Server",
+        "system": "http://terminology.hl7.org/CodeSystem/testscript-profile-destination-types"
+      }
+    }
+  ],
+  "variable": [
+    {
+      "name": "token",
+      "description": "T2: valid, signed, not encrypted."
+    },
+    {
+      "name": "X-Correlation-ID",
+      "defaultValue": "${UUID}",
+      "description": "X-Correlation-ID, by default a UUID following the MedMij Afsprakenstelsel. Does not have to be edited, see https://nictiz.atlassian.net/browse/MM-5132 for more information"
+    }
+  ],
+  "test": [
+    {
+      "action": [
+        {
+          "operation": {
+            "requestHeader": [
+              {
+                "field": "Authorization",
+                "value": "Bearer ${token}"
+              },
+              {
+                "field": "MedMij-Request-ID",
+                "value": "${UUID}"
+              },
+              {
+                "field": "X-Correlation-ID",
+                "value": "${X-Correlation-ID}"
+              }
+            ],
+            "type": {
+              "code": "search",
+              "system": "http://hl7.org/fhir/restful-interaction"
+            },
+            "resource": "DocumentReference",
+            "description": "Search for current DocumentReference resources.",
+            "accept": "json",
+            "destination": 1,
+            "encodeRequestUrl": true,
+            "origin": 1,
+            "params": "?status=current"
+          }
+        },
+        {
+          "assert": {
+            "description": "Confirm that the operation was successful.",
+            "direction": "response",
+            "operator": "in",
+            "responseCode": "200,201",
+            "stopTestOnFail": true,
+            "warningOnly": false
+          }
+        },
+        {
+          "assert": {
+            "description": "Confirm that the returned resource type is Bundle.",
+            "direction": "response",
+            "resource": "Bundle",
+            "stopTestOnFail": false,
+            "warningOnly": false
+          }
+        }
+      ],
+      "id": "02",
+      "name": "AUTH-02",
+      "description": "A signed but not encrypted token is accepted in connectathon mode"
+    }
+  ],
+  "version": "0.1.0",
+  "status": "active",
+  "publisher": "GUPZ",
+  "name": "Auth_02_signed_only_token",
+  "title": "AUTH-02 - A signed but not encrypted token is accepted in connectathon mode",
+  "description": "One of the three token variants agreed for the connectathon of 22 September 2026. Deviates from security.md, which prescribes sign then encrypt, so this case only applies to a platform running in connectathon mode."
+}

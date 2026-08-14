@@ -1,0 +1,110 @@
+{
+  "resourceType": "TestScript",
+  "id": "auth-11-other-patient",
+  "url": "https://gegevensuitwisseling-paramedische-zorg.github.io/GUPZ-testscripts/TestScript/auth-11-other-patient",
+  "origin": [
+    {
+      "extension": [
+        {
+          "url": "http://fhir.interoplab.eu/fhir/StructureDefinition/Interoplab-CL-ext-SUT",
+          "valueBoolean": false
+        }
+      ],
+      "index": 1,
+      "profile": {
+        "code": "FHIR-Client",
+        "system": "http://terminology.hl7.org/CodeSystem/testscript-profile-origin-types"
+      }
+    }
+  ],
+  "destination": [
+    {
+      "extension": [
+        {
+          "url": "http://fhir.interoplab.eu/fhir/StructureDefinition/Interoplab-CL-ext-SUT",
+          "valueBoolean": true
+        }
+      ],
+      "index": 1,
+      "profile": {
+        "code": "FHIR-Server",
+        "system": "http://terminology.hl7.org/CodeSystem/testscript-profile-destination-types"
+      }
+    }
+  ],
+  "variable": [
+    {
+      "name": "token",
+      "description": "T9: valid, but patient is a different person than the one this request asks for."
+    },
+    {
+      "name": "X-Correlation-ID",
+      "defaultValue": "${UUID}",
+      "description": "X-Correlation-ID, by default a UUID following the MedMij Afsprakenstelsel. Does not have to be edited, see https://nictiz.atlassian.net/browse/MM-5132 for more information"
+    }
+  ],
+  "test": [
+    {
+      "action": [
+        {
+          "operation": {
+            "requestHeader": [
+              {
+                "field": "Authorization",
+                "value": "Bearer ${token}"
+              },
+              {
+                "field": "MedMij-Request-ID",
+                "value": "${UUID}"
+              },
+              {
+                "field": "X-Correlation-ID",
+                "value": "${X-Correlation-ID}"
+              }
+            ],
+            "type": {
+              "code": "search",
+              "system": "http://hl7.org/fhir/restful-interaction"
+            },
+            "resource": "DocumentReference",
+            "description": "Search for current DocumentReference resources.",
+            "accept": "json",
+            "destination": 1,
+            "encodeRequestUrl": true,
+            "origin": 1,
+            "params": "?status=current"
+          }
+        },
+        {
+          "assert": {
+            "description": "Confirm that the returned HTTP status is not 200 (OK). Assert is set to warning only because open-GUPZ issue #73 has not been decided: the specification does not state that a request has to match the patient in the token.",
+            "direction": "response",
+            "operator": "notEquals",
+            "responseCode": "200",
+            "stopTestOnFail": false,
+            "warningOnly": true
+          }
+        },
+        {
+          "assert": {
+            "description": "Check if the returned HTTP status is 401 (Unauthorized) or 403 (Forbidden). Warning only, for the same reason.",
+            "direction": "response",
+            "operator": "in",
+            "responseCode": "401,403",
+            "stopTestOnFail": false,
+            "warningOnly": true
+          }
+        }
+      ],
+      "id": "11",
+      "name": "AUTH-11",
+      "description": "A request for another patient than the token is refused"
+    }
+  ],
+  "version": "0.1.0",
+  "status": "active",
+  "publisher": "GUPZ",
+  "name": "Auth_11_other_patient",
+  "title": "AUTH-11 - A request for another patient than the token is refused",
+  "description": "Tests whether the platform ties the request to the patient claim in the token. Not required by the specification today; raised as open-GUPZ issue #73. Both asserts are warning only until that is decided, so this case reports behaviour without being able to fail a platform."
+}
