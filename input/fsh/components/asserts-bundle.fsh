@@ -5,10 +5,10 @@
 // Generated from the source with scripts/nictiz-to-fsh.py; do not retype the
 // FHIRPath expressions by hand, the backslash escaping is easy to get wrong.
 //
-// Note: the last assert uses the Touchstone rule extension, not the
-// Interoplab-CL-ext-assert-rule from the Conformancelab guide. Kept as it came
-// from Nictiz. Whether Conformancelab honours the Touchstone url is an open
-// question, see docs/scenario-selection.md.
+// The last assert calls a Groovy rule. Nictiz declares that with the Touchstone
+// extension; here it is the Conformancelab equivalent
+// Interoplab-CL-ext-assert-rule, which is structurally the same. See
+// docs/scenario-selection.md.
 
 RuleSet: assertsBundleSearchsetCore
 * test[=].action[+].assert
@@ -110,7 +110,7 @@ RuleSet: assertsBundleSearchsetCore
   * stopTestOnFail = false
   * warningOnly = false
 * test[=].action[+].assert
-  * extension[+].url = "http://touchstone.aegis.net/touchstone/fhir/testing/StructureDefinition/testscript-assert-rule"
+  * extension[+].url = "http://fhir.interoplab.eu/fhir/StructureDefinition/Interoplab-CL-ext-assert-rule"
   * extension[=].extension[+].url = "ruleId"
   * extension[=].extension[=].valueId = "assert-response-queryParamsInSelfLink"
   * description = "Confirm that the parameters in the request URL are all handled by the server, by inspecting the self link."

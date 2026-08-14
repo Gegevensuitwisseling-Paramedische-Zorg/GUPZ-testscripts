@@ -99,6 +99,16 @@ priority: the connectathon of 22 September 2026 is about the data platform.
 | 3.1 Send one document | the client sends a document | no | ITI-65, constraint 1 |
 | 3.2 Send two documents | the client sends two documents | no | ITI-65, constraint 1 |
 
+## Coming change: how the system under test is marked
+
+Today `Interoplab-CL-ext-SUT` on `origin` and `destination` marks which side is
+under test, and that is what the imported scripts use. Interoplab will replace
+it with a profile on `origin.profile` and `destination.profile`. The
+specification does not exist yet and the extension keeps working for now, so
+nothing changes in this repository at the moment. When it lands, the change is
+confined to `input/fsh/components/origin-destination.fsh`, which is the only
+place where the extension is written.
+
 ## What the declared FHIR package already enforces
 
 The Test Sets declare `nictiz.fhir.nl.stu3.zib2017` 2.3.2 in `properties.json`,
@@ -116,6 +126,17 @@ so profile validation applies these constraints from
 
 The `status` search parameter is mandatory in the IG and only takes `current` or
 `superseded`.
+
+## Deliberate deviations from the imported scripts
+
+**The Groovy rule uses the Conformancelab extension.** Nictiz declares its rules
+with the Touchstone extensions,
+`.../StructureDefinition/testscript-rule` on the TestScript and
+`.../testscript-assert-rule` on the assert. Conformancelab defines its own,
+`Interoplab-CL-ext-rule` and `Interoplab-CL-ext-assert-rule`, which are
+structurally identical. On confirmation by Interoplab on 14 August 2026 the
+conversion rewrites both urls. This is the only difference between the generated
+scripts and their originals; everything else compares identical.
 
 ## Where the Nictiz scripts do not simply carry over
 

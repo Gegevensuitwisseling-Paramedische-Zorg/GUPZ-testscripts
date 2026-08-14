@@ -8,7 +8,7 @@ RuleSet: xis-1-2-serve-0-documentreference-NoManifest-meta(format, formatLabel)
 * description = "Scenario 1.2 - Serve DocumentReference resources of XXX-Baltus that are indexed/created in the period from T-730 to T-365."
 
 RuleSet: xis-1-2-serve-0-documentreference-NoManifest-body
-* extension[+].url = "http://touchstone.aegis.net/touchstone/fhir/testing/StructureDefinition/testscript-rule"
+* extension[+].url = "http://fhir.interoplab.eu/fhir/StructureDefinition/Interoplab-CL-ext-rule"
 * extension[=].extension[+].url = "ruleId"
 * extension[=].extension[=].valueId = "assert-response-queryParamsInSelfLink"
 * extension[=].extension[+].url = "path"

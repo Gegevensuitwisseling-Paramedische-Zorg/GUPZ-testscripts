@@ -26,7 +26,7 @@
           "valueString": "../_reference/rules/assert_response_queryParamsInSelfLink.groovy"
         }
       ],
-      "url": "http://touchstone.aegis.net/touchstone/fhir/testing/StructureDefinition/testscript-rule"
+      "url": "http://fhir.interoplab.eu/fhir/StructureDefinition/Interoplab-CL-ext-rule"
     }
   ],
   "origin": [
@@ -291,7 +291,7 @@
                     "valueId": "assert-response-queryParamsInSelfLink"
                   }
                 ],
-                "url": "http://touchstone.aegis.net/touchstone/fhir/testing/StructureDefinition/testscript-assert-rule"
+                "url": "http://fhir.interoplab.eu/fhir/StructureDefinition/Interoplab-CL-ext-assert-rule"
               }
             ],
             "description": "Confirm that the parameters in the request URL are all handled by the server, by inspecting the self link.",

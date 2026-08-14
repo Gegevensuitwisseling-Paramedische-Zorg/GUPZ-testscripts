@@ -26,6 +26,21 @@ import xml.etree.ElementTree as ET
 
 F = "{http://hl7.org/fhir}"
 
+# Deliberate deviation from the imported scripts: Nictiz declares its Groovy
+# rules with the Touchstone extensions, Conformancelab defines its own. The two
+# are structurally the same, so only the url changes. Confirmed by Interoplab on
+# 14 August 2026.
+EXTENSION_URLS = {
+    "http://touchstone.aegis.net/touchstone/fhir/testing/StructureDefinition/testscript-rule":
+        "http://fhir.interoplab.eu/fhir/StructureDefinition/Interoplab-CL-ext-rule",
+    "http://touchstone.aegis.net/touchstone/fhir/testing/StructureDefinition/testscript-assert-rule":
+        "http://fhir.interoplab.eu/fhir/StructureDefinition/Interoplab-CL-ext-assert-rule",
+}
+
+
+def extension_url(url):
+    return EXTENSION_URLS.get(url, url)
+
 # The seventeen asserts that every searchset scenario shares, identified by the
 # description of the first and last one. Verified identical across scenarios
 # 1.1, 1.2, 1.4, 2.1 and 2.5.
@@ -54,7 +69,7 @@ def emit_assert(a, out, indent="* "):
     for child in a:
         tag = child.tag.replace(F, "")
         if tag == "extension":
-            url = child.get("url")
+            url = extension_url(child.get("url"))
             out.append(f"  * extension[+].url = {fsh(url)}")
             for sub in child:
                 sub_tag = sub.get("url")
@@ -160,7 +175,7 @@ def convert(path):
     # Absolute paths on purpose: an indented rule inherits the path of the rule
     # above it, which would nest the sub extensions under .url.
     for ext in root.findall(F + "extension"):
-        body.append(f"* extension[+].url = {fsh(ext.get('url'))}")
+        body.append(f"* extension[+].url = {fsh(extension_url(ext.get('url')))}")
         for sub in ext:
             body.append(f"* extension[=].extension[+].url = {fsh(sub.get('url'))}")
             child = sub[0]

@@ -8,7 +8,7 @@ RuleSet: xis-1-4-serve-2-pdfa-NoManifest-meta(format, formatLabel)
 * description = "Scenario 1.4 - Serve two PDFA documents of XXX-Baltus through Binary resources. If PDFA documents are served via an HTTP get, scenario 2.5 should be executed instead."
 
 RuleSet: xis-1-4-serve-2-pdfa-NoManifest-body
-* extension[+].url = "http://touchstone.aegis.net/touchstone/fhir/testing/StructureDefinition/testscript-rule"
+* extension[+].url = "http://fhir.interoplab.eu/fhir/StructureDefinition/Interoplab-CL-ext-rule"
 * extension[=].extension[+].url = "ruleId"
 * extension[=].extension[=].valueId = "assert-response-queryParamsInSelfLink"
 * extension[=].extension[+].url = "path"

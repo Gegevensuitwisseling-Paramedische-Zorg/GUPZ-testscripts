@@ -8,7 +8,7 @@ RuleSet: xis-1-1-serve-2-documentreference-NoManifest-meta(format, formatLabel)
 * description = "Scenario 1.1 - Serve two DocumentReference resources of XXX-Baltus."
 
 RuleSet: xis-1-1-serve-2-documentreference-NoManifest-body
-* extension[+].url = "http://touchstone.aegis.net/touchstone/fhir/testing/StructureDefinition/testscript-rule"
+* extension[+].url = "http://fhir.interoplab.eu/fhir/StructureDefinition/Interoplab-CL-ext-rule"
 * extension[=].extension[+].url = "ruleId"
 * extension[=].extension[=].valueId = "assert-response-queryParamsInSelfLink"
 * extension[=].extension[+].url = "path"
