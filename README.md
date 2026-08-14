@@ -46,21 +46,22 @@ not and on what grounds is recorded in
 [docs/scenario-selection.md](docs/scenario-selection.md), with references to the
 issues and specification sections that the decisions rest on.
 
-### Converting the Nictiz scripts
+### Converting a Nictiz script
 
-Conversion of the imported XML to FSH is done scenario by scenario.
-[GoFSH](https://fshschool.org/docs/gofsh/) is useful as a scaffold:
+Conversion of imported XML to FSH is done with `scripts/nictiz-to-fsh.py`:
 
 ```
-gofsh <directory-with-xml> -t xml-only -u 5.0.0 --indent -o <output-directory>
+python3 scripts/nictiz-to-fsh.py <script.xml> > input/fsh/<set>/<name>.fsh
 ```
 
-Treat GoFSH as a helper, not as a translator: on these files it demonstrably
-drops two things. `stopTestOnFail` disappears entirely, including where the
-value is `false` (you will notice, because the element is 1..1 in R5 and SUSHI
-refuses to build), and for a `profile` carrying an element id only the id
-survives while the canonical is lost (you will not notice). So verify every
-converted script against its original:
+It recognises the blocks that are identical across scripts and emits an
+`insert` for them, and writes everything else out literally. The FHIRPath
+expressions are generated rather than typed, because their backslash escaping
+survives three layers of quoting and is easy to get wrong. When it meets an
+element it does not handle it stops with an error instead of silently dropping
+it.
+
+Then verify the built result against the original, always:
 
 ```
 python3 scripts/compare-testscript.py <original.xml> fsh-generated/resources/TestScript-<id>.json
@@ -68,6 +69,14 @@ python3 scripts/compare-testscript.py <original.xml> fsh-generated/resources/Tes
 
 That script flattens both sides to path and value and ignores the difference
 between a single value and an array, so only real differences in content remain.
+Only delete the original XML once it reports `IDENTICAL`.
+
+[GoFSH](https://fshschool.org/docs/gofsh/) is the general purpose alternative
+and works on these files with `-t xml-only -u 5.0.0`, but it is not lossless
+here: it drops `stopTestOnFail` everywhere, including where the value is `false`
+(you will notice, because the element is 1..1 in R5 and SUSHI refuses to build),
+and for a `profile` carrying an element id it keeps the id and loses the
+canonical (you will not notice).
 
 ## Layout
 

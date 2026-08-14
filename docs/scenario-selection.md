@@ -66,7 +66,7 @@ receive an error saying the resource is not supported. Reasoning confirmed in
 |---|---|---|:---:|---|
 | 1.1 Serve two DocumentReference resources | search `?status=current` | mandatory | yes | Core of Find Document Reference |
 | 1.2 Serve zero DocumentReference resources | search on status plus a date range | mandatory | yes | Empty result must still be a valid Bundle |
-| 1.3 Serve zero DocumentReference and one OperationOutcome | search with invalid syntax | mandatory | yes | Error handling. Converted to FSH already |
+| 1.3 Serve zero DocumentReference and one OperationOutcome | search with invalid syntax | mandatory | yes | Error handling |
 | 1.4 Serve two PDF/A documents | retrieve two Binary resources | optional, but at least one of 1.4 and 2.5 | yes | The qualification leaves the choice between Binary and an HTTP reference free. Constraint 3 removes that freedom for GUPZ, so 1.4 becomes the mandatory retrieve scenario. Agreed with the architects of the front runners on 18 May 2026, recorded in [#61][i61] |
 | 1.5 Serve zero Binary resources and one OperationOutcome | retrieve an unknown Binary | mandatory | yes | Error handling on Retrieve Document |
 | 2.1 Serve one DocumentReference resource | search returning a single hit | mandatory | yes | Variant of 1.1, second test person |
