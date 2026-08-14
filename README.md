@@ -39,6 +39,17 @@ Not part of the build: `_reference/` (fixtures and Groovy rules) and the
 Interoplab does it in ntv-testscripts. The fixtures add up to more than 12 MB
 and would otherwise be stored in the repository twice.
 
+### Test sets
+
+Two sets are planned. The PDF/A set exists; the auth set is modelled but not
+built.
+
+- **PDF/A**, testing the document interface. Which scenarios are in scope and
+  why is in [docs/scenario-selection.md](docs/scenario-selection.md).
+- **Auth**, testing the token and authentication part of the interface. The
+  model, with the requirement each case tests and the open points that block
+  some of them, is in [docs/auth-test-design.md](docs/auth-test-design.md).
+
 ### Which scenarios we run
 
 Not every imported scenario applies to GUPZ. Which ones are in scope, which are
