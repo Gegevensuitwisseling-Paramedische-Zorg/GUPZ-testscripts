@@ -53,6 +53,34 @@ script that has been converted to FSH, because the generated JSON no longer
 resembles the original XML line by line. For those, use
 `scripts/compare-testscript.py`, which compares content rather than text.
 
+## What stays verbatim
+
+Most of the imported scenarios were converted to FSH, which means we now own
+them: they are generated, and a Nictiz update has to be merged into our sources
+by hand. Three things were deliberately left as they came, in
+`input/static/`, and are copied into `output/` untouched by the build.
+
+**The fixtures and the Groovy rule.** Data rather than structure, and not
+expressible in FSH anyway; see the README.
+
+**Scenario 2.5.** Optional rather than out of scope, so it is kept without being
+part of the GUPZ set. Converting something we do not run would be work without a
+reader.
+
+**The provisioning script in `_LoadResources`.** This one is a TestScript, so
+converting it looks natural, but it fits the pattern badly: it declares no
+`origin` and no `destination`, it uses an operation code `purge` that is not in
+the published value set, its `url` does not follow from its `id` and it carries
+no `version`. Converting would mean either making the converter considerably
+more general or editing the script, and editing it breaks the property that
+makes this whole arrangement work.
+
+That property is the point. Anything still verbatim can be replaced wholesale
+when Nictiz publishes a new patch release: drop in the new file, run the build,
+done. For everything we converted, an update is a comparison and a merge
+instead. Keeping the line where it is keeps that cost proportional to what we
+actually changed.
+
 ## Updating from Nictiz
 
 The source is configured as a read-only remote:

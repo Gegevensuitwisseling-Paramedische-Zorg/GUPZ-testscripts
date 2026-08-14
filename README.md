@@ -42,6 +42,12 @@ fixtures and the Groovy rule under `_reference/`, the provisioning script, and
 the Nictiz scripts that have not been converted. Its layout mirrors `output/`,
 so where a file ends up follows from where it sits.
 
+The line between the two directories is not "TestScripts are FSH". It is that
+what we author lives in `input/fsh/`, and what we import stays verbatim in
+`input/static/`. That is why the provisioning script sits there next to the
+fixtures even though it is a TestScript too. See
+[UPSTREAM.md](UPSTREAM.md#what-stays-verbatim).
+
 The TestScript resources are **R5**, even though the material under test is
 STU3. Those two are independent: Conformancelab only officially supports
 TestScript R5. The FHIR version of the material under test is declared in
