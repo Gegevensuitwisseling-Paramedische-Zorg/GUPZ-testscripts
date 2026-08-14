@@ -1,0 +1,130 @@
+{
+  "resourceType": "TestScript",
+  "id": "phr-2-2-retrieve-1-documentreference",
+  "url": "http://nictiz.nl/fhir/TestScript/phr-2-2-retrieve-1-documentreference",
+  "contact": [
+    {
+      "telecom": [
+        {
+          "system": "email",
+          "value": "kwalificatie@nictiz.nl",
+          "use": "work"
+        }
+      ],
+      "name": "Nictiz"
+    }
+  ],
+  "origin": [
+    {
+      "extension": [
+        {
+          "url": "http://fhir.interoplab.eu/fhir/StructureDefinition/Interoplab-CL-ext-SUT",
+          "valueBoolean": true
+        }
+      ],
+      "index": 1,
+      "profile": {
+        "code": "FHIR-Client",
+        "system": "http://terminology.hl7.org/CodeSystem/testscript-profile-origin-types"
+      }
+    }
+  ],
+  "destination": [
+    {
+      "extension": [
+        {
+          "url": "http://fhir.interoplab.eu/fhir/StructureDefinition/Interoplab-CL-ext-SUT",
+          "valueBoolean": false
+        }
+      ],
+      "index": 1,
+      "profile": {
+        "code": "FHIR-Server",
+        "system": "http://terminology.hl7.org/CodeSystem/testscript-profile-destination-types"
+      }
+    }
+  ],
+  "test": [
+    {
+      "action": [
+        {
+          "operation": {
+            "requestHeader": [
+              {
+                "field": "Authorization",
+                "value": "Bearer aae7b5aa-d796-4fba-b4d3-852d9043ee66"
+              }
+            ],
+            "type": {
+              "code": "read",
+              "system": "http://hl7.org/fhir/restful-interaction"
+            },
+            "resource": "DocumentReference",
+            "description": "Test PHR client to read DocumentReference resource.",
+            "params": "/pdfa-documentreference4",
+            "destination": 1,
+            "origin": 1,
+            "encodeRequestUrl": true
+          }
+        },
+        {
+          "assert": {
+            "description": "Confirm that HTTP header Authorization contains the patient token Bearer aae7b5aa-d796-4fba-b4d3-852d9043ee66",
+            "direction": "request",
+            "headerField": "Authorization",
+            "stopTestOnFail": false,
+            "value": "Bearer aae7b5aa-d796-4fba-b4d3-852d9043ee66",
+            "warningOnly": false
+          }
+        },
+        {
+          "assert": {
+            "description": "Confirm that query parameter 'patient=' was not present to avoid BSNs in the URL.",
+            "direction": "request",
+            "operator": "notContains",
+            "requestURL": "patient=",
+            "stopTestOnFail": false,
+            "warningOnly": false
+          }
+        },
+        {
+          "assert": {
+            "description": "Confirm that query parameter 'subject=' was not present to avoid BSNs in the URL.",
+            "direction": "request",
+            "operator": "notContains",
+            "requestURL": "subject=",
+            "stopTestOnFail": false,
+            "warningOnly": false
+          }
+        },
+        {
+          "assert": {
+            "description": "Confirm that the operation was successful",
+            "operator": "in",
+            "responseCode": "200,201",
+            "stopTestOnFail": true,
+            "warningOnly": false
+          }
+        },
+        {
+          "assert": {
+            "description": "Make sure that the server of the test simulator returns the requested DocumentReference resource.",
+            "direction": "response",
+            "resource": "DocumentReference",
+            "stopTestOnFail": false,
+            "warningOnly": false
+          }
+        }
+      ],
+      "id": "scenario2-2-retrieve-1-documentreference",
+      "name": "Scenario 2.2",
+      "description": "Read DocumentReference resource."
+    }
+  ],
+  "version": "stu3-2.0-patchlevel 2026.30",
+  "status": "active",
+  "publisher": "Nictiz",
+  "name": "Phr_2_2_retrieve_1_documentreference",
+  "title": "Scenario 2.2 - Retrieve one DocumentReference resource",
+  "description": "Scenario 2.2 - Retrieve one DocumentReference resource of XXX-Schulte based on a retrieved reference in a DocumentManifest resource (scenario 2.1)."
+}

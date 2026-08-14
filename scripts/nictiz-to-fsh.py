@@ -115,7 +115,10 @@ def emit_operation(op, out):
 def convert(path):
     root = ET.parse(path).getroot()
     script_id = val(root, "id")
-    base_id = script_id.replace("-json", "")
+    # Server aimed scripts come in a JSON and an XML variant that differ only in
+    # id, url, name, title and accept. Client aimed scripts have one variant.
+    two_variants = script_id.endswith("-json")
+    base_id = script_id[: -len("-json")] if two_variants else script_id
     name = val(root, "name")
     title = val(root, "title")
     slug = re.sub(r"[^a-zA-Z0-9]+", "-", base_id).strip("-")
@@ -124,14 +127,32 @@ def convert(path):
         f"// Generated from {path.split('/')[-1]} with scripts/nictiz-to-fsh.py",
         "// and verified against the original with scripts/compare-testscript.py.",
         "",
-        f"RuleSet: {slug}-meta(format, formatLabel)",
-        f"* insert metadataNictiz({base_id}-{{format}})",
-        f"* name = {fsh(name.replace('_json', '_{format}'))}",
-        f"* title = {fsh(title.replace('JSON Format', '{formatLabel} Format'))}",
     ]
+    if two_variants:
+        head += [
+            f"RuleSet: {slug}-meta(format, formatLabel)",
+            f"* insert metadataNictiz({base_id}-{{format}})",
+            f"* name = {fsh(name.replace('_json', '_{format}'))}",
+            f"* title = {fsh(title.replace('JSON Format', '{formatLabel} Format'))}",
+        ]
+    else:
+        head += [
+            f"RuleSet: {slug}-meta",
+            f"* insert metadataNictiz({base_id})",
+            f"* name = {fsh(name)}",
+            f"* title = {fsh(title)}",
+        ]
     description = val(root, "description")
     if description:
         head.append(f"* description = {fsh(description)}")
+
+    known_root = {"id", "extension", "url", "version", "name", "title", "status",
+                  "publisher", "contact", "description", "origin", "destination",
+                  "profile", "variable", "fixture", "test", "setup", "teardown"}
+    for child in root:
+        tag = child.tag.replace(F, "")
+        if tag not in known_root:
+            raise SystemExit(f"root element not handled by the generator: {tag}")
 
     body = ["", f"RuleSet: {slug}-body"]
 
@@ -146,10 +167,23 @@ def convert(path):
             key = child.tag.replace(F, "")
             body.append(f"* extension[=].extension[=].{key} = {fsh(child.get('value'))}")
 
-    body.append("* insert serverAimed")
+    sut = root.find(F + "origin").find(F + "extension").find(F + "valueBoolean").get("value")
+    body.append("* insert clientAimed" if sut == "true" else "* insert serverAimed")
 
     for prof in root.findall(F + "profile"):
         body.append(f"* insert profileToValidate({prof.get('id')}, {prof.get('value')})")
+
+    for fix in root.findall(F + "fixture"):
+        body.append(f"* fixture[+].id = {fsh(fix.get('id'))}")
+        for tag in ("autocreate", "autodelete"):
+            v = val(fix, tag)
+            if v is not None:
+                body.append(f"* fixture[=].{tag} = {v}")
+        resource = fix.find(F + "resource")
+        if resource is not None:
+            body.append(
+                f"* fixture[=].resource.reference = {fsh(val(resource, 'reference'))}"
+            )
 
     for var in root.findall(F + "variable"):
         vname = val(var, "name")
@@ -206,14 +240,17 @@ def convert(path):
                 accept_paths.append((t_index, a_index, val(op, "accept")))
 
     tail = [""]
-    for fmt, label in (("json", "JSON"), ("xml", "XML")):
-        tail.append(f"Instance: {base_id}-{fmt}")
+    variants = (("json", "JSON"), ("xml", "XML")) if two_variants else ((None, None),)
+    for fmt, label in variants:
+        tail.append(f"Instance: {base_id}-{fmt}" if fmt else f"Instance: {base_id}")
         tail.append("InstanceOf: TestScript")
         tail.append("Usage: #definition")
-        tail.append(f"* insert {slug}-meta({fmt}, {label})")
+        tail.append(f"* insert {slug}-meta({fmt}, {label})" if fmt else f"* insert {slug}-meta")
         tail.append(f"* insert {slug}-body")
-        for t_index, a_index, _ in accept_paths:
-            tail.append(f"* test[{t_index}].action[{a_index}].operation.accept = #{fmt}")
+        for t_index, a_index, original in accept_paths:
+            tail.append(
+                f"* test[{t_index}].action[{a_index}].operation.accept = #{fmt or original}"
+            )
         tail.append("")
 
     return "\n".join(head + body + tail)
