@@ -1,24 +1,24 @@
-// Operations directed at the server under test.
+// Request headers for the operations directed at the server under test.
 //
-// The standard headers live in their own RuleSet without parameters, because
-// their values contain Conformancelab placeholders such as ${UUID}. Those
-// braces must not be touched by SUSHI parameter substitution.
+// One RuleSet per test person rather than one parameterised RuleSet, because
+// the values contain Conformancelab placeholders such as ${UUID}. SUSHI
+// substitutes anything in braces inside a parameterised RuleSet, which would
+// corrupt those placeholders.
+//
+// Authorization, MedMij-Request-ID and X-Correlation-ID are what the MedMij
+// Afsprakenstelsel requires on every resource request.
 
-RuleSet: operationSearch(resource, params, format)
-* test[=].action[+].operation.type = $restful-interaction#search
-* test[=].action[=].operation.resource = "{resource}"
-* test[=].action[=].operation.description = "Test XIS server to serve {resource} resources."
-* test[=].action[=].operation.accept = #{format}
-* test[=].action[=].operation.destination = 1
-* test[=].action[=].operation.encodeRequestUrl = true
-* test[=].action[=].operation.origin = 1
-* test[=].action[=].operation.params = "{params}"
-
-// Authorization, MedMij-Request-ID and X-Correlation-ID, as the MedMij
-// Afsprakenstelsel requires them on every resource request.
 RuleSet: requestHeadersBaltus
 * test[=].action[=].operation.requestHeader[+].field = "Authorization"
 * test[=].action[=].operation.requestHeader[=].value = "${patient-token-XXX_Baltus}"
+* test[=].action[=].operation.requestHeader[+].field = "MedMij-Request-ID"
+* test[=].action[=].operation.requestHeader[=].value = "${UUID}"
+* test[=].action[=].operation.requestHeader[+].field = "X-Correlation-ID"
+* test[=].action[=].operation.requestHeader[=].value = "${X-Correlation-ID}"
+
+RuleSet: requestHeadersSchulte
+* test[=].action[=].operation.requestHeader[+].field = "Authorization"
+* test[=].action[=].operation.requestHeader[=].value = "${patient-token-XXX_Schulte}"
 * test[=].action[=].operation.requestHeader[+].field = "MedMij-Request-ID"
 * test[=].action[=].operation.requestHeader[=].value = "${UUID}"
 * test[=].action[=].operation.requestHeader[+].field = "X-Correlation-ID"

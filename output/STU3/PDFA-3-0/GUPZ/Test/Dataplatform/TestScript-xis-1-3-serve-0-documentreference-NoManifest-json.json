@@ -89,11 +89,11 @@
             },
             "resource": "DocumentReference",
             "description": "Test XIS server to serve DocumentReference resources.",
-            "accept": "json",
+            "params": "/$",
             "destination": 1,
-            "encodeRequestUrl": true,
             "origin": 1,
-            "params": "/$"
+            "encodeRequestUrl": true,
+            "accept": "json"
           }
         },
         {
