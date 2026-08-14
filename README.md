@@ -39,6 +39,13 @@ Not part of the build: `_reference/` (fixtures and Groovy rules) and the
 Interoplab does it in ntv-testscripts. The fixtures add up to more than 12 MB
 and would otherwise be stored in the repository twice.
 
+### Which scenarios we run
+
+Not every imported scenario applies to GUPZ. Which ones are in scope, which are
+not and on what grounds is recorded in
+[docs/scenario-selection.md](docs/scenario-selection.md), with references to the
+issues and specification sections that the decisions rest on.
+
 ### Converting the Nictiz scripts
 
 Conversion of the imported XML to FSH is done scenario by scenario.
