@@ -193,7 +193,7 @@ nine finished tokens. The list below is the recipe.
 | T6 | Unknown or untrusted `iss`, otherwise valid |
 | T7 | Signature broken, for example signed with a different RS256 key |
 | T8 | Encrypted with a public key that is not the platform's |
-| T9 | Valid, but `patient` is a different person than the one the request asks for |
+| T9 | Valid, for the second test patient, so that AUTH-11 can compare two scopes |
 
 Generating on the spot also settles the problem that a token is only valid for
 fifteen minutes, `now - iat < 900`, which would have made a token pasted into a
@@ -223,15 +223,34 @@ those asserts can be added later without restructuring.
 | AUTH-08 | Search with token T6, unknown issuer | Refused | GUPZ-VAL-002 | [#27][i27] on which issuers are trusted, [#70][i70] |
 | AUTH-09 | Search with token T7, broken signature | Refused | GUPZ-VAL-001 | [#70][i70] |
 | AUTH-10 | Search with token T8, wrong encryption key | Refused | GUPZ-VAL-001 | [#70][i70] |
-| AUTH-11 | Search with token T9, other patient than the request | Refused | not specified | [#73][i73], case is advisory |
+| AUTH-11 | The same search with T1 and with T9 | Each response holds only that patient's documents | not specified | [#73][i73], distinguishing asserts are advisory |
 
-AUTH-11 is the case worth arguing about. `security.md` describes `patient` as the
-BSN of the patient whose data is being requested, but nowhere does it say that
-the platform must refuse a request for a different patient than the one in the
-token. As an authorisation rule that is arguably the single most important check
-in the whole interface, and it is not written down. Raised as [#73][i73]. The
-case is built with both asserts on warning only, so it reports what a platform
-does without being able to fail it while the question is open.
+AUTH-11 is the case worth arguing about, and it changed shape on 17 August.
+It began as a refusal case: send a request about one patient with a token for
+another and expect a rejection. Raised as [#73][i73], because `security.md`
+describes `patient` as the BSN of the patient whose data is being requested but
+never says the platform has to check it.
+
+The answer settled the design rather than the question. The preference stated in
+[#73][i73] is to carry the BSN in the token and keep it out of request
+parameters, which means there is nothing to compare: a search never names a
+patient. That matches what the scripts already do, since every PDF/A search in
+this repository queries `?status=current` and leaves the patient to the token.
+
+So the refusal case cannot exist, but the risk behind it can still be tested,
+and more directly. The token is now the only thing that selects a patient, so
+the same request sent with two different tokens has to produce two different
+result sets. AUTH-11 sends `?status=current` twice, once per test patient, and
+checks each response both for a document that patient has and for the absence of
+a document only the other patient has. Ellen XXX_Baltus is identified by LOINC
+68688-1 and Eva XXX_Schulte by 68626-1; both codes appear for one patient only in
+the Nictiz fixtures.
+
+A platform that ignores the token and returns everything now fails on the first
+assert of each test, because a response holding both patients also holds the
+wrong one. The two absence asserts stay warning only: scoping follows from the
+design, but [#73][i73] has not put it in the specification, and until it does no
+platform should fail on it.
 
 ## What this set does not cover
 
@@ -267,8 +286,11 @@ and [#52][i52]. Until those are settled, a test on the presence of `patient`,
    only asserts that the response is not 200, with the expected 401 or 403 as a
    warning. Those become hard asserts as soon as the response is specified.
 4. Arrange the out of band transport check described above.
-5. Revisit AUTH-11 when [#73][i73] is decided. If the check becomes a
-   requirement, the two warnings become hard asserts.
+5. Get the scoping rule into the specification. [#73][i73] states the preference
+   to keep the BSN out of request parameters; the obligation that follows from
+   it, that the platform limits the response to the patient in the token, is not
+   written down. Once it is, the two AUTH-11 absence asserts go from warning to
+   hard.
 
 [sec]: https://github.com/Gegevensuitwisseling-Paramedische-Zorg/open-GUPZ/blob/main/docs/api/security.md
 [sec-tls]: https://github.com/Gegevensuitwisseling-Paramedische-Zorg/open-GUPZ/blob/main/docs/api/security.md#transport-level-security

@@ -95,6 +95,13 @@ The table above had to be assembled from three documents, which is why
 the question it raises: is the generic profile a baseline that the others
 deviate from, or a fallback for callers without a profile of their own?
 
+That question was answered on 17 August. The direction in [#74][i74] is that
+`security.md` holds the token profile for every situation, a NIS included, with
+ZorgDomein and Vecozo as the named exceptions, because both already have token
+specifications of their own. So it is a baseline. One profile for all callers
+was the original intention and has been let go. The overview itself is to be
+discussed with the front runners before it is written down.
+
 The same reading shows how one sided the current coverage is. Everything that
 exists tests the data platform. The party that produces the token, and so
 decides whether anything secure actually happens, is not tested at all today.

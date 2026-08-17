@@ -165,6 +165,14 @@ carrying `severity` `error` and `code` `not-supported`, with an example. That is
 what scenarios 2.2, 2.3 and 2.4 already assert, so those cases now test a GUPZ
 requirement instead of an assumption.
 
+**The patient is never named in a request.** Every search in this repository
+queries on status and dates, never on a patient identifier, and that is not an
+oversight in the Nictiz material: the patient comes from the token. The
+preference stated in [#73][i73] is to keep it that way, carrying the BSN in the
+token and out of request parameters. The scripts therefore need no change, and
+the token becomes the only thing that selects a patient, which is what the
+AUTH-11 case in [auth-test-design.md](auth-test-design.md) tests.
+
 **`status=current` is already covered.** All Nictiz search scenarios query
 `?status=current`, which lines up with the requirement in [`pdfa.md`][pdfa] that
 documents with GUPZ status `Concept` are never served. Whether an extra assert is
@@ -184,6 +192,7 @@ validator will actually check. Related:
 [i64]: https://github.com/Gegevensuitwisseling-Paramedische-Zorg/open-GUPZ/issues/64
 [i66]: https://github.com/Gegevensuitwisseling-Paramedische-Zorg/open-GUPZ/issues/66
 [i72]: https://github.com/Gegevensuitwisseling-Paramedische-Zorg/open-GUPZ/issues/72
+[i73]: https://github.com/Gegevensuitwisseling-Paramedische-Zorg/open-GUPZ/issues/73
 [pdfa]: https://github.com/Gegevensuitwisseling-Paramedische-Zorg/open-GUPZ/blob/main/docs/api/pdfa.md
 [medmij]: https://github.com/Gegevensuitwisseling-Paramedische-Zorg/open-GUPZ/blob/main/docs/architecture/medmij.md
 [fo]: https://informatiestandaarden.nictiz.nl/wiki/MedMij:V2020.01/OntwerpPDFA

@@ -1,0 +1,52 @@
+Instance: auth-11-patient-scoping
+InstanceOf: TestScript
+Usage: #definition
+* insert metadataGupz(auth-11-patient-scoping)
+* name = "Auth_11_patient_scoping"
+* title = "AUTH-11 - The response is scoped to the patient in the token"
+* description = "Tests whether the platform limits what it returns to the patient in the token. The same search is sent twice, once with a token for each test patient, and each response is checked for a document that only the other patient has. In open-GUPZ issue #73 the choice was made to carry the BSN in the token and not in request parameters, which makes the token the only thing that selects the patient. That the platform acts on it is not stated in the specification, so the distinguishing asserts are warning only."
+
+* insert serverAimed
+* insert variableToken
+* variable[=].description = "T1: valid token for the first test patient, XXX_Baltus."
+* insert variableTokenSecondPatient
+* variable[=].description = "T9: valid token for the second test patient, XXX_Schulte."
+* insert variableCorrelationId
+
+* test[+].id = "11a"
+* test[=].name = "AUTH-11a"
+* test[=].description = "A search with the token of the first patient returns that patient's documents"
+* insert operationSearchDocumentReference
+* insert headersWithBearerToken
+* insert assertsRequestAccepted
+* test[=].action[+].assert
+  * description = "Confirm that the returned Bundle contains a DocumentReference with LOINC code 68688-1, which belongs to the first test patient."
+  * direction = #response
+  * expression = "Bundle.entry.select(resource as DocumentReference).where(type.coding.where(code = '68688-1')).exists()"
+  * stopTestOnFail = false
+  * warningOnly = false
+* test[=].action[+].assert
+  * description = "Confirm that the returned Bundle contains no DocumentReference with LOINC code 68626-1, which belongs to the second test patient. Assert is set to warning only because open-GUPZ issue #73 is open: scoping the response to the patient in the token follows from the design but is not stated in the specification."
+  * direction = #response
+  * expression = "Bundle.entry.select(resource as DocumentReference).where(type.coding.where(code = '68626-1')).exists().not()"
+  * stopTestOnFail = false
+  * warningOnly = true
+
+* test[+].id = "11b"
+* test[=].name = "AUTH-11b"
+* test[=].description = "The same search with the token of the second patient returns that patient's documents"
+* insert operationSearchDocumentReference
+* insert headersWithBearerTokenSecondPatient
+* insert assertsRequestAccepted
+* test[=].action[+].assert
+  * description = "Confirm that the returned Bundle contains a DocumentReference with LOINC code 68626-1, which belongs to the second test patient."
+  * direction = #response
+  * expression = "Bundle.entry.select(resource as DocumentReference).where(type.coding.where(code = '68626-1')).exists()"
+  * stopTestOnFail = false
+  * warningOnly = false
+* test[=].action[+].assert
+  * description = "Confirm that the returned Bundle contains no DocumentReference with LOINC code 68688-1, which belongs to the first test patient. Assert is set to warning only for the same reason as in AUTH-11a."
+  * direction = #response
+  * expression = "Bundle.entry.select(resource as DocumentReference).where(type.coding.where(code = '68688-1')).exists().not()"
+  * stopTestOnFail = false
+  * warningOnly = true

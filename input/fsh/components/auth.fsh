@@ -23,6 +23,11 @@ RuleSet: metadataGupz(id)
 RuleSet: variableToken
 * variable[+].name = "token"
 
+// AUTH-11 needs two tokens at once, one per test patient, because it compares
+// what the platform returns for each of them.
+RuleSet: variableTokenSecondPatient
+* variable[+].name = "token-patient-2"
+
 // The request itself is incidental: a search that any conformant platform
 // supports, so that the outcome says something about the token and not about
 // the query. Kept identical to PDF/A scenario 1.1 on purpose.
@@ -39,6 +44,11 @@ RuleSet: operationSearchDocumentReference
 RuleSet: headersWithBearerToken
 * test[=].action[=].operation.requestHeader[+].field = "Authorization"
 * test[=].action[=].operation.requestHeader[=].value = "Bearer ${token}"
+* insert headersMedMijTracing
+
+RuleSet: headersWithBearerTokenSecondPatient
+* test[=].action[=].operation.requestHeader[+].field = "Authorization"
+* test[=].action[=].operation.requestHeader[=].value = "Bearer ${token-patient-2}"
 * insert headersMedMijTracing
 
 // The same token, but without the Bearer prefix the specification prescribes.
@@ -84,25 +94,6 @@ RuleSet: assertsRequestRefused
   * warningOnly = false
 * test[=].action[+].assert
   * description = "Check if the returned HTTP status is 401 (Unauthorized) or 403 (Forbidden). Assert is set to warning only because open-GUPZ issue #70 does not specify the response to a refused token, so other failure codes may be expected as well."
-  * direction = #response
-  * operator = #in
-  * responseCode = "401,403"
-  * stopTestOnFail = false
-  * warningOnly = true
-
-// For a case that tests something the specification does not require yet. Both
-// asserts are warning only, so the case reports what a platform does without
-// being able to fail it.
-RuleSet: assertsRequestRefusedAdvisory
-* test[=].action[+].assert
-  * description = "Confirm that the returned HTTP status is not 200 (OK). Assert is set to warning only because open-GUPZ issue #73 has not been decided: the specification does not state that a request has to match the patient in the token."
-  * direction = #response
-  * operator = #notEquals
-  * responseCode = "200"
-  * stopTestOnFail = false
-  * warningOnly = true
-* test[=].action[+].assert
-  * description = "Check if the returned HTTP status is 401 (Unauthorized) or 403 (Forbidden). Warning only, for the same reason."
   * direction = #response
   * operator = #in
   * responseCode = "401,403"
