@@ -42,7 +42,7 @@ All of it comes from [`docs/api/security.md`][sec] unless stated otherwise.
 | GUPZ-TR-004 | PKIoverheid Private G1 certificates on both sides | [Eisen aan de te gebruiken certificaten][sec-cert] |
 | GUPZ-TOK-001 | Every call carries `Authorization: Bearer <encrypted token>` | [Token beveiliging][sec-tokensec] |
 | GUPZ-TOK-002 | Sign then encrypt: JWS inside JWE | [Token beveiliging][sec-tokensec] |
-| GUPZ-JWS-001 | JWS header carries `alg`, `typ` and `kid` | [Token inhoud][sec-token] |
+| GUPZ-JWS-001 | JWS header carries `alg` with the fixed value `RS256`, `typ` and `kid` | [Token inhoud][sec-token] |
 | GUPZ-PAY-001 | Payload carries `iat`, `exp` and `iss` | [Token inhoud][sec-token] |
 | GUPZ-PAY-002 | `patient`, `provider`, `nbf`, `jti`, `aud` and `scope` are optional, with a prescribed format when present | [Token inhoud][sec-token] |
 | GUPZ-VAL-001 | The platform decrypts the JWE and validates the JWS signature | [Token beveiliging][sec-tokensec] |
@@ -153,7 +153,7 @@ list to hand to whoever prepares the connectathon data.
 | T4 | `iat` more than 15 minutes in the past, otherwise valid |
 | T5 | `exp` in the past, otherwise valid |
 | T6 | Unknown or untrusted `iss`, otherwise valid |
-| T7 | Signature broken, for example signed with a different key |
+| T7 | Signature broken, for example signed with a different RS256 key |
 | T8 | Encrypted with a public key that is not the platform's |
 | T9 | Valid, but `patient` is a different person than the one the request asks for |
 
@@ -182,7 +182,7 @@ those asserts can be added later without restructuring.
 | AUTH-06 | Search with token T4, `iat` too old | Refused | GUPZ-VAL-002 | [#69][i69] on what the rule means, [#70][i70] |
 | AUTH-07 | Search with token T5, expired | Refused | GUPZ-VAL-002 | [#70][i70] |
 | AUTH-08 | Search with token T6, unknown issuer | Refused | GUPZ-VAL-002 | [#27][i27] on which issuers are trusted, [#70][i70] |
-| AUTH-09 | Search with token T7, broken signature | Refused | GUPZ-VAL-001 | [#67][i67] on the algorithm, [#70][i70] |
+| AUTH-09 | Search with token T7, broken signature | Refused | GUPZ-VAL-001 | [#70][i70] |
 | AUTH-10 | Search with token T8, wrong encryption key | Refused | GUPZ-VAL-001 | [#68][i68] on the JWE profile, [#70][i70] |
 | AUTH-11 | Search with token T9, other patient than the request | Refused | not specified | [#73][i73], case is advisory |
 
