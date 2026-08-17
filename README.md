@@ -1,8 +1,22 @@
 # GUPZ-testscripts
 
-FHIR TestScripts for testing the GUPZ data platform on
-[Conformancelab](https://fhir.interoplab.eu/ig/), the TestScript engine built by
-Interoplab. The first target is the connectathon of 22 September 2026.
+Test and qualification material for the GUPZ data platform: FHIR TestScript
+resources and the fixtures that belong with them, testing the platform against
+the [open-GUPZ](https://github.com/Gegevensuitwisseling-Paramedische-Zorg/open-GUPZ)
+specification.
+
+This follows the line Nictiz takes for testing and qualification. Their material
+is TestScript resources with fixtures alongside, and the PDF/A scripts here were
+imported from their qualification set. That the same material can serve more than
+one engine is visible in that import: it arrived carrying Touchstone rule
+extensions, which were rewritten to the Conformancelab equivalents.
+
+The engine used initially is [Conformancelab](https://fhir.interoplab.eu/ig/),
+built by Interoplab, which Nictiz also generates output for. That is tooling
+rather than purpose. Where the engine offers something the standard does not,
+such as its placeholders and its rule extensions, it is marked where it occurs.
+
+The first target is the connectathon of 22 September 2026.
 
 ## Language
 
