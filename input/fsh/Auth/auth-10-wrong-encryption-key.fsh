@@ -4,7 +4,7 @@ Usage: #definition
 * insert metadataGupz(auth-10-wrong-encryption-key)
 * name = "Auth_10_wrong_encryption_key"
 * title = "AUTH-10 - A token encrypted with the wrong key is refused"
-* description = "A token the platform cannot decrypt with its private encryption key must be refused. The JWE profile itself is incomplete, see open-GUPZ issue #68."
+* description = "A token the platform cannot decrypt with its private encryption key must be refused. Since open-GUPZ issue #68 the JWE profile is fixed: alg RSA-OAEP, enc A256CBC-HS512, cty JWT."
 
 * insert serverAimed
 * insert variableToken

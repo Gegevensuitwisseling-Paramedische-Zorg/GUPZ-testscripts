@@ -155,16 +155,15 @@ filter the BSN between DVA and platform as well, so that the same scripts can be
 used and there is double assurance, while acknowledging that this may not be
 equally easy for every vendor. **Not decided.**
 
-**The response to a DocumentManifest request is only half specified.** The
-qualification says a system without manifest support should answer with an error
-indicating the resource is not supported. Which status code and which
-OperationOutcome that is, is not written anywhere: the imported scripts expect
-HTTP 404 with an OperationOutcome, and that expectation comes from the Nictiz
-TestScript rather than from a specification. [`pdfa.md`][pdfa] states that Find
-Document Manifest is not supported but says nothing about how to answer. Raised
-as [#72 Respons op een verzoek op DocumentManifest][i72], with the suggestion to
-adopt what the qualification scripts already expect, so that they stay usable
-unchanged.
+**The response to a DocumentManifest request is now specified.** It was not: the
+qualification said only that a system without manifest support should answer
+with an error indicating the resource is not supported, and the HTTP 404 with an
+OperationOutcome that the imported scripts expect came from the Nictiz
+TestScript rather than from a specification. Raised as [#72][i72] and settled on
+17 August 2026: [`pdfa.md`][pdfa] now prescribes 404 with an OperationOutcome
+carrying `severity` `error` and `code` `not-supported`, with an example. That is
+what scenarios 2.2, 2.3 and 2.4 already assert, so those cases now test a GUPZ
+requirement instead of an assumption.
 
 **`status=current` is already covered.** All Nictiz search scenarios query
 `?status=current`, which lines up with the requirement in [`pdfa.md`][pdfa] that

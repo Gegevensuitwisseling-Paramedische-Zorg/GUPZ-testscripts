@@ -41,13 +41,13 @@ All of it comes from [`docs/api/security.md`][sec] unless stated otherwise.
 | GUPZ-TR-003 | The listed cipher suites are supported | [Eisen aan de TLS configuratie][sec-tlscfg] |
 | GUPZ-TR-004 | PKIoverheid Private G1 certificates on both sides | [Eisen aan de te gebruiken certificaten][sec-cert] |
 | GUPZ-TOK-001 | Every call carries `Authorization: Bearer <encrypted token>` | [Token beveiliging][sec-tokensec] |
-| GUPZ-TOK-002 | Sign then encrypt: JWS inside JWE | [Token beveiliging][sec-tokensec] |
+| GUPZ-TOK-002 | Sign then encrypt: JWS inside JWE, with a JWE header carrying `alg` RSA-OAEP, `enc` A256CBC-HS512 and `cty` JWT | [Token beveiliging][sec-tokensec] |
 | GUPZ-JWS-001 | JWS header carries `alg` with the fixed value `RS256`, `typ` and `kid` | [Token inhoud][sec-token] |
 | GUPZ-PAY-001 | Payload carries `iat`, `exp` and `iss` | [Token inhoud][sec-token] |
 | GUPZ-PAY-002 | `patient`, `provider`, `nbf`, `jti`, `aud` and `scope` are optional, with a prescribed format when present | [Token inhoud][sec-token] |
 | GUPZ-VAL-001 | The platform decrypts the JWE and validates the JWS signature | [Token beveiliging][sec-tokensec] |
-| GUPZ-VAL-002 | The platform refuses a request when `iat` is older than 15 minutes, when `exp` has passed, and validates `iss` | [Token beveiliging][sec-tokensec] |
-| GUPZ-CRY-001 | X.509 keys from a trusted CA, RSA-SHA256 for signing, RSA-OAEP-256 for encryption | [Eisen aan de te gebruiken certificaten][sec-cert2] |
+| GUPZ-VAL-002 | The platform refuses a request unless `now - iat < 900` and `now < exp`, and validates `iss` | [Token beveiliging][sec-tokensec] |
+| GUPZ-CRY-001 | X.509 keys from a trusted CA, RSA-SHA256 for signing, RSA-OAEP with A256CBC-HS512 for encryption | [Eisen aan de te gebruiken certificaten][sec-cert2] |
 | GUPZ-JWKS-001 | JWKS key rotation | [Key rotation][sec-rot] |
 | GUPZ-MED-002 | A DVA fills `scope` with MedMij data service numbers | [MedMij specifieke eisen][sec-medmij] |
 
@@ -86,11 +86,13 @@ TestScript never sees.
 
 ## Where the token comes from
 
-Today the operator pastes it. The alternative is to let Conformancelab mint the
-token itself, which is what suppliers tend to prefer, because then they do not
-depend on a set of files that someone has to produce and that expire. It is
-worth being precise about what that would and would not solve, because the two
-options put the work in different places.
+Today the operator generates it with `JwtCliTool` and pastes it, which is the
+route [#69][i69] points at as well: not static tokens, but tokens issued with
+the available tooling at the moment of testing. The alternative is to let
+Conformancelab mint the token itself, which is what suppliers tend to prefer,
+because then they do not depend on a tool and a set of keys on the operator's
+machine. It is worth being precise about what that would and would not solve,
+because the two options put the work in different places.
 
 Pasting is not really the burden. That is one field per run. The burden on a
 supplier is that their platform has to trust whoever issued the token, and that
@@ -174,26 +176,30 @@ produce a JWE anyway.
 
 ## Test data GUPZ needs to supply
 
-Every case below needs a prepared token. They can be produced with the
-`JwtCliTool` that already sits in open-GUPZ, except where noted. This is the
-list to hand to whoever prepares the connectathon data.
+Every case below needs a token. They are produced with the `JwtCliTool` that
+already sits in open-GUPZ, and they are generated shortly before a run rather
+than handed over as a set of files: in [#69][i69] it was made explicit that
+testing should not use static tokens, so that expired tokens can be tested too.
+What the testers need is therefore the key material and the claim values, not
+nine finished tokens. The list below is the recipe.
 
 | Token | Description |
 |---|---|
-| T1 | Valid, signed and encrypted, for the test patient |
+| T1 | Valid, signed with RS256 and encrypted with RSA-OAEP and A256CBC-HS512, for the test patient |
 | T2 | Valid, signed only, not encrypted (connectathon variant) |
 | T3 | Valid, neither signed nor encrypted (connectathon variant, definition still open) |
-| T4 | `iat` more than 15 minutes in the past, otherwise valid |
+| T4 | `iat` more than 900 seconds in the past, otherwise valid |
 | T5 | `exp` in the past, otherwise valid |
 | T6 | Unknown or untrusted `iss`, otherwise valid |
 | T7 | Signature broken, for example signed with a different RS256 key |
 | T8 | Encrypted with a public key that is not the platform's |
 | T9 | Valid, but `patient` is a different person than the one the request asks for |
 
-Two practical points. A token with a fifteen minute lifetime cannot sit in a
-TestScript as a default value for long, so either the connectathon tokens get a
-long `exp`, or they are generated on the day, or the platform relaxes the age
-check in test mode. And T3 cannot be produced by `JwtCliTool` as it stands,
+Generating on the spot also settles the problem that a token is only valid for
+fifteen minutes, `now - iat < 900`, which would have made a token pasted into a
+script stale within the hour. The operator generates, pastes and runs.
+
+One entry cannot be prepared yet. T3 is beyond `JwtCliTool` as it stands,
 because what "plain" means has not been defined: an unsigned JWT per RFC 7519 is
 a JWS with `alg: none` and an empty signature, which is a different thing from a
 bare base64 payload.
@@ -212,11 +218,11 @@ those asserts can be added later without restructuring.
 | AUTH-03 | Search with token T3, plain | Success in connectathon mode | GUPZ-TOK-001 | Definition of "plain" is open |
 | AUTH-04 | Search without an `Authorization` header | Refused | GUPZ-TOK-001 | [#70][i70] for the exact response |
 | AUTH-05 | Search with a header that is not a Bearer token | Refused | GUPZ-TOK-001 | [#70][i70] |
-| AUTH-06 | Search with token T4, `iat` too old | Refused | GUPZ-VAL-002 | [#69][i69] on what the rule means, [#70][i70] |
+| AUTH-06 | Search with token T4, `iat` too old | Refused | GUPZ-VAL-002 | [#70][i70] |
 | AUTH-07 | Search with token T5, expired | Refused | GUPZ-VAL-002 | [#70][i70] |
 | AUTH-08 | Search with token T6, unknown issuer | Refused | GUPZ-VAL-002 | [#27][i27] on which issuers are trusted, [#70][i70] |
 | AUTH-09 | Search with token T7, broken signature | Refused | GUPZ-VAL-001 | [#70][i70] |
-| AUTH-10 | Search with token T8, wrong encryption key | Refused | GUPZ-VAL-001 | [#68][i68] on the JWE profile, [#70][i70] |
+| AUTH-10 | Search with token T8, wrong encryption key | Refused | GUPZ-VAL-001 | [#70][i70] |
 | AUTH-11 | Search with token T9, other patient than the request | Refused | not specified | [#73][i73], case is advisory |
 
 AUTH-11 is the case worth arguing about. `security.md` describes `patient` as the
@@ -254,8 +260,8 @@ and [#52][i52]. Until those are settled, a test on the presence of `patient`,
 
 ## What still has to happen
 
-1. Get the tokens T1 to T9, or agree who produces them and when. This is the
-   critical path: the scripts run, but without tokens they prove nothing.
+1. Get the key material, so that tokens can be generated on the spot. This is
+   the critical path: the scripts run, but without keys they prove nothing.
 2. Decide what "plain" means for T3, otherwise AUTH-03 cannot be prepared.
 3. Tighten the negative asserts once [#70][i70] lands. Each refusal case now
    only asserts that the response is not 200, with the expected 401 or 403 as a
