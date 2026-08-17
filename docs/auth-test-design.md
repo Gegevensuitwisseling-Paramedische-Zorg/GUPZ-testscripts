@@ -44,7 +44,7 @@ All of it comes from [`docs/api/security.md`][sec] unless stated otherwise.
 | GUPZ-TOK-002 | Sign then encrypt: JWS inside JWE, with a JWE header carrying `alg` RSA-OAEP, `enc` A256CBC-HS512 and `cty` JWT | [Token beveiliging][sec-tokensec] |
 | GUPZ-JWS-001 | JWS header carries `alg` with the fixed value `RS256`, `typ` and `kid` | [Token inhoud][sec-token] |
 | GUPZ-PAY-001 | Payload carries `iat`, `exp` and `iss` | [Token inhoud][sec-token] |
-| GUPZ-PAY-002 | `patient`, `provider`, `nbf`, `jti`, `aud` and `scope` are optional, with a prescribed format when present | [Token inhoud][sec-token] |
+| GUPZ-PAY-002 | `aud` is mandatory and `patient` is mandatory for a patient bound request; `provider`, `nbf`, `jti` and `scope` are optional. Each has a prescribed format when present | [Token inhoud][sec-token] |
 | GUPZ-VAL-001 | The platform decrypts the JWE and validates the JWS signature | [Token beveiliging][sec-tokensec] |
 | GUPZ-VAL-002 | The platform refuses a request unless `now - iat < 900` and `now < exp`, and validates `iss` | [Token beveiliging][sec-tokensec] |
 | GUPZ-CRY-001 | X.509 keys from a trusted CA, RSA-SHA256 for signing, RSA-OAEP with A256CBC-HS512 for encryption | [Eisen aan de te gebruiken certificaten][sec-cert2] |
@@ -273,9 +273,19 @@ Groovy rule to inspect the token.
 **Key rotation.** `GUPZ-JWKS-001` needs a JWKS endpoint and an agreement on
 discovery and trust, which is [#27][i27]. Not for this connectathon.
 
-**Claim obligations.** Which claims are mandatory in which profile is [#38][i38]
-and [#52][i52]. Until those are settled, a test on the presence of `patient`,
-`aud` or `scope` would test an assumption.
+**Claim obligations.** Three of these were settled on 17 August. [#38][i38] was
+closed with the answers that `provider` is the name to use and that `patient` is
+mandatory for a patient bound request, and `security.md` now says so. In
+[#52][i52] `aud` became mandatory, on the grounds that without it a platform
+cannot establish that a token was meant for it.
+
+What is left is the shape of `scope` and the claims for the end user. [#52][i52]
+carries a proposal to allow more than one scope, space separated after the SMART
+on FHIR convention, so that a client does not need a fresh token per request;
+`security.md` still says `medmij.gegevensdienst.<nummer>` without a separator.
+The end user and the authorised representative moved to [#76][i76], where `sub`
+is proposed. A case on the presence of `aud` or `patient` can be built once the
+refusal responses are settled, since it is those responses it would assert on.
 
 ## What still has to happen
 
@@ -304,6 +314,7 @@ and [#52][i52]. Until those are settled, a test on the presence of `patient`,
 [i27]: https://github.com/Gegevensuitwisseling-Paramedische-Zorg/open-GUPZ/issues/27
 [i38]: https://github.com/Gegevensuitwisseling-Paramedische-Zorg/open-GUPZ/issues/38
 [i52]: https://github.com/Gegevensuitwisseling-Paramedische-Zorg/open-GUPZ/issues/52
+[i76]: https://github.com/Gegevensuitwisseling-Paramedische-Zorg/open-GUPZ/issues/76
 [i67]: https://github.com/Gegevensuitwisseling-Paramedische-Zorg/open-GUPZ/issues/67
 [i68]: https://github.com/Gegevensuitwisseling-Paramedische-Zorg/open-GUPZ/issues/68
 [i69]: https://github.com/Gegevensuitwisseling-Paramedische-Zorg/open-GUPZ/issues/69
