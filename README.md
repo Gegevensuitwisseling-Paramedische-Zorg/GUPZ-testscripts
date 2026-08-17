@@ -9,6 +9,13 @@ Interoplab. The first target is the connectathon of 22 September 2026.
 Everything in this repository is written in English: documentation, comments,
 commit messages and the TestScripts themselves.
 
+## About this documentation
+
+The documentation in this repository is written with the help of AI. Every text
+is read by a human before it is merged and corrected where needed;
+responsibility for the content rests with the authors. If you do find a mistake,
+please report it as an issue.
+
 ## Authoring in FSH
 
 TestScripts are written in [FHIR Shorthand](https://fshschool.org) and built
@@ -170,13 +177,6 @@ The PDF/A scripts were imported from the qualification material published by
 Nictiz and adapted for GUPZ. See [UPSTREAM.md](UPSTREAM.md) for the exact
 source, the commit that was imported, the licensing situation and how to pull in
 changes from Nictiz or offer changes back to them.
-
-## About this documentation
-
-The documentation in this repository is written with the help of AI. Every text
-is read by a human before it is merged and corrected where needed;
-responsibility for the content rests with the authors. If you do find a mistake,
-please report it as an issue.
 
 ## How we work
 
