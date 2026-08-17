@@ -84,6 +84,39 @@ certificate, a TestScript cannot produce that situation. Nor does it cover
 `GUPZ-TR-004`, the certificate profile: those live in the handshake, which a
 TestScript never sees.
 
+## Where the token comes from
+
+Today the operator pastes it. The alternative is to let Conformancelab mint the
+token itself, which is what suppliers tend to prefer, because then they do not
+depend on a set of files that someone has to produce and that expire. It is
+worth being precise about what that would and would not solve, because the two
+options put the work in different places.
+
+Pasting is not really the burden. That is one field per run. The burden on a
+supplier is that their platform has to trust whoever issued the token, and that
+is configuration they cannot avoid, because validating the token is the thing
+being tested. So the real question is not how the token reaches Conformancelab,
+but whose key the platform has to trust: the one GUPZ signs with, or Interoplab's.
+
+**What Conformancelab could mint.** `${JWT-ENCODE, {payload}}` builds a JWT from
+a claims object, and the claims are fully ours to set, including a stale `iat` or
+a past `exp` through `${CURRENT-NUMERICDATE, m, -20}`. The header and the
+signature are added by the engine, there is no JWE, and the guide does not say
+which key signs or where the matching public key can be found. Without a
+discoverable public key a supplier cannot verify such a token at all, so this
+route is currently blocked on a question rather than on a design choice.
+
+**What it would cover.** The happy flow, and AUTH-06 and AUTH-07, which only need
+control over time. Not AUTH-09 or AUTH-10, which need control over keys, and not
+the signed and encrypted variant, which needs a JWE the engine cannot produce.
+
+**Switching is cheap.** The token is a variable. Whether the operator fills it or
+its default becomes a `${JWT-ENCODE, ...}` expression is one line per script and
+changes nothing about the requests or the asserts. Operator input stays the
+baseline because it covers all eleven cases; a minted variant can be added
+alongside it for the cases it can serve, once it is known which key the engine
+signs with.
+
 ## Why this set uses no stubs
 
 Conformancelab can mock an endpoint with a WireMock stub and the `stub`

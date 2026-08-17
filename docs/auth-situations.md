@@ -18,17 +18,49 @@ The actors, from [PSA.md][psa-soc] and [medmij.md][mm-rol]:
 | NIS | Netwerk Informatie Systeem |
 | PGO | Personal health environment. Talks to a DVA, never to the data platform |
 
+## Two shapes, and one combination
+
+Everything below is one of two shapes. Either Conformancelab makes the call, or
+it receives one and plays the part of the other side. That single distinction
+decides what a test can assert, and whether stubs are involved at all.
+
+```mermaid
+flowchart TB
+  subgraph one["Conformancelab is the caller: situations 1, 3, 4, 5"]
+    direction LR
+    cl1["Conformancelab"] -- "request carrying a token" --> dp1["Data platform<br>system under test"]
+    dp1 -. "response, asserted on" .-> cl1
+  end
+  subgraph two["Conformancelab is the receiver: situation 2"]
+    direction LR
+    dva["DVA<br>system under test"] -- "request carrying a token" --> cl2["Conformancelab<br>plays the data platform, with stubs"]
+    cl2 -. "stubbed response" .-> dva
+  end
+  subgraph three["Both at once: situation 6"]
+    direction LR
+    cl3["Conformancelab"] -- "request carrying a token" --> dp3["Data platform<br>system under test"]
+    dp3 -- "fetches the key set to verify the signature" --> cl4["Conformancelab<br>hosts the JWKS, with a stub"]
+  end
+```
+
+Situation 7 is in neither shape: Conformancelab has no part in it.
+
+The consequence worth remembering: a stub can only catch traffic that arrives at
+Conformancelab, so stubs exist in the second shape and in the second half of the
+third. In the first shape something has to exist at the other end, which is why
+those sets need an endpoint rather than a mock.
+
 ## The situations
 
 | # | Situation | System under test | What Conformancelab does | Where it is described | Status |
 |---|---|---|---|---|---|
-| 1 | A DVA queries the data platform | Data platform | Sends the request itself, carrying a supplied token, and asserts on the response | [medmij.md][mm-rol], [pdfa.md][pdfa-sec], [security.md][sec-tok] | Built, 11 cases |
-| 2 | The same interface, with the DVA under test | DVA | Mocks the data platform with stubs, catches the request and asserts on what the DVA sent | same as 1 | Not built |
-| 3 | Vecozo sends a referral | Data platform | As 1, with a Vecozo token: signed but not encrypted, no `patient` or `provider`, fixed `iss` | [referral.md][ref-vec] | Not built |
-| 4 | ZorgDomein sends a referral | Data platform | As 1, but the security profile is not GUPZ's | [referral.md][ref-zd], external | Not built, profile is external |
-| 5 | A NIS queries the data platform | Data platform | As 1 | [PSA.md][psa-soc] | Not built, no separate requirements exist |
-| 6 | The platform fetches a JWKS | Data platform | Hosts the key set as a stub and checks whether the platform retrieves it and picks the key matching the `kid` | [security.md][sec-rot], [#27][i27] | Not built, mechanism unspecified |
-| 7 | A PGO retrieves data from a DVA | PGO or DVA | Nothing; this is the existing Nictiz MedMij qualification | [medmij.md][mm-rol] | Outside GUPZ, but the source of our PDF/A scripts |
+| 1 | A DVA queries the data platform | Data platform | **Caller.** Sends the request itself, carrying a supplied token, and asserts on the response | [medmij.md][mm-rol], [pdfa.md][pdfa-sec], [security.md][sec-tok] | Built, 11 cases |
+| 2 | The same interface, with the DVA under test | DVA | **Receiver.** Mocks the data platform with stubs, catches the request and asserts on what the DVA sent | same as 1 | Not built |
+| 3 | Vecozo sends a referral | Data platform | **Caller.** As 1, with a Vecozo token: signed but not encrypted, no `patient` or `provider`, fixed `iss` | [referral.md][ref-vec] | Not built |
+| 4 | ZorgDomein sends a referral | Data platform | **Caller.** As 1, but the security profile is not GUPZ's | [referral.md][ref-zd], external | Not built, profile is external |
+| 5 | A NIS queries the data platform | Data platform | **Caller.** As 1 | [PSA.md][psa-soc] | Not built, no separate requirements exist |
+| 6 | The platform fetches a JWKS | Data platform | **Caller and receiver.** Sends the request, then hosts the key set as a stub and checks whether the platform retrieves it and picks the key matching the `kid` | [security.md][sec-rot], [#27][i27] | Not built, mechanism unspecified |
+| 7 | A PGO retrieves data from a DVA | PGO or DVA | **Not involved.** This is the existing Nictiz MedMij qualification | [medmij.md][mm-rol] | Outside GUPZ, but the source of our PDF/A scripts |
 
 Situation 1 is worked out in [auth-test-design.md](auth-test-design.md).
 
