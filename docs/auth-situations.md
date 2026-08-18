@@ -121,7 +121,7 @@ change that, and they combine:
 
 Chained, they read a claim out of a token: capture the Bearer value, isolate the
 payload segment with a second regex, decode it, and match the claim. Two limits
-are worth knowing before building on it. The regex mapper keeps only the first
+apply before building on it. The regex mapper keeps only the first
 full match and does not support capture groups, so the payload segment has to be
 isolated with lookaround rather than a group. And a token that follows
 `GUPZ-TOK-002` is a JWE, whose payload is encrypted, so this reads the plain and

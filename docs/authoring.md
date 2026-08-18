@@ -52,7 +52,7 @@ has to report `IDENTICAL`.
 
 Fixtures are STU3 resources and they are written by hand, as XML or JSON, in
 `input/static/.../_reference/resources/`. They are not written in FSH, for two
-reasons that are worth knowing before anyone tries.
+reasons that should be understood before anyone tries.
 
 SUSHI does not do STU3. Setting `fhirVersion: 3.0.2` produces
 `The sushi-config.yaml must specify a supported version of FHIR. Found 3.0.2.`

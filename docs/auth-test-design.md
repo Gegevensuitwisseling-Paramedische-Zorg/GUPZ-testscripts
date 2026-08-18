@@ -34,24 +34,41 @@ the open points that came out of the inventory.
 
 All of it comes from [`docs/api/security.md`][sec] unless stated otherwise.
 
-| Id | Requirement | Source |
-|---|---|---|
-| GUPZ-TR-001 | Traffic runs over mTLS, both sides authenticate with a certificate | [Transport level security][sec-tls] |
-| GUPZ-TR-002 | TLS 1.2 or 1.3, at least NCSC level *Voldoende* | [Eisen aan de TLS configuratie][sec-tlscfg] |
-| GUPZ-TR-003 | The listed cipher suites are supported | [Eisen aan de TLS configuratie][sec-tlscfg] |
-| GUPZ-TR-004 | PKIoverheid Private G4 certificates on both sides, and not required for testing | [Eisen aan de te gebruiken certificaten][sec-cert] |
-| GUPZ-TOK-001 | Every call carries `Authorization: Bearer <encrypted token>` | [Token beveiliging][sec-tokensec] |
-| GUPZ-TOK-002 | Sign then encrypt: JWS inside JWE, with a JWE header carrying `alg` RSA-OAEP, `enc` A256CBC-HS512 and `cty` JWT | [Token beveiliging][sec-tokensec] |
-| GUPZ-JWS-001 | JWS header carries `alg` with the fixed value `RS256`, `typ` and `kid` | [Token inhoud][sec-token] |
-| GUPZ-PAY-001 | Payload carries `iat`, `exp` and `iss` | [Token inhoud][sec-token] |
-| GUPZ-PAY-002 | `aud` is mandatory and `patient` is mandatory for a patient bound request; `provider`, `nbf`, `jti` and `scope` are optional. Each has a prescribed format when present | [Token inhoud][sec-token] |
-| GUPZ-VAL-001 | The platform decrypts the JWE and validates the JWS signature | [Token beveiliging][sec-tokensec] |
-| GUPZ-VAL-002 | The platform refuses a request unless `now - iat < 900` and `now < exp`, and validates `iss`. The tolerated clock skew is [#77][i77], proposing Dutch NTP and at most 30 seconds | [Token beveiliging][sec-tokensec] |
-| GUPZ-CRY-001 | X.509 keys from a trusted CA, RSA-SHA256 for signing, RSA-OAEP with A256CBC-HS512 for encryption | [Eisen aan de te gebruiken certificaten][sec-cert2] |
-| GUPZ-JWKS-001 | Both sides publish a JWKS on `/.well-known/jwks.json`: the caller its signing keys, the platform its encryption keys. The platform refetches when a token carries an unknown `kid` | [Key rotation][sec-rot] |
-| GUPZ-VAL-003 | A refused token is answered with 401, a `WWW-Authenticate: Bearer` header carrying `error="invalid_token"`, and an OperationOutcome with `severity` error and `code` `login` | [Afhandeling van ongeldige tokens][sec-invalid] |
-| GUPZ-VAL-004 | A request outside the scope in the token is answered with 403, `error="insufficient_scope"` with the required scope, and an OperationOutcome with `code` `forbidden` | [Afhandeling van ontbrekende autorisatie][sec-forbidden] |
-| GUPZ-MED-002 | A DVA fills `scope` with MedMij data service numbers | [MedMij specifieke eisen][sec-medmij] |
+The Modality column reads the source with the key words of [RFC 2119][rfc2119].
+`security.md` does not use them, so each one is our reading of a Dutch sentence,
+and where that reading is not certain the column says so. It is not decoration:
+the modality decides what an assert may do.
+
+| Modality in the source | What the assert does |
+|---|---|
+| MUST, MUST NOT, REQUIRED | Hard assert. A platform that fails it is not conformant |
+| SHOULD, RECOMMENDED | `warningOnly` is true. Reports the deviation without failing anyone |
+| MAY, OPTIONAL | No assert, or an informational one. There is nothing to be conformant to |
+| Unclear | Treated as SHOULD until it is settled, and an issue is raised |
+
+That last row is where two of our findings come from. `GUPZ-TR-002` and
+`GUPZ-TR-003` are only open because nobody can tell whether every party has to
+support every version and every cipher suite, or one of each. Written with the
+key words, neither question would exist.
+
+| Id | Requirement | Modality | Source |
+|---|---|---|---|
+| GUPZ-TR-001 | Traffic runs over mTLS, both sides authenticate with a certificate | MUST | [Transport level security][sec-tls] |
+| GUPZ-TR-002 | TLS 1.2 or 1.3, at least NCSC level *Voldoende* | MUST, but unclear which version | [Eisen aan de TLS configuratie][sec-tlscfg] |
+| GUPZ-TR-003 | The listed cipher suites are supported | Unclear: all suites or one | [Eisen aan de TLS configuratie][sec-tlscfg] |
+| GUPZ-TR-004 | PKIoverheid Private G4 certificates on both sides, and not required for testing | MUST in production, NOT REQUIRED for testing | [Eisen aan de te gebruiken certificaten][sec-cert] |
+| GUPZ-TOK-001 | Every call carries `Authorization: Bearer <encrypted token>` | MUST | [Token beveiliging][sec-tokensec] |
+| GUPZ-TOK-002 | Sign then encrypt: JWS inside JWE, with a JWE header carrying `alg` RSA-OAEP, `enc` A256CBC-HS512 and `cty` JWT | MUST | [Token beveiliging][sec-tokensec] |
+| GUPZ-JWS-001 | JWS header carries `alg` with the fixed value `RS256`, `typ` and `kid` | MUST | [Token inhoud][sec-token] |
+| GUPZ-PAY-001 | Payload carries `iat`, `exp` and `iss` | MUST | [Token inhoud][sec-token] |
+| GUPZ-PAY-002 | `aud` is mandatory and `patient` is mandatory for a patient bound request; `provider`, `nbf`, `jti` and `scope` are optional. Each has a prescribed format when present | MUST for `aud`, and for `patient` on a patient bound request; the rest OPTIONAL | [Token inhoud][sec-token] |
+| GUPZ-VAL-001 | The platform decrypts the JWE and validates the JWS signature | MUST | [Token beveiliging][sec-tokensec] |
+| GUPZ-VAL-002 | The platform refuses a request unless `now - iat < 900` and `now < exp`, and validates `iss`. The tolerated clock skew is [#77][i77], proposing Dutch NTP and at most 30 seconds | MUST; the clock skew is unresolved | [Token beveiliging][sec-tokensec] |
+| GUPZ-CRY-001 | X.509 keys from a trusted CA, RSA-SHA256 for signing, RSA-OAEP with A256CBC-HS512 for encryption | MUST | [Eisen aan de te gebruiken certificaten][sec-cert2] |
+| GUPZ-JWKS-001 | Both sides publish a JWKS on `/.well-known/jwks.json`: the caller its signing keys, the platform its encryption keys. The platform refetches when a token carries an unknown `kid` | MUST, with manual exchange as the fallback for 22 September | [Key rotation][sec-rot] |
+| GUPZ-VAL-003 | A refused token is answered with 401, a `WWW-Authenticate: Bearer` header carrying `error="invalid_token"`, and an OperationOutcome with `severity` error and `code` `login` | MUST, under review | [Afhandeling van ongeldige tokens][sec-invalid] |
+| GUPZ-VAL-004 | A request outside the scope in the token is answered with 403, `error="insufficient_scope"` with the required scope, and an OperationOutcome with `code` `forbidden` | MUST, under review | [Afhandeling van ontbrekende autorisatie][sec-forbidden] |
+| GUPZ-MED-002 | A DVA fills `scope` with MedMij data service numbers | MUST for a DVA; checking it is a MAY for the platform | [MedMij specifieke eisen][sec-medmij] |
 
 ## What Conformancelab can and cannot do here
 
@@ -72,7 +89,7 @@ are the ones who made the token. It matters a great deal for the mirror image,
 where a DVA is under test and the token is the thing being judged; see
 [auth-situations.md](auth-situations.md).
 
-**Groovy rules remain the escape hatch.** An assert can call an external Groovy
+**Groovy rules remain the fallback for anything the asserts cannot express.** An assert can call an external Groovy
 script with access to request, response and FHIRPath. Both rule extensions are
 now published in the IG under Interoplab canonicals. Not needed for the model
 below.
@@ -100,10 +117,10 @@ because then they do not depend on a tool and a set of keys on the operator's
 machine. It is worth being precise about what that would and would not solve,
 because the two options put the work in different places.
 
-Pasting is not really the burden. That is one field per run. The burden on a
-supplier is that their platform has to trust whoever issued the token, and that
-is configuration they cannot avoid, because validating the token is the thing
-being tested. So the real question is not how the token reaches Conformancelab,
+Pasting is not the burden; that is one field per run. The burden on a supplier
+is that their platform has to trust whoever issued the token, and that is
+configuration they cannot avoid, because validating the token is the thing being
+tested. So the real question is not how the token reaches Conformancelab,
 but whose key the platform has to trust: the one GUPZ signs with, or Interoplab's.
 
 **What Conformancelab could mint.** `${JWT-ENCODE, {payload}}` builds a JWT from
@@ -118,7 +135,7 @@ route is currently blocked on a question rather than on a design choice.
 control over time. Not AUTH-09 or AUTH-10, which need control over keys, and not
 the signed and encrypted variant, which needs a JWE the engine cannot produce.
 
-**Switching is cheap.** The token is a variable. Whether the operator fills it or
+**Switching costs little.** The token is a variable. Whether the operator fills it or
 its default becomes a `${JWT-ENCODE, ...}` expression is one line per script and
 changes nothing about the requests or the asserts. Operator input stays the
 baseline because it covers all eleven cases; a minted variant can be added
@@ -217,8 +234,8 @@ the encryption is the concession a test setup gets. It is to be discussed with
 the front runners and an issue will follow.
 
 If that holds, the connectathon has two token variants rather than three, and
-AUTH-03 turns inside out: instead of a plain token being accepted in test mode,
-an unsigned token has to be refused. That is a better test than the one it
+AUTH-03 reverses: instead of a plain token being accepted in test mode, an
+unsigned token has to be refused. That is a better test than the one it
 replaces, because it asserts a security property instead of a configuration.
 Nothing is changed here yet, since the decision is not final.
 
@@ -260,7 +277,7 @@ one, and this set will need to know which mode a platform is running in.
 | AUTH-10 | Search with token T8, wrong encryption key | Refused | GUPZ-VAL-001 | [#70][i70] |
 | AUTH-11 | The same search with T1 and with T9 | Each response holds only that patient's documents | not specified | [#73][i73], distinguishing asserts are advisory |
 
-AUTH-11 is the case worth arguing about, and it changed shape on 17 August.
+AUTH-11 is the case that needed the most argument, and it changed shape on 17 August.
 It began as a refusal case: send a request about one patient with a token for
 another and expect a rejection. Raised as [#73][i73], because `security.md`
 describes `patient` as the BSN of the patient whose data is being requested but
@@ -360,8 +377,8 @@ refusal responses are settled, since it is those responses it would assert on.
 6. Add a case for the JWKS endpoint. `security.md` now puts one on
    `/.well-known/jwks.json` at both ends, and the platform's is a plain GET that
    a script can make. GUPZ expects this may not be ready by 22 September, with
-   manual key exchange as the fallback, so the case is worth building but not
-   worth failing anyone on that day.
+   manual key exchange as the fallback, so the case should be built but should
+   not fail anyone on that day.
 
 [sec]: https://github.com/Gegevensuitwisseling-Paramedische-Zorg/open-GUPZ/blob/main/docs/api/security.md
 [sec-tls]: https://github.com/Gegevensuitwisseling-Paramedische-Zorg/open-GUPZ/blob/main/docs/api/security.md#transport-level-security
@@ -379,6 +396,7 @@ refusal responses are settled, since it is those responses it would assert on.
 [i52]: https://github.com/Gegevensuitwisseling-Paramedische-Zorg/open-GUPZ/issues/52
 [i76]: https://github.com/Gegevensuitwisseling-Paramedische-Zorg/open-GUPZ/issues/76
 [i77]: https://github.com/Gegevensuitwisseling-Paramedische-Zorg/open-GUPZ/issues/77
+[rfc2119]: https://www.rfc-editor.org/rfc/rfc2119
 [i67]: https://github.com/Gegevensuitwisseling-Paramedische-Zorg/open-GUPZ/issues/67
 [i68]: https://github.com/Gegevensuitwisseling-Paramedische-Zorg/open-GUPZ/issues/68
 [i69]: https://github.com/Gegevensuitwisseling-Paramedische-Zorg/open-GUPZ/issues/69
