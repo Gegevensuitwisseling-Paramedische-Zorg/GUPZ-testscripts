@@ -190,19 +190,55 @@ that the request did not succeed. What we want is the exact status code and
 `OperationOutcome`, and that is blocked by [#70][i70]; the model is written so
 those asserts can be added later without restructuring.
 
-`security.md` now describes those responses, and GUPZ confirmed on 17 August that
-they may be taken as written, with only the detail level of `error_description`
-and `diagnostics` still under discussion. That is enough to harden most of what
-these cases assert: the status code, the `WWW-Authenticate` header and the
-`OperationOutcome` code are settled, and only the human readable text is not.
+`security.md` describes those responses and GUPZ confirmed on 17 August that they
+may be taken as written. The status code, the `WWW-Authenticate` header and the
+`OperationOutcome` code are settled. One question is not: which failure is a 401
+and which a 403 was raised as needing agreement, because the two lie close
+together and implementations differ. For the seven token validation cases the
+specification says 401 and the scope case says 403, so the model below follows
+that and the asserts stay soft until the question closes.
 
-Two things came up afterwards and are not settled. Which failure is a 401 and
-which a 403 was raised as needing agreement, because the two lie close together
-and implementations differ. And there is a proposal to let a platform reveal as
-much as possible in a test setup while revealing nothing in production, as a
-switch, which GUPZ can accept on the condition that a run without the switch is
-also tested. If that lands, a refusal case has two expected outcomes rather than
-one, and this set will need to know which mode a platform is running in.
+### Two modes, and why that does not double the set
+
+On 18 August `security.md` gained a rule that changes the shape of these cases:
+for testing, more detail may be put in `error_description` and `diagnostics`,
+but a platform has to be able to demonstrate that including such detail can be
+switched off. Both modes therefore have to be shown, which at first sight means
+every refusal case needs two expected outcomes.
+
+It does not, as long as the seven cases assert only what holds in both modes:
+
+| Holds in both modes | Mode dependent |
+|---|---|
+| HTTP 401 | Whether `diagnostics` names the cause |
+| `WWW-Authenticate: Bearer` with `error="invalid_token"` | |
+| OperationOutcome with `severity` error and `code` `login` | |
+| `error_description` and `diagnostics` carry the same value | |
+
+Only the wording of one field varies, and none of the seven cases needs to
+inspect it. They pass in either mode, and the operator does not have to tell the
+set which mode the platform is in.
+
+What is worth adding is a single case for the switch itself, since that is the
+new requirement. Call it AUTH-12: send three different failures in one script,
+for instance a missing header, an unknown issuer and a token encrypted with the
+wrong key, and assert that the returned `diagnostics` are identical. A platform
+that reveals nothing beyond "expired" or "signature failed" cannot distinguish
+those three, so identical text is exactly what switching the detail off means.
+Run it in the closed mode only; in the open mode the same script is expected to
+differ and proves nothing.
+
+Two mechanics make this buildable. The comparison has to happen inside one
+script, because a variable reads from an earlier response in the same script.
+And reading a header into a variable and comparing it with a response element
+uses the regex mapper together with
+`Interoplab-CL-ext-assert-input-variable`, the chain that became available on
+18 August. The same chain covers the rule that `error_description` and
+`diagnostics` must be equal, which is the one part of the refusal response that
+is currently asserted nowhere.
+
+Nothing is built yet. The seven cases keep their soft asserts until the 401
+against 403 question closes, and AUTH-12 waits with them.
 
 | Case | What Conformancelab does | Expected | Requirement | Blocked by |
 |---|---|---|---|---|
@@ -285,21 +321,20 @@ what it would assert on.
 2. Settle the unsigned token. GUPZ is against supporting one at all, even in a
    test setup, and will raise an issue after discussing it with the front
    runners. Either AUTH-03 inverts into a refusal case or it disappears.
-3. Tighten the negative asserts once [#70][i70] closes. Each refusal case now
-   only asserts that the response is not 200, with the expected 401 or 403 as a
-   warning. Two things have to be settled before those become hard asserts:
-   which failure is a 401 and which a 403, and whether the diagnostics switch
-   is adopted. The switch would mean every refusal case needs a second expected
-   outcome, since GUPZ requires a run with it turned off as well.
-4. Arrange the out of band transport check described above. Easier since
+3. Tighten the negative asserts once the 401 against 403 question in [#70][i70]
+   closes, and add the mode independent asserts described above: the
+   `WWW-Authenticate` header, the `OperationOutcome` code, and the equality of
+   `error_description` and `diagnostics`.
+4. Build AUTH-12 for the detail switch, to be run in the closed mode.
+5. Arrange the out of band transport check described above. Easier since
    17 August: a G4 certificate is explicitly not required for testing, so what
    has to be agreed is only what does apply on the day.
-5. Get the scoping rule into the specification. [#73][i73] states the preference
+6. Get the scoping rule into the specification. [#73][i73] states the preference
    to keep the BSN out of request parameters; the obligation that follows from
    it, that the platform limits the response to the patient in the token, is not
    written down. Once it is, the two AUTH-11 absence asserts go from warning to
    hard.
-6. Add a case for the JWKS endpoint. `security.md` now puts one on
+7. Add a case for the JWKS endpoint. `security.md` now puts one on
    `/.well-known/jwks.json` at both ends, and the platform's is a plain GET that
    a script can make. GUPZ expects this may not be ready by 22 September, with
    manual key exchange as the fallback, so the case should be built but should
