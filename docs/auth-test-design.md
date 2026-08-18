@@ -39,16 +39,18 @@ All of it comes from [`docs/api/security.md`][sec] unless stated otherwise.
 | GUPZ-TR-001 | Traffic runs over mTLS, both sides authenticate with a certificate | [Transport level security][sec-tls] |
 | GUPZ-TR-002 | TLS 1.2 or 1.3, at least NCSC level *Voldoende* | [Eisen aan de TLS configuratie][sec-tlscfg] |
 | GUPZ-TR-003 | The listed cipher suites are supported | [Eisen aan de TLS configuratie][sec-tlscfg] |
-| GUPZ-TR-004 | PKIoverheid Private G1 certificates on both sides | [Eisen aan de te gebruiken certificaten][sec-cert] |
+| GUPZ-TR-004 | PKIoverheid Private G4 certificates on both sides, and not required for testing | [Eisen aan de te gebruiken certificaten][sec-cert] |
 | GUPZ-TOK-001 | Every call carries `Authorization: Bearer <encrypted token>` | [Token beveiliging][sec-tokensec] |
 | GUPZ-TOK-002 | Sign then encrypt: JWS inside JWE, with a JWE header carrying `alg` RSA-OAEP, `enc` A256CBC-HS512 and `cty` JWT | [Token beveiliging][sec-tokensec] |
 | GUPZ-JWS-001 | JWS header carries `alg` with the fixed value `RS256`, `typ` and `kid` | [Token inhoud][sec-token] |
 | GUPZ-PAY-001 | Payload carries `iat`, `exp` and `iss` | [Token inhoud][sec-token] |
 | GUPZ-PAY-002 | `aud` is mandatory and `patient` is mandatory for a patient bound request; `provider`, `nbf`, `jti` and `scope` are optional. Each has a prescribed format when present | [Token inhoud][sec-token] |
 | GUPZ-VAL-001 | The platform decrypts the JWE and validates the JWS signature | [Token beveiliging][sec-tokensec] |
-| GUPZ-VAL-002 | The platform refuses a request unless `now - iat < 900` and `now < exp`, and validates `iss` | [Token beveiliging][sec-tokensec] |
+| GUPZ-VAL-002 | The platform refuses a request unless `now - iat < 900` and `now < exp`, and validates `iss`. The tolerated clock skew is [#77][i77], proposing Dutch NTP and at most 30 seconds | [Token beveiliging][sec-tokensec] |
 | GUPZ-CRY-001 | X.509 keys from a trusted CA, RSA-SHA256 for signing, RSA-OAEP with A256CBC-HS512 for encryption | [Eisen aan de te gebruiken certificaten][sec-cert2] |
-| GUPZ-JWKS-001 | JWKS key rotation | [Key rotation][sec-rot] |
+| GUPZ-JWKS-001 | Both sides publish a JWKS on `/.well-known/jwks.json`: the caller its signing keys, the platform its encryption keys. The platform refetches when a token carries an unknown `kid` | [Key rotation][sec-rot] |
+| GUPZ-VAL-003 | A refused token is answered with 401, a `WWW-Authenticate: Bearer` header carrying `error="invalid_token"`, and an OperationOutcome with `severity` error and `code` `login` | [Afhandeling van ongeldige tokens][sec-invalid] |
+| GUPZ-VAL-004 | A request outside the scope in the token is answered with 403, `error="insufficient_scope"` with the required scope, and an OperationOutcome with `code` `forbidden` | [Afhandeling van ontbrekende autorisatie][sec-forbidden] |
 | GUPZ-MED-002 | A DVA fills `scope` with MedMij data service numbers | [MedMij specifieke eisen][sec-medmij] |
 
 ## What Conformancelab can and cannot do here
@@ -191,7 +193,7 @@ nine finished tokens. The list below is the recipe.
 |---|---|
 | T1 | Valid, signed with RS256 and encrypted with RSA-OAEP and A256CBC-HS512, for the test patient |
 | T2 | Valid, signed only, not encrypted (connectathon variant) |
-| T3 | Valid, neither signed nor encrypted (connectathon variant, definition still open) |
+| T3 | Neither signed nor encrypted. GUPZ has come out against this variant, see below; it may become a refusal case or disappear |
 | T4 | `iat` more than 900 seconds in the past, otherwise valid |
 | T5 | `exp` in the past, otherwise valid |
 | T6 | Unknown or untrusted `iss`, otherwise valid |
@@ -203,10 +205,25 @@ Generating on the spot also settles the problem that a token is only valid for
 fifteen minutes, `now - iat < 900`, which would have made a token pasted into a
 script stale within the hour. The operator generates, pastes and runs.
 
-One entry cannot be prepared yet. T3 is beyond `JwtCliTool` as it stands,
-because what "plain" means has not been defined: an unsigned JWT per RFC 7519 is
-a JWS with `alg: none` and an empty signature, which is a different thing from a
-bare base64 payload.
+One entry is in doubt, and it may disappear rather than get defined. T3 is beyond
+`JwtCliTool` as it stands, because what "plain" means was never written down: an
+unsigned JWT per RFC 7519 is a JWS with `alg: none` and an empty signature, which
+is a different thing from a bare base64 payload. Asked which of the two applies,
+GUPZ answered on 17 August that it would rather have neither. The reasoning is
+that many libraries carry known vulnerabilities around `alg: none` and that
+support for it has to be switched on deliberately, which is too much risk to take
+for a test. The position is that a token is always signed, and that leaving out
+the encryption is the concession a test setup gets. It is to be discussed with
+the front runners and an issue will follow.
+
+If that holds, the connectathon has two token variants rather than three, and
+AUTH-03 turns inside out: instead of a plain token being accepted in test mode,
+an unsigned token has to be refused. That is a better test than the one it
+replaces, because it asserts a security property instead of a configuration.
+Nothing is changed here yet, since the decision is not final.
+
+Remko has said he will supply the PEM files, which settles who produces the key
+material.
 
 ## The test model
 
@@ -214,6 +231,20 @@ Two levels of assert for every negative case. What we can do today is confirm
 that the request did not succeed. What we want is the exact status code and
 `OperationOutcome`, and that is blocked by [#70][i70]; the model is written so
 those asserts can be added later without restructuring.
+
+`security.md` now describes those responses, and GUPZ confirmed on 17 August that
+they may be taken as written, with only the detail level of `error_description`
+and `diagnostics` still under discussion. That is enough to harden most of what
+these cases assert: the status code, the `WWW-Authenticate` header and the
+`OperationOutcome` code are settled, and only the human readable text is not.
+
+Two things came up afterwards and are not settled. Which failure is a 401 and
+which a 403 was raised as needing agreement, because the two lie close together
+and implementations differ. And there is a proposal to let a platform reveal as
+much as possible in a test setup while revealing nothing in production, as a
+switch, which GUPZ can accept on the condition that a run without the switch is
+also tested. If that lands, a refusal case has two expected outcomes rather than
+one, and this set will need to know which mode a platform is running in.
 
 | Case | What Conformancelab does | Expected | Requirement | Blocked by |
 |---|---|---|---|---|
@@ -274,8 +305,22 @@ only be tested indirectly, through acceptance and refusal. Testing them directly
 belongs in the client aimed set, where a DVA is under test, and would need a
 Groovy rule to inspect the token.
 
-**Key rotation.** `GUPZ-JWKS-001` needs a JWKS endpoint and an agreement on
-discovery and trust, which is [#27][i27]. Not for this connectathon.
+**Key rotation, only partly.** [#27][i27] was answered on 17 August: both sides
+publish a JWKS on `/.well-known/jwks.json` and the platform refetches when a
+token carries an unknown `kid`. Rotation itself, that a new key is picked up and
+an old one falls away, needs two runs and a key change in between, which is
+beyond a TestScript. That the platform publishes a JWKS at all is not: it is a
+plain GET, and it is the one half of `GUPZ-JWKS-001` a script can reach. Worth
+adding as a case, with the caveat that GUPZ expects JWKS may not be ready by
+22 September and that manual key exchange is the fallback for that day.
+
+**Single use of a token.** [#52][i52] carries a proposal to make `jti` mandatory
+with a fresh guid per request, so that a platform can enforce that a token is
+used once, put forward as the counterpart to allowing more than one scope. GUPZ
+rejected it on 18 August: the replay measures already in `security.md`, a
+fifteen minute lifetime combined with mTLS, are considered sufficient and
+one-time tokens complicate matters. So there is no case to write here, and this
+set may reuse a token across cases.
 
 **Claim obligations.** Three of these were settled on 17 August. [#38][i38] was
 closed with the answers that `provider` is the name to use and that `patient` is
@@ -295,30 +340,45 @@ refusal responses are settled, since it is those responses it would assert on.
 
 1. Get the key material, so that tokens can be generated on the spot. This is
    the critical path: the scripts run, but without keys they prove nothing.
-2. Decide what "plain" means for T3, otherwise AUTH-03 cannot be prepared.
-3. Tighten the negative asserts once [#70][i70] lands. Each refusal case now
+2. Settle the unsigned token. GUPZ is against supporting one at all, even in a
+   test setup, and will raise an issue after discussing it with the front
+   runners. Either AUTH-03 inverts into a refusal case or it disappears.
+3. Tighten the negative asserts once [#70][i70] closes. Each refusal case now
    only asserts that the response is not 200, with the expected 401 or 403 as a
-   warning. Those become hard asserts as soon as the response is specified.
-4. Arrange the out of band transport check described above.
+   warning. Two things have to be settled before those become hard asserts:
+   which failure is a 401 and which a 403, and whether the diagnostics switch
+   is adopted. The switch would mean every refusal case needs a second expected
+   outcome, since GUPZ requires a run with it turned off as well.
+4. Arrange the out of band transport check described above. Easier since
+   17 August: a G4 certificate is explicitly not required for testing, so what
+   has to be agreed is only what does apply on the day.
 5. Get the scoping rule into the specification. [#73][i73] states the preference
    to keep the BSN out of request parameters; the obligation that follows from
    it, that the platform limits the response to the patient in the token, is not
    written down. Once it is, the two AUTH-11 absence asserts go from warning to
    hard.
+6. Add a case for the JWKS endpoint. `security.md` now puts one on
+   `/.well-known/jwks.json` at both ends, and the platform's is a plain GET that
+   a script can make. GUPZ expects this may not be ready by 22 September, with
+   manual key exchange as the fallback, so the case is worth building but not
+   worth failing anyone on that day.
 
 [sec]: https://github.com/Gegevensuitwisseling-Paramedische-Zorg/open-GUPZ/blob/main/docs/api/security.md
 [sec-tls]: https://github.com/Gegevensuitwisseling-Paramedische-Zorg/open-GUPZ/blob/main/docs/api/security.md#transport-level-security
 [sec-tlscfg]: https://github.com/Gegevensuitwisseling-Paramedische-Zorg/open-GUPZ/blob/main/docs/api/security.md#eisen-aan-de-tls-configuratie
 [sec-cert]: https://github.com/Gegevensuitwisseling-Paramedische-Zorg/open-GUPZ/blob/main/docs/api/security.md#eisen-aan-de-te-gebruiken-certificaten
 [sec-cert2]: https://github.com/Gegevensuitwisseling-Paramedische-Zorg/open-GUPZ/blob/main/docs/api/security.md#eisen-aan-de-te-gebruiken-certificaten-1
-[sec-token]: https://github.com/Gegevensuitwisseling-Paramedische-Zorg/open-GUPZ/blob/main/docs/api/security.md#token-inhoud
+[sec-token]: https://github.com/Gegevensuitwisseling-Paramedische-Zorg/open-GUPZ/blob/main/docs/api/security.md#jws-token-inhoud
 [sec-tokensec]: https://github.com/Gegevensuitwisseling-Paramedische-Zorg/open-GUPZ/blob/main/docs/api/security.md#token-beveiliging
 [sec-medmij]: https://github.com/Gegevensuitwisseling-Paramedische-Zorg/open-GUPZ/blob/main/docs/api/security.md#medmij-specifieke-eisen-op-het-gebied-van-application-level-security
 [sec-rot]: https://github.com/Gegevensuitwisseling-Paramedische-Zorg/open-GUPZ/blob/main/docs/api/security.md#key-rotation
+[sec-invalid]: https://github.com/Gegevensuitwisseling-Paramedische-Zorg/open-GUPZ/blob/main/docs/api/security.md#afhandeling-van-ongeldige-tokens
+[sec-forbidden]: https://github.com/Gegevensuitwisseling-Paramedische-Zorg/open-GUPZ/blob/main/docs/api/security.md#afhandeling-van-ontbrekende-autorisatie
 [i27]: https://github.com/Gegevensuitwisseling-Paramedische-Zorg/open-GUPZ/issues/27
 [i38]: https://github.com/Gegevensuitwisseling-Paramedische-Zorg/open-GUPZ/issues/38
 [i52]: https://github.com/Gegevensuitwisseling-Paramedische-Zorg/open-GUPZ/issues/52
 [i76]: https://github.com/Gegevensuitwisseling-Paramedische-Zorg/open-GUPZ/issues/76
+[i77]: https://github.com/Gegevensuitwisseling-Paramedische-Zorg/open-GUPZ/issues/77
 [i67]: https://github.com/Gegevensuitwisseling-Paramedische-Zorg/open-GUPZ/issues/67
 [i68]: https://github.com/Gegevensuitwisseling-Paramedische-Zorg/open-GUPZ/issues/68
 [i69]: https://github.com/Gegevensuitwisseling-Paramedische-Zorg/open-GUPZ/issues/69
