@@ -169,34 +169,26 @@ filter the BSN between DVA and platform as well, so that the same scripts can be
 used and there is double assurance, while acknowledging that this may not be
 equally easy for every vendor. **Not decided.**
 
-**The response to a DocumentManifest request is now specified.** It was not: the
-qualification said only that a system without manifest support should answer
-with an error indicating the resource is not supported, and the HTTP 404 with an
-OperationOutcome that the imported scripts expect came from the Nictiz
-TestScript rather than from a specification. Raised as [#72][i72] and settled on
-17 August 2026: [`pdfa.md`][pdfa] now prescribes 404 with an OperationOutcome
-carrying `severity` `error` and `code` `not-supported`, with an example. That is
-what scenarios 2.2, 2.3 and 2.4 already assert, so those cases now test a GUPZ
-requirement instead of an assumption.
+**The response to a DocumentManifest request is specified.** [`pdfa.md`][pdfa]
+prescribes 404 with an OperationOutcome carrying `severity` `error` and `code`
+`not-supported`. That is what scenarios 2.2, 2.3 and 2.4 already assert, so
+those cases test a GUPZ requirement rather than an assumption. Added on request,
+see [#72][i72].
 
-**The patient is never named in a request.** Every search in this repository
-queries on status and dates, never on a patient identifier, and that is not an
-oversight in the Nictiz material: the patient comes from the token. [#73][i73]
-keeps it that way and goes further. The rule being written is one token per
-patient, tying the token to a patient without carrying a BSN at all, so the BSN
-disappears from both the query and the claim.
+**The patient is never named in a request.** Every search here queries on status
+and dates, never on a patient identifier: the patient comes from the token.
+[#73][i73] goes further and moves to one token per patient without a BSN at all,
+so the BSN disappears from both the query and the claim. Three rules follow for
+authoring:
 
-Three things follow for authoring here. A script may not search for a patient,
-not by BSN and not by any other identifier, so a patient can only ever be
-reached through the token that was pasted for that run. Where a script does need
-a patient reference, it has to read it out of a response, for instance from
-`DocumentReference.subject`, rather than construct it. And a token belongs to
-exactly one patient, which is the model AUTH-11 in
-[auth-test-design.md](auth-test-design.md) already uses.
+- A script may not search for a patient, by BSN or by any other identifier.
+- A patient reference has to be read out of a response, for instance from
+  `DocumentReference.subject`, not constructed.
+- A token belongs to exactly one patient, the model AUTH-11 already uses.
 
-What the token then carries instead of the BSN is not yet written down, and it
-overlaps with the `sub` claim proposed in [#76][i76]. Until that lands, a script
-cannot assume anything about the value, only about the binding.
+What the token carries instead of the BSN is not yet written down and overlaps
+with `sub` in [#76][i76], so a script can assume nothing about the value, only
+about the binding.
 
 **`status=current` is already covered.** All Nictiz search scenarios query
 `?status=current`, which lines up with the requirement in [`pdfa.md`][pdfa] that

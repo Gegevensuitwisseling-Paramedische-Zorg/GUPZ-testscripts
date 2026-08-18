@@ -72,27 +72,20 @@ key words, neither question would exist.
 
 ## What Conformancelab can and cannot do here
 
-**The token is operator input.** A TestScript variable, sent as
-`Authorization: Bearer ${token}`. The variable deliberately has no default: the
-operator pastes the token the case describes. This is the same mechanism the
-Nictiz PDF/A scripts use for their tokens, so it is proven on this engine. It also means GUPZ can
-supply pre-signed tokens without the engine having to sign anything, which
-matters because Conformancelab cannot produce a JWE at all.
+**The token is operator input.** A TestScript variable without a default, sent
+as `Authorization: Bearer ${token}`; the operator pastes the token the case
+describes. The Nictiz PDF/A scripts use the same mechanism, so it is proven on
+this engine, and it lets GUPZ supply pre-signed tokens without the engine having
+to sign anything, which matters because Conformancelab cannot produce a JWE.
 
-**A token can now be read, but not in this set.** There is no JWT decode as such,
-yet since 18 August 2026 the pieces to build one are there: a variable can carry
-a regex match over the `Authorization` header, an assert can take that variable
-as its input through `Interoplab-CL-ext-assert-input-variable`, and
-`base64Decode` was added to the mapper functions. Chained together those read a
-claim out of a token. It does not help here, because in a server aimed set we
-are the ones who made the token. It matters a great deal for the mirror image,
-where a DVA is under test and the token is the thing being judged; see
-[auth-situations.md](auth-situations.md).
+**A token can be read, but that does not help here.** Since 18 August a regex
+mapper, `Interoplab-CL-ext-assert-input-variable` and `base64Decode` can be
+chained to read a claim out of a token. In a server aimed set we made the token
+ourselves, so there is nothing to learn. It matters for the mirror image, where
+a DVA is under test; see [auth-situations.md](auth-situations.md).
 
-**Groovy rules remain the fallback for anything the asserts cannot express.** An assert can call an external Groovy
-script with access to request, response and FHIRPath. Both rule extensions are
-now published in the IG under Interoplab canonicals. Not needed for the model
-below.
+**Groovy rules remain the fallback for what an assert cannot express**, with
+access to request, response and FHIRPath. Not needed for the model below.
 
 **Conformancelab presents a client certificate, configured per instance rather
 than per TestScript.** That has one useful consequence for this set: every case
@@ -109,93 +102,52 @@ TestScript never sees.
 
 ## Where the token comes from
 
-Today the operator generates it with `JwtCliTool` and pastes it, which is the
-route [#69][i69] points at as well: not static tokens, but tokens issued with
-the available tooling at the moment of testing. The alternative is to let
-Conformancelab mint the token itself, which is what suppliers tend to prefer,
-because then they do not depend on a tool and a set of keys on the operator's
-machine. It is worth being precise about what that would and would not solve,
-because the two options put the work in different places.
+The operator generates it with `JwtCliTool` and pastes it, the route [#69][i69]
+also points at. The alternative, letting Conformancelab mint the token, is what
+suppliers tend to prefer, so it is worth being clear about what that would and
+would not solve.
 
 Pasting is not the burden; that is one field per run. The burden on a supplier
 is that their platform has to trust whoever issued the token, and that is
-configuration they cannot avoid, because validating the token is the thing being
-tested. So the real question is not how the token reaches Conformancelab,
-but whose key the platform has to trust: the one GUPZ signs with, or Interoplab's.
+configuration they cannot avoid, because validating the token is what is being
+tested. The real question is therefore not how the token reaches Conformancelab
+but whose key the platform has to trust.
 
-**What Conformancelab could mint.** `${JWT-ENCODE, {payload}}` builds a JWT from
-a claims object, and the claims are fully ours to set, including a stale `iat` or
-a past `exp` through `${CURRENT-NUMERICDATE, m, -20}`. The header and the
-signature are added by the engine, there is no JWE, and the guide does not say
-which key signs or where the matching public key can be found. Without a
-discoverable public key a supplier cannot verify such a token at all, so this
-route is currently blocked on a question rather than on a design choice.
+Minting would cover the happy flow and the two time based cases, since
+`${JWT-ENCODE}` takes a claims object and `${CURRENT-NUMERICDATE}` can set a
+stale `iat`. It would not cover AUTH-09 and AUTH-10, which need control over
+keys, nor the encrypted variant, which needs a JWE the engine cannot produce.
+And the guide does not say which key signs or where the matching public key can
+be found, so a supplier could not verify a minted token at all.
 
-**What it would cover.** The happy flow, and AUTH-06 and AUTH-07, which only need
-control over time. Not AUTH-09 or AUTH-10, which need control over keys, and not
-the signed and encrypted variant, which needs a JWE the engine cannot produce.
-
-**Switching costs little.** The token is a variable. Whether the operator fills it or
-its default becomes a `${JWT-ENCODE, ...}` expression is one line per script and
-changes nothing about the requests or the asserts. Operator input stays the
-baseline because it covers all eleven cases; a minted variant can be added
-alongside it for the cases it can serve, once it is known which key the engine
-signs with.
+Switching later costs little: the token is a variable, so operator input or a
+`${JWT-ENCODE, ...}` default is one line per script. Operator input stays the
+baseline because it covers all eleven cases.
 
 ## Why this set uses no stubs
 
-Conformancelab can mock an endpoint with a WireMock stub and the `stub`
-operation code: it registers the stub, waits for the system under test to call
-it, and asserts on the request that arrives. That is how our earlier OAuth proof
-of concept tested a client, by playing the authorization server and the token
-endpoint.
+Conformancelab can mock an endpoint with a WireMock stub, wait for the system
+under test to call it and assert on the request that arrives. Two reasons that
+does not apply here, both worth stating because the absence looks like an
+omission.
 
-None of that applies here, and the reason is worth writing down because it is
-easy to mistake for an omission.
+There is no flow to mock. The data platform is a resource server with no
+`/authorize` and no `/token`: the caller builds, signs and encrypts the token
+itself and sends it on every call. Obtaining a token happens between a PGO, a
+DVA and the DVA's own authorization server, outside this interface. And a stub
+only catches traffic that comes towards us, while in a server aimed test it runs
+the other way.
 
-**There is no flow on this interface to mock.** The data platform is a resource
-server, not an authorization server. It has no `/authorize` and no `/token`
-endpoint. According to [`security.md`][sec-tokensec] the calling system creates
-the token itself, signs it with its own private key, encrypts it with the
-platform's public key and sends it on every call; the platform decrypts,
-validates and answers. Obtaining a token happens between a PGO, a DVA and the
-DVA's own authorization server, all of which sit outside this interface. A stub
-would have nothing to stand in for.
+The limitation that follows is real: these cases prove what the platform does
+with a token, never that a caller can produce one correctly. That belongs in a
+client aimed set.
 
-**A stub only works when the system under test calls us.** Conformancelab hosts
-its stubs on its own `/cl/{organizationId}/` route. In a server aimed test the
-traffic runs the other way, so there is nothing for a stub to catch.
-
-What follows from this is a real limitation, not a gap in the test set: these
-cases prove what the platform does with a token, never that a caller can produce
-one correctly. Token production is a property of the caller and belongs in a
-client aimed test.
-
-### Where stubs do belong
-
-Three places, none of them in this set today.
-
-**Testing a DVA.** When the calling party is the system under test,
-Conformancelab has to be the counterparty: mock the authorization and token
-endpoints, let the DVA run the flow against them, and assert on the requests it
-sends. That is the client aimed set, and the mechanics are proven.
-
-**A JWKS fetch by the platform.** This is the one moment where the data platform
-would call out during authentication: to retrieve the public signing key of the
-caller so it can verify the signature, or to publish its own encryption key.
-Conformancelab could host that JWKS as a stub, which would make it testable
-whether the platform fetches the key set, picks the key that matches the `kid`
-in the token header, and follows a rotation. It is not built because the
-mechanism is not specified: [`security.md`][sec-rot] says only that JWKS key
-rotation is used and flags the subject as still to be worked out, and
-[#27][i27] is the open discussion.
-
-**Obtaining a token dynamically.** Conformancelab has an authentication script
-concept that runs a token flow before a test set and hands the result to the
-tests that follow. If GUPZ ever wants the token fetched rather than pasted, that
-is the mechanism, and it would need stubbed or real endpoints to fetch from. For
-now pasting is deliberate: the tokens come from GUPZ and the engine cannot
-produce a JWE anyway.
+Stubs return in three places, none of them here. Testing a DVA needs
+Conformancelab to play the authorization and token endpoints. A JWKS fetch by
+the platform could be stubbed now that [#27][i27] specifies one on
+`/.well-known/jwks.json`, which would make key selection on `kid` testable. And
+if GUPZ ever wants the token fetched rather than pasted, the engine has an
+authentication script concept that would need endpoints to fetch from.
 
 ## Test data GUPZ needs to supply
 
@@ -218,29 +170,18 @@ nine finished tokens. The list below is the recipe.
 | T8 | Encrypted with a public key that is not the platform's |
 | T9 | Valid, for the second test patient, so that AUTH-11 can compare two scopes |
 
-Generating on the spot also settles the problem that a token is only valid for
-fifteen minutes, `now - iat < 900`, which would have made a token pasted into a
-script stale within the hour. The operator generates, pastes and runs.
+Generating on the spot also settles the fifteen minute lifetime, which would
+otherwise make a token pasted into a script stale within the hour. GUPZ supplies
+the PEM files.
 
-One entry is in doubt, and it may disappear rather than get defined. T3 is beyond
-`JwtCliTool` as it stands, because what "plain" means was never written down: an
-unsigned JWT per RFC 7519 is a JWS with `alg: none` and an empty signature, which
-is a different thing from a bare base64 payload. Asked which of the two applies,
-GUPZ answered on 17 August that it would rather have neither. The reasoning is
-that many libraries carry known vulnerabilities around `alg: none` and that
-support for it has to be switched on deliberately, which is too much risk to take
-for a test. The position is that a token is always signed, and that leaving out
-the encryption is the concession a test setup gets. It is to be discussed with
-the front runners and an issue will follow.
-
-If that holds, the connectathon has two token variants rather than three, and
-AUTH-03 reverses: instead of a plain token being accepted in test mode, an
-unsigned token has to be refused. That is a better test than the one it
-replaces, because it asserts a security property instead of a configuration.
-Nothing is changed here yet, since the decision is not final.
-
-Remko has said he will supply the PEM files, which settles who produces the key
-material.
+T3 is the one entry that may disappear rather than get defined. What "plain"
+means was never written down, and asked which reading applies GUPZ answered on
+17 August that it would rather have neither, because of the known
+vulnerabilities around `alg: none`. A token is always signed; dropping the
+encryption is the concession a test setup gets. If that holds, AUTH-03 reverses
+into a refusal case, which is the stronger test because it asserts a security
+property instead of a configuration. Nothing is changed here until the issue
+lands.
 
 ## The test model
 
@@ -311,10 +252,8 @@ platform should fail on it.
 TestScript does not do, and the refusal half of `GUPZ-TR-001` cannot be produced
 by an engine that always presents its certificate. Proposal: check these out of
 band on the day, with a TLS scanner against the endpoint and a manual attempt to
-connect without a client certificate. That does need a written expectation,
-which for the connectathon is complicated by the fact that one mail says
-self-signed certificates and a later one says self-signed is undesirable and
-proposes a hosted CA.
+connect without a client certificate. That needs a written expectation of what
+applies on the day, which is still being decided.
 
 **Token structure.** `GUPZ-TOK-002`, `GUPZ-JWS-001`, `GUPZ-CRY-001` and
 `GUPZ-PAY-001` describe what the caller produces. In a server aimed set they can
@@ -322,36 +261,22 @@ only be tested indirectly, through acceptance and refusal. Testing them directly
 belongs in the client aimed set, where a DVA is under test, and would need a
 Groovy rule to inspect the token.
 
-**Key rotation, only partly.** [#27][i27] was answered on 17 August: both sides
-publish a JWKS on `/.well-known/jwks.json` and the platform refetches when a
-token carries an unknown `kid`. Rotation itself, that a new key is picked up and
-an old one falls away, needs two runs and a key change in between, which is
-beyond a TestScript. That the platform publishes a JWKS at all is not: it is a
-plain GET, and it is the one half of `GUPZ-JWKS-001` a script can reach. Worth
-adding as a case, with the caveat that GUPZ expects JWKS may not be ready by
-22 September and that manual key exchange is the fallback for that day.
+**Key rotation, only partly.** Rotation itself needs two runs with a key change
+in between, which is beyond a TestScript. That the platform publishes a JWKS is
+not: it is a plain GET and the one half of `GUPZ-JWKS-001` a script can reach.
+GUPZ expects JWKS may not be ready by 22 September, with manual exchange as the
+fallback.
 
-**Single use of a token.** [#52][i52] carries a proposal to make `jti` mandatory
-with a fresh guid per request, so that a platform can enforce that a token is
-used once, put forward as the counterpart to allowing more than one scope. GUPZ
-rejected it on 18 August: the replay measures already in `security.md`, a
-fifteen minute lifetime combined with mTLS, are considered sufficient and
-one-time tokens complicate matters. So there is no case to write here, and this
-set may reuse a token across cases.
+**Single use of a token.** GUPZ rejected one-time tokens in [#52][i52]: the
+fifteen minute lifetime combined with mTLS is considered sufficient. There is no
+case to write, and this set may reuse a token across cases.
 
-**Claim obligations.** Three of these were settled on 17 August. [#38][i38] was
-closed with the answers that `provider` is the name to use and that `patient` is
-mandatory for a patient bound request, and `security.md` now says so. In
-[#52][i52] `aud` became mandatory, on the grounds that without it a platform
-cannot establish that a token was meant for it.
-
-What is left is the shape of `scope` and the claims for the end user. [#52][i52]
-carries a proposal to allow more than one scope, space separated after the SMART
-on FHIR convention, so that a client does not need a fresh token per request;
-`security.md` still says `medmij.gegevensdienst.<nummer>` without a separator.
-The end user and the authorised representative moved to [#76][i76], where `sub`
-is proposed. A case on the presence of `aud` or `patient` can be built once the
-refusal responses are settled, since it is those responses it would assert on.
+**Claim obligations.** Settled on 17 August: `provider` is the name to use,
+`patient` is mandatory for a patient bound request ([#38][i38]) and `aud` is
+mandatory ([#52][i52]). Still open are the separator in `scope` ([#52][i52]) and
+the claims for the end user ([#76][i76]). A case on the presence of `aud` or
+`patient` can be built once the refusal responses are settled, since that is
+what it would assert on.
 
 ## What still has to happen
 
