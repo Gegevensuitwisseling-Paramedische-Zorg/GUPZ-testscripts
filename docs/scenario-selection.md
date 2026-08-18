@@ -181,11 +181,22 @@ requirement instead of an assumption.
 
 **The patient is never named in a request.** Every search in this repository
 queries on status and dates, never on a patient identifier, and that is not an
-oversight in the Nictiz material: the patient comes from the token. The
-preference stated in [#73][i73] is to keep it that way, carrying the BSN in the
-token and out of request parameters. The scripts therefore need no change, and
-the token becomes the only thing that selects a patient, which is what the
-AUTH-11 case in [auth-test-design.md](auth-test-design.md) tests.
+oversight in the Nictiz material: the patient comes from the token. [#73][i73]
+keeps it that way and goes further. The rule being written is one token per
+patient, tying the token to a patient without carrying a BSN at all, so the BSN
+disappears from both the query and the claim.
+
+Three things follow for authoring here. A script may not search for a patient,
+not by BSN and not by any other identifier, so a patient can only ever be
+reached through the token that was pasted for that run. Where a script does need
+a patient reference, it has to read it out of a response, for instance from
+`DocumentReference.subject`, rather than construct it. And a token belongs to
+exactly one patient, which is the model AUTH-11 in
+[auth-test-design.md](auth-test-design.md) already uses.
+
+What the token then carries instead of the BSN is not yet written down, and it
+overlaps with the `sub` claim proposed in [#76][i76]. Until that lands, a script
+cannot assume anything about the value, only about the binding.
 
 **`status=current` is already covered.** All Nictiz search scenarios query
 `?status=current`, which lines up with the requirement in [`pdfa.md`][pdfa] that
@@ -207,6 +218,7 @@ validator will actually check. Related:
 [i66]: https://github.com/Gegevensuitwisseling-Paramedische-Zorg/open-GUPZ/issues/66
 [i72]: https://github.com/Gegevensuitwisseling-Paramedische-Zorg/open-GUPZ/issues/72
 [i73]: https://github.com/Gegevensuitwisseling-Paramedische-Zorg/open-GUPZ/issues/73
+[i76]: https://github.com/Gegevensuitwisseling-Paramedische-Zorg/open-GUPZ/issues/76
 [pdfa]: https://github.com/Gegevensuitwisseling-Paramedische-Zorg/open-GUPZ/blob/main/docs/api/pdfa.md
 [medmij]: https://github.com/Gegevensuitwisseling-Paramedische-Zorg/open-GUPZ/blob/main/docs/architecture/medmij.md
 [fo]: https://informatiestandaarden.nictiz.nl/wiki/MedMij:V2020.01/OntwerpPDFA

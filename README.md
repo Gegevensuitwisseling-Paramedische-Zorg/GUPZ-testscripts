@@ -86,6 +86,10 @@ one role within an information standard. The name of the directory above the
 Test Set is free; the contents of `properties.json` determine what appears in
 the user interface.
 
+Because that scan covers the whole repository, only `output/` may contain a file
+by that name. The copies under `input/` are called `src-properties.json` and the
+build renames them, see [docs/authoring.md](docs/authoring.md).
+
 ```
 output/STU3/PDFA-3-0/GUPZ/Test/
   Dataplatform/      server aimed: the data platform is the system under test

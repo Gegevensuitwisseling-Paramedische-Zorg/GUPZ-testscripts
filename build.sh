@@ -8,9 +8,15 @@
 #
 #   input/fsh/     TestScripts, written in FSH and built with SUSHI
 #   input/static/  files that are copied verbatim, mirroring the output tree:
-#                  properties.json, the fixtures under _reference, the Groovy
-#                  rule, the provisioning script and the Nictiz scripts that
-#                  have not been converted
+#                  the Test Set properties, the fixtures under _reference, the
+#                  Groovy rule, the provisioning script and the Nictiz scripts
+#                  that have not been converted
+#
+# One file is not copied verbatim. Conformancelab treats every directory holding
+# a properties.json as a Test Set, and it scans the whole repository, so a
+# properties.json under input/ is picked up as a second, broken copy of the set.
+# They are therefore called src-properties.json in input/ and renamed on the way
+# out. This follows what Nictiz does for the same reason.
 #
 # Why the fixtures are not written in FSH: SUSHI supports R4 and later while the
 # fixtures are STU3, and they contain Conformancelab placeholders such as
@@ -28,7 +34,10 @@ rm -rf "$OUT"
 echo "=== 2/4 Copying the static files"
 mkdir -p "$OUT"
 cp -R input/static/. "$OUT"/
-echo "  $(find "$OUT" -type f | wc -l | tr -d ' ') files"
+for f in $(find "$OUT" -name src-properties.json); do
+  mv "$f" "$(dirname "$f")/properties.json"
+done
+echo "  $(find "$OUT" -type f | wc -l | tr -d ' ') files, of which $(find "$OUT" -name properties.json | wc -l | tr -d ' ') Test Set properties"
 
 echo "=== 3/4 SUSHI"
 sushi build .

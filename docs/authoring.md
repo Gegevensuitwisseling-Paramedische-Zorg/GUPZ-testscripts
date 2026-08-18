@@ -20,10 +20,18 @@ the Instance. Edit anything in `output/` and the next build silently throws your
 change away. The directory is committed regardless, because Conformancelab reads
 the repository.
 
-`input/static/` holds what is not generated: the `properties.json` files, the
+`input/static/` holds what is not generated: the Test Set properties, the
 fixtures and the Groovy rule under `_reference/`, the provisioning script, and
 the Nictiz scripts that have not been converted. Its layout mirrors `output/`,
 so where a file ends up follows from where it sits.
+
+One file is renamed on the way out. Conformancelab treats every directory that
+holds a `properties.json` as a Test Set, and it scans the whole repository, so a
+copy under `input/` is picked up as a second Test Set pointing at source files
+rather than built ones. The file is therefore called `src-properties.json` in
+`input/static/` and the build renames it while copying. Nictiz solved it the
+same way. If you add a Test Set, name its properties file `src-properties.json`
+and nothing else has to change.
 
 The line between the two directories is not "TestScripts are FSH". It is that
 what we author lives in `input/fsh/`, and what we import stays verbatim in
@@ -35,10 +43,6 @@ The TestScript resources are **R5**, even though the material under test is
 STU3. Those two are independent: Conformancelab only officially supports
 TestScript R5. The FHIR version of the material under test is declared in
 `properties.json`.
-
-The TestScript resources are **R5**, even though the material under test is
-STU3. Those two are independent, and the FHIR version of the material under test
-is declared in `properties.json`.
 
 Two checks before committing. `rm -rf output && ./build.sh` has to reproduce
 `output/` exactly, and for anything converted from Nictiz the comparison below
