@@ -4,27 +4,15 @@
   "url": "https://gegevensuitwisseling-paramedische-zorg.github.io/GUPZ-testscripts/TestScript/auth-09-broken-signature",
   "origin": [
     {
-      "extension": [
-        {
-          "url": "http://fhir.interoplab.eu/fhir/StructureDefinition/Interoplab-CL-ext-SUT",
-          "valueBoolean": false
-        }
-      ],
       "index": 1,
       "profile": {
-        "code": "FHIR-Client",
-        "system": "http://terminology.hl7.org/CodeSystem/testscript-profile-origin-types"
+        "code": "Conformancelab-Client",
+        "system": "http://fhir.interoplab.eu/fhir/CodeSystem/Interoplab-CL-origin-profile"
       }
     }
   ],
   "destination": [
     {
-      "extension": [
-        {
-          "url": "http://fhir.interoplab.eu/fhir/StructureDefinition/Interoplab-CL-ext-SUT",
-          "valueBoolean": true
-        }
-      ],
       "index": 1,
       "profile": {
         "code": "FHIR-Server",

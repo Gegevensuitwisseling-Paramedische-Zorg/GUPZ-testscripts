@@ -3,4 +3,5 @@ Alias: $destination-types = http://terminology.hl7.org/CodeSystem/testscript-pro
 Alias: $restful-interaction = http://hl7.org/fhir/restful-interaction
 
 Alias: $CL-TestScript-core = http://fhir.interoplab.eu/fhir/StructureDefinition/Interoplab-CL-TestScript-core
-Alias: $CL-ext-SUT = http://fhir.interoplab.eu/fhir/StructureDefinition/Interoplab-CL-ext-SUT
+Alias: $CL-origin-profile = http://fhir.interoplab.eu/fhir/CodeSystem/Interoplab-CL-origin-profile
+Alias: $CL-destination-profile = http://fhir.interoplab.eu/fhir/CodeSystem/Interoplab-CL-destination-profile

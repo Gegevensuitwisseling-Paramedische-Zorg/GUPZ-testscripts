@@ -107,6 +107,41 @@ exists tests the data platform. The party that produces the token, and so
 decides whether anything secure actually happens, is not tested at all today.
 That is situation 2, and it is the largest gap in this table.
 
+## What became possible for situation 2 on 18 August
+
+Testing the calling party means judging the token it sends, and until now the
+engine could not look inside one. Three additions to the Conformancelab IG
+change that, and they combine:
+
+| Piece | What it does |
+|---|---|
+| `Interoplab-CL-ext-variable-regex-mapper` | Captures a regex match over a request header into a variable. The IG example is exactly the Bearer value out of `Authorization` |
+| `Interoplab-CL-ext-assert-input-variable` | Feeds a variable into an assert as its input |
+| `base64Decode` in `Interoplab-CL-ext-assert-mapper-function` | Decodes that input before it is compared |
+
+Chained, they read a claim out of a token: capture the Bearer value, isolate the
+payload segment with a second regex, decode it, and match the claim. Two limits
+are worth knowing before building on it. The regex mapper keeps only the first
+full match and does not support capture groups, so the payload segment has to be
+isolated with lookaround rather than a group. And a token that follows
+`GUPZ-TOK-002` is a JWE, whose payload is encrypted, so this reads the plain and
+signed only variants and nothing more. For the signed and encrypted variant the
+claims stay out of reach without the private key.
+
+A second addition is just as useful and needs no chaining.
+`Interoplab-CL-ext-assert-additional-operators` adds `exists` and `notExists`
+for a header or a query parameter, and the IG example is literally a test that a
+`patient` query parameter is absent from a request URL. That is the rule from
+[#73][i73] stated as an assert: the calling party carries the BSN in the token
+and not in the query. It is the first case in situation 2 that can be written
+today, and it needs no test data beyond a request.
+
+Related and worth watching: `Interoplab-CL-ext-test-request-mode` governs
+whether a client under test has to issue its requests in exactly the scripted
+order, with `extra-allowed` and `random-order` as the alternatives. A DVA that
+resolves references before doing the search it was asked to do would fail under
+the default, so this is a knob that any situation 2 set will need.
+
 [psa-soc]: https://github.com/Gegevensuitwisseling-Paramedische-Zorg/open-GUPZ/blob/main/docs/PSA.md#seperation-of-concerns
 [mm-rol]: https://github.com/Gegevensuitwisseling-Paramedische-Zorg/open-GUPZ/blob/main/docs/architecture/medmij.md#rol-in-het-medmij-afsprakenstelsel
 [pdfa-sec]: https://github.com/Gegevensuitwisseling-Paramedische-Zorg/open-GUPZ/blob/main/docs/api/pdfa.md#security
@@ -115,4 +150,5 @@ That is situation 2, and it is the largest gap in this table.
 [ref-vec]: https://github.com/Gegevensuitwisseling-Paramedische-Zorg/open-GUPZ/blob/main/docs/api/referral.md#vecozo-dienst-verwijzen-1
 [ref-zd]: https://github.com/Gegevensuitwisseling-Paramedische-Zorg/open-GUPZ/blob/main/docs/api/referral.md#zorgdomein
 [i27]: https://github.com/Gegevensuitwisseling-Paramedische-Zorg/open-GUPZ/issues/27
+[i73]: https://github.com/Gegevensuitwisseling-Paramedische-Zorg/open-GUPZ/issues/73
 [i74]: https://github.com/Gegevensuitwisseling-Paramedische-Zorg/open-GUPZ/issues/74

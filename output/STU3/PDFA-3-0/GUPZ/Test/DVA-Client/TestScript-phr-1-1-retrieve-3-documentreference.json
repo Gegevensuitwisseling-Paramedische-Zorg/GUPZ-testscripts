@@ -16,12 +16,6 @@
   ],
   "origin": [
     {
-      "extension": [
-        {
-          "url": "http://fhir.interoplab.eu/fhir/StructureDefinition/Interoplab-CL-ext-SUT",
-          "valueBoolean": true
-        }
-      ],
       "index": 1,
       "profile": {
         "code": "FHIR-Client",
@@ -31,16 +25,10 @@
   ],
   "destination": [
     {
-      "extension": [
-        {
-          "url": "http://fhir.interoplab.eu/fhir/StructureDefinition/Interoplab-CL-ext-SUT",
-          "valueBoolean": false
-        }
-      ],
       "index": 1,
       "profile": {
-        "code": "FHIR-Server",
-        "system": "http://terminology.hl7.org/CodeSystem/testscript-profile-destination-types"
+        "code": "Conformancelab-Server",
+        "system": "http://fhir.interoplab.eu/fhir/CodeSystem/Interoplab-CL-destination-profile"
       }
     }
   ],

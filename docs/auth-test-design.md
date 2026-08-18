@@ -60,16 +60,20 @@ Nictiz PDF/A scripts use for their tokens, so it is proven on this engine. It al
 supply pre-signed tokens without the engine having to sign anything, which
 matters because Conformancelab cannot produce a JWE at all.
 
-**Conformancelab cannot inspect a token.** There is no JWT decode, and the assert
-mapper functions are limited to `length`, `urlDecode` and `urlEncode`. So the
-content of a token can only be tested through the behaviour of the platform that
-receives it, never by reading the token itself. For a server aimed set that is
-no loss: what the platform does with a token is exactly what we want to test.
+**A token can now be read, but not in this set.** There is no JWT decode as such,
+yet since 18 August 2026 the pieces to build one are there: a variable can carry
+a regex match over the `Authorization` header, an assert can take that variable
+as its input through `Interoplab-CL-ext-assert-input-variable`, and
+`base64Decode` was added to the mapper functions. Chained together those read a
+claim out of a token. It does not help here, because in a server aimed set we
+are the ones who made the token. It matters a great deal for the mirror image,
+where a DVA is under test and the token is the thing being judged; see
+[auth-situations.md](auth-situations.md).
 
-**Groovy rules are the escape hatch.** An assert can call an external Groovy
-script with access to request, response and FHIRPath. If we ever need to inspect
-a token or decode base64, that is where it would happen. Not needed for the
-model below.
+**Groovy rules remain the escape hatch.** An assert can call an external Groovy
+script with access to request, response and FHIRPath. Both rule extensions are
+now published in the IG under Interoplab canonicals. Not needed for the model
+below.
 
 **Conformancelab presents a client certificate, configured per instance rather
 than per TestScript.** That has one useful consequence for this set: every case

@@ -33,10 +33,10 @@ Sources referenced below:
 | Kept as imported XML | Dataplatform 2.5, because it is optional rather than out of scope |
 | Removed | Dataplatform 3.1 and 3.2, DVA-Client 2.1, 3.1 and 3.2 |
 
-Everything converted was compared with its Nictiz original and is identical, so
-the set can be run as it stands, without GUPZ specific changes. Removed
-scenarios remain available through the tag `nictiz-baseline-2026.30` and the
-`nictiz` remote.
+Everything converted was compared with its Nictiz original and matches it apart
+from the two deliberate deviations listed below, so the set can be run as it
+stands. Removed scenarios remain available through the tag
+`nictiz-baseline-2026.30` and the `nictiz` remote.
 
 ## The deciding constraints
 
@@ -99,21 +99,17 @@ priority: the connectathon of 22 September 2026 is about the data platform.
 | 3.1 Send one document | the client sends a document | no | ITI-65, constraint 1 |
 | 3.2 Send two documents | the client sends two documents | no | ITI-65, constraint 1 |
 
-## Coming change: how the system under test is marked
+## What the declared FHIR package says, and what enforces it
 
-Today `Interoplab-CL-ext-SUT` on `origin` and `destination` marks which side is
-under test, and that is what the imported scripts use. In a future version of
-Conformancelab that role moves to a profile on `origin.profile` and
-`destination.profile`. The extension applies until then, so nothing changes in
-this repository at the moment. When the switch comes, it is confined to
-`input/fsh/components/origin-destination.fsh`, the only place where the
-extension is written.
+The Test Sets declare `nictiz.fhir.nl.stu3.zib2017` 2.3.2 in `properties.json`.
+Note what that does and does not do today: the Conformancelab setup guide states
+that use of `fhirPackage` has yet to be implemented, so the declaration records
+which package the material is written against rather than switching on
+validation against it. Where a constraint has to hold for a test to mean
+anything, it needs an assert of its own until that changes.
 
-## What the declared FHIR package already enforces
-
-The Test Sets declare `nictiz.fhir.nl.stu3.zib2017` 2.3.2 in `properties.json`,
-so profile validation applies these constraints from
-`IHE.MHD.Minimal.DocumentReference` without any assert having to state them:
+These are the constraints from `IHE.MHD.Minimal.DocumentReference` that the
+package carries:
 
 | Element | Constraint | Consequence |
 |---|---|---|
@@ -135,8 +131,26 @@ with the Touchstone extensions,
 `.../testscript-assert-rule` on the assert. Conformancelab defines its own,
 `Interoplab-CL-ext-rule` and `Interoplab-CL-ext-assert-rule`, which are
 structurally identical. On confirmation by Interoplab on 14 August 2026 the
-conversion rewrites both urls. This is the only difference between the generated
-scripts and their originals; everything else compares identical.
+conversion rewrites both urls. Both extensions are published in the IG under
+those canonicals, so the rewritten scripts point at defined artefacts.
+
+**The system under test is marked with a profile, not an extension.** The
+imported scripts flag it with `Interoplab-CL-ext-SUT`, a boolean on `origin` and
+`destination`. The IG deprecated that on 18 August 2026 in favour of codes on
+`origin.profile` and `destination.profile`: `Conformancelab-Client` where
+Conformancelab initiates the operations, so the `FHIR-Server` opposite it is
+under test, and `Conformancelab-Server` where Conformancelab answers them, so
+the `FHIR-Client` opposite it is under test. The system under test is now the
+side without a Conformancelab profile.
+
+The generated scripts use the new form. The extension still works, so this is a
+change we could have postponed, but it was confined to
+`input/fsh/components/origin-destination.fsh` and it removes a deprecated
+construct before more scripts are written against it. Scenario 2.5, which is
+kept exactly as Nictiz wrote it, still carries the extension.
+
+These two are the only differences between the generated scripts and their
+originals; everything else compares identical.
 
 ## Where the Nictiz scripts do not simply carry over
 

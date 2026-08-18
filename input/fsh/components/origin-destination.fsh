@@ -4,28 +4,23 @@
 // acts as the client. clientAimed is the mirror image, used by the DVA-Client
 // scripts.
 //
-// In a future version of Conformancelab, marking the system under test moves
-// from Interoplab-CL-ext-SUT to a profile on origin.profile and
-// destination.profile. The extension applies until then. These two RuleSets are
-// the only place where it is written, so that switch is a change to this one
-// file.
+// The system under test is the side that does not carry a Conformancelab
+// profile. Conformancelab-Client means Conformancelab initiates the operations,
+// so the FHIR-Server opposite it is under test; Conformancelab-Server means
+// Conformancelab answers them, so the FHIR-Client opposite it is under test.
+//
+// This replaces Interoplab-CL-ext-SUT, which the IG deprecated on 18 August
+// 2026. The extension still works for backwards compatibility, and the imported
+// scenario 2.5, which is kept as Nictiz wrote it, still uses it.
 
 RuleSet: serverAimed
-* origin.extension.url = $CL-ext-SUT
-* origin.extension.valueBoolean = false
 * origin.index = 1
-* origin.profile = $origin-types#FHIR-Client
-* destination.extension.url = $CL-ext-SUT
-* destination.extension.valueBoolean = true
+* origin.profile = $CL-origin-profile#Conformancelab-Client
 * destination.index = 1
 * destination.profile = $destination-types#FHIR-Server
 
 RuleSet: clientAimed
-* origin.extension.url = $CL-ext-SUT
-* origin.extension.valueBoolean = true
 * origin.index = 1
 * origin.profile = $origin-types#FHIR-Client
-* destination.extension.url = $CL-ext-SUT
-* destination.extension.valueBoolean = false
 * destination.index = 1
-* destination.profile = $destination-types#FHIR-Server
+* destination.profile = $CL-destination-profile#Conformancelab-Server
