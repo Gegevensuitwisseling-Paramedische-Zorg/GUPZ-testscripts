@@ -24,11 +24,6 @@
     {
       "name": "auth-03-token",
       "description": "T3: valid content, neither signed nor encrypted."
-    },
-    {
-      "name": "X-Correlation-ID",
-      "defaultValue": "${UUID}",
-      "description": "X-Correlation-ID, by default a UUID following the MedMij Afsprakenstelsel. Does not have to be edited, see https://nictiz.atlassian.net/browse/MM-5132 for more information"
     }
   ],
   "test": [
@@ -40,14 +35,6 @@
               {
                 "field": "Authorization",
                 "value": "Bearer ${auth-03-token}"
-              },
-              {
-                "field": "MedMij-Request-ID",
-                "value": "${UUID}"
-              },
-              {
-                "field": "X-Correlation-ID",
-                "value": "${X-Correlation-ID}"
               }
             ],
             "type": {

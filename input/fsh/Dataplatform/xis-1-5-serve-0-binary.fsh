@@ -11,7 +11,6 @@ RuleSet: xis-1-5-serve-0-binary-NoManifest-body
 * insert serverAimed
 * insert profileToValidate(OperationOutcome-profile, http://hl7.org/fhir/StructureDefinition/OperationOutcome)
 * insert variablePatientToken(XXX_Baltus, Bearer f92b6141-55db-46d5-a3ae-874b69907d22)
-* insert variableCorrelationId
 
 * test[+].id = "scenario1-5-serve-0-binary"
 * test[=].name = "Scenario 1.5"

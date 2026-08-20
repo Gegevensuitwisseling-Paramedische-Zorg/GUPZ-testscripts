@@ -45,11 +45,6 @@
       "name": "patient-token-XXX_Schulte",
       "defaultValue": "Bearer aae7b5aa-d796-4fba-b4d3-852d9043ee66",
       "description": "OAuth Token for patient 'XXX_Schulte'"
-    },
-    {
-      "name": "X-Correlation-ID",
-      "defaultValue": "${UUID}",
-      "description": "X-Correlation-ID, by default a UUID following the MedMij Afsprakenstelsel. Does not have to be edited, see https://nictiz.atlassian.net/browse/MM-5132 for more information"
     }
   ],
   "test": [
@@ -61,14 +56,6 @@
               {
                 "field": "Authorization",
                 "value": "${patient-token-XXX_Schulte}"
-              },
-              {
-                "field": "MedMij-Request-ID",
-                "value": "${UUID}"
-              },
-              {
-                "field": "X-Correlation-ID",
-                "value": "${X-Correlation-ID}"
               }
             ],
             "type": {

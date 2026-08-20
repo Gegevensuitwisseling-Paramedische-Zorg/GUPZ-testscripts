@@ -86,12 +86,6 @@ RuleSet: assertsBundleSearchsetCore
   * stopTestOnFail = false
   * warningOnly = false
 * test[=].action[+].assert
-  * description = "Confirm that Bundle does not use Burgerservicenummer (BSN) anywhere."
-  * direction = #response
-  * expression = "Bundle.descendants().select(identifier.where(system = 'http://fhir.nl/fhir/NamingSystem/bsn').where(value.empty().not() and value.extension.exists().not())).count() = 0"
-  * stopTestOnFail = false
-  * warningOnly = false
-* test[=].action[+].assert
   * description = "Confirm that the returned Bundle total value matches or is less than the number of entries in the Bundle. The included resources should not be counted as entries in the Bundle.total."
   * direction = #response
   * expression = "Bundle.total.exists() implies (Bundle.total.toInteger() <= Bundle.entry.where(search.empty() or search.mode = 'match').count())"

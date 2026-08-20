@@ -9,7 +9,6 @@ Usage: #definition
 * insert serverAimed
 * insert variableToken(auth-10-token)
 * variable[=].description = "T8: encrypted with a public key that is not the platform's."
-* insert variableCorrelationId
 
 * test[+].id = "10"
 * test[=].name = "AUTH-10"

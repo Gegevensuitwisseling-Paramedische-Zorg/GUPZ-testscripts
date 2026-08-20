@@ -9,7 +9,6 @@ Usage: #definition
 * insert serverAimed
 * insert variableToken(auth-07-token)
 * variable[=].description = "T5: exp in the past, otherwise valid."
-* insert variableCorrelationId
 
 * test[+].id = "07"
 * test[=].name = "AUTH-07"

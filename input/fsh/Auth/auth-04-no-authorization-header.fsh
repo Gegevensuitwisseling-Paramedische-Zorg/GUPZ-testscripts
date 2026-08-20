@@ -7,11 +7,9 @@ Usage: #definition
 * description = "security.md requires the token on every call. A request without one must not be answered with data."
 
 * insert serverAimed
-* insert variableCorrelationId
 
 * test[+].id = "04"
 * test[=].name = "AUTH-04"
 * test[=].description = "A request without an Authorization header is refused"
 * insert operationSearchDocumentReference
-* insert headersMedMijTracing
 * insert assertsRequestRefused

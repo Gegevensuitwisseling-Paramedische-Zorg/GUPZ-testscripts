@@ -14,7 +14,6 @@ RuleSet: xis-2-3-serve-1-documentmanifest-NoManifest-body
 * variable[+].name = "T"
 * variable[=].defaultValue = "${CURRENTDATE}"
 * variable[=].description = "Date that data and queries are expected to be relative to."
-* insert variableCorrelationId
 
 * test[+].id = "scenario2-3-serve-1-documentmanifest"
 * test[=].name = "Scenario 2.3"

@@ -19,7 +19,6 @@ RuleSet: xis-1-2-serve-0-documentreference-NoManifest-body
 * variable[+].name = "T"
 * variable[=].defaultValue = "${CURRENTDATE}"
 * variable[=].description = "Date that data and queries are expected to be relative to."
-* insert variableCorrelationId
 
 * test[+].id = "scenario1-2-serve-0-documentreference"
 * test[=].name = "Scenario 1.2"

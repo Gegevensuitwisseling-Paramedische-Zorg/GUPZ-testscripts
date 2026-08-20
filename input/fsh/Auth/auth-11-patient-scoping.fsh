@@ -11,7 +11,6 @@ Usage: #definition
 * variable[=].description = "T1: valid token for the first test patient, XXX_Baltus."
 * insert variableToken(auth-11-token-patient-2)
 * variable[=].description = "T9: valid token for the second test patient, XXX_Schulte."
-* insert variableCorrelationId
 
 * test[+].id = "11a"
 * test[=].name = "AUTH-11a"

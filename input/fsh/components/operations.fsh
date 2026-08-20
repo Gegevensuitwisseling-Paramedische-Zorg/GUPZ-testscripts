@@ -5,21 +5,15 @@
 // substitutes anything in braces inside a parameterised RuleSet, which would
 // corrupt those placeholders.
 //
-// Authorization, MedMij-Request-ID and X-Correlation-ID are what the MedMij
-// Afsprakenstelsel requires on every resource request.
+// Only Authorization is sent. The imported scripts also carried
+// MedMij-Request-ID and X-Correlation-ID, which the MedMij Afsprakenstelsel
+// requires; the data platform sits outside that framework, so they are dropped.
+// See scenario-selection.md.
 
 RuleSet: requestHeadersBaltus
 * test[=].action[=].operation.requestHeader[+].field = "Authorization"
 * test[=].action[=].operation.requestHeader[=].value = "${patient-token-XXX_Baltus}"
-* test[=].action[=].operation.requestHeader[+].field = "MedMij-Request-ID"
-* test[=].action[=].operation.requestHeader[=].value = "${UUID}"
-* test[=].action[=].operation.requestHeader[+].field = "X-Correlation-ID"
-* test[=].action[=].operation.requestHeader[=].value = "${X-Correlation-ID}"
 
 RuleSet: requestHeadersSchulte
 * test[=].action[=].operation.requestHeader[+].field = "Authorization"
 * test[=].action[=].operation.requestHeader[=].value = "${patient-token-XXX_Schulte}"
-* test[=].action[=].operation.requestHeader[+].field = "MedMij-Request-ID"
-* test[=].action[=].operation.requestHeader[=].value = "${UUID}"
-* test[=].action[=].operation.requestHeader[+].field = "X-Correlation-ID"
-* test[=].action[=].operation.requestHeader[=].value = "${X-Correlation-ID}"

@@ -9,7 +9,6 @@ Usage: #definition
 * insert serverAimed
 * insert variableToken(auth-09-token)
 * variable[=].description = "T7: signature broken, for example signed with a different key."
-* insert variableCorrelationId
 
 * test[+].id = "09"
 * test[=].name = "AUTH-09"

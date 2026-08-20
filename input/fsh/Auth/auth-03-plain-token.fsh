@@ -9,7 +9,6 @@ Usage: #definition
 * insert serverAimed
 * insert variableToken(auth-03-token)
 * variable[=].description = "T3: valid content, neither signed nor encrypted."
-* insert variableCorrelationId
 
 * test[+].id = "03"
 * test[=].name = "AUTH-03"

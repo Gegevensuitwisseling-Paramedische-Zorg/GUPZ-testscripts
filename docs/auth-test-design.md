@@ -86,8 +86,7 @@ Each case names its variable after itself rather than calling it `token`. The
 engine spots a variable name that occurs in more than one scenario and offers to
 fill it once for all of them, which is a useful shortcut in most sets and a trap
 in this one: every case here needs a different token. Unique names remove the
-offer. `X-Correlation-ID` stays shared, because a variable with a default is not
-offered.
+offer.
 
 **A token can be read, but that does not help here.** Since 18 August a regex
 mapper, `Interoplab-CL-ext-assert-input-variable` and `base64Decode` can be

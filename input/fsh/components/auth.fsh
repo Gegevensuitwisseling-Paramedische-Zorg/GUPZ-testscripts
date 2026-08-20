@@ -45,19 +45,12 @@ RuleSet: operationSearchDocumentReference
 RuleSet: headersWithBearerToken(name)
 * test[=].action[=].operation.requestHeader[+].field = "Authorization"
 * test[=].action[=].operation.requestHeader[=].value = "Bearer ${{name}}"
-* insert headersMedMijTracing
 
 // The same token, but without the Bearer prefix the specification prescribes.
 RuleSet: headersWithoutBearerPrefix(name)
 * test[=].action[=].operation.requestHeader[+].field = "Authorization"
 * test[=].action[=].operation.requestHeader[=].value = "${{name}}"
-* insert headersMedMijTracing
 
-RuleSet: headersMedMijTracing
-* test[=].action[=].operation.requestHeader[+].field = "MedMij-Request-ID"
-* test[=].action[=].operation.requestHeader[=].value = "${UUID}"
-* test[=].action[=].operation.requestHeader[+].field = "X-Correlation-ID"
-* test[=].action[=].operation.requestHeader[=].value = "${X-Correlation-ID}"
 
 RuleSet: assertsRequestAccepted
 * test[=].action[+].assert

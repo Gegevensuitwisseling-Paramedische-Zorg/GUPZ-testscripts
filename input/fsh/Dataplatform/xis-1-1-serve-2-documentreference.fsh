@@ -16,7 +16,6 @@ RuleSet: xis-1-1-serve-2-documentreference-NoManifest-body
 * insert serverAimed
 * insert profileToValidate(Bundle-profile, http://hl7.org/fhir/StructureDefinition/Bundle)
 * insert variablePatientToken(XXX_Baltus, Bearer f92b6141-55db-46d5-a3ae-874b69907d22)
-* insert variableCorrelationId
 
 * test[+].id = "scenario1-1-serve-2-documentreference"
 * test[=].name = "Scenario 1.1"

@@ -134,6 +134,30 @@ structurally identical. On confirmation by Interoplab on 14 August 2026 the
 conversion rewrites both urls. Both extensions are published in the IG under
 those canonicals, so the rewritten scripts point at defined artefacts.
 
+**The BSN assert that does not apply here is removed.** Every imported script
+asserted `Confirm that Bundle does not use Burgerservicenummer (BSN) anywhere`.
+That rule comes from the functional design, which forbids exchanging the BSN
+with a PGO, so it belongs to the interface between PGO and DVA. Between DVA and
+data platform the opposite holds: [`medmij.md`][medmij] has the BSN travel along
+as the patient identifier and the DVA filters it out. Applied unchanged the
+assert rejects conformant behaviour, so it is gone from the converted scripts.
+Raised with GUPZ; scenario 2.5, kept as Nictiz wrote it, still carries it.
+
+The neighbouring assert, that the BSN does not appear in the self link, is
+deliberately kept and is now stronger than it was. The self link echoes the
+request url, and [#73][i73] settled that a BSN never appears in a url or query
+parameter. That assert therefore tests a GUPZ requirement rather than a MedMij
+one.
+
+**The MedMij tracing headers are not sent.** The imported scripts put
+`MedMij-Request-ID` and `X-Correlation-ID` on every request, which the MedMij
+Afsprakenstelsel requires. The data platform is not a participant in that
+framework and offers, in the words of [`medmij.md`][medmij], APIs independent of
+it. Neither header appears anywhere in the specification. Sending them suggested
+an expectation that nothing supports, so they are gone. Whether GUPZ wants a
+correlation id of its own is a fair question, given that the audit trail has to
+log `sub`, and it has been put to them.
+
 **The system under test is marked with a profile, not an extension.** The
 imported scripts flag it with `Interoplab-CL-ext-SUT`, a boolean on `origin` and
 `destination`. The IG deprecated that on 18 August 2026 in favour of codes on
@@ -149,25 +173,13 @@ change we could have postponed, but it was confined to
 construct before more scripts are written against it. Scenario 2.5, which is
 kept exactly as Nictiz wrote it, still carries the extension.
 
-These two are the only differences between the generated scripts and their
+These four are the only differences between the generated scripts and their
 originals; everything else compares identical.
 
 ## Where the Nictiz scripts do not simply carry over
 
 These are properties of the imported scripts that need a GUPZ decision. Not all
 of them have been decided.
-
-**The BSN assert is contested.** Every imported script asserts
-`Confirm that Bundle does not use Burgerservicenummer (BSN) anywhere`. That rule
-comes from the functional design, which states that the BSN may not be exchanged
-with PGOs, and it therefore belongs to the interface between PGO and DVA. On the
-interface between DVA and data platform the opposite holds:
-[`medmij.md`][medmij] has the BSN travel along as the patient identifier, and the
-DVA is the party that filters it out. Applied unchanged, the assert would reject
-conformant behaviour of the data platform. In [#61][i61] it was suggested to
-filter the BSN between DVA and platform as well, so that the same scripts can be
-used and there is double assurance, while acknowledging that this may not be
-equally easy for every vendor. **Not decided.**
 
 **The response to a DocumentManifest request is specified.** [`pdfa.md`][pdfa]
 prescribes 404 with an OperationOutcome carrying `severity` `error` and `code`

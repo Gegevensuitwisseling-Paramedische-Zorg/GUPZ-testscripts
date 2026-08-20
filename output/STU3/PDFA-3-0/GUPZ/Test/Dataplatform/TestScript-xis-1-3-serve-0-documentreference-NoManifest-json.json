@@ -45,11 +45,6 @@
       "name": "patient-token-XXX_Baltus",
       "defaultValue": "Bearer f92b6141-55db-46d5-a3ae-874b69907d22",
       "description": "OAuth Token for patient 'XXX_Baltus'"
-    },
-    {
-      "name": "X-Correlation-ID",
-      "defaultValue": "${UUID}",
-      "description": "X-Correlation-ID, by default a UUID following the MedMij Afsprakenstelsel. Does not have to be edited, see https://nictiz.atlassian.net/browse/MM-5132 for more information"
     }
   ],
   "test": [
@@ -61,14 +56,6 @@
               {
                 "field": "Authorization",
                 "value": "${patient-token-XXX_Baltus}"
-              },
-              {
-                "field": "MedMij-Request-ID",
-                "value": "${UUID}"
-              },
-              {
-                "field": "X-Correlation-ID",
-                "value": "${X-Correlation-ID}"
               }
             ],
             "type": {

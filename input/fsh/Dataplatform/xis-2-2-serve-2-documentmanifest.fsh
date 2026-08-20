@@ -11,7 +11,6 @@ RuleSet: xis-2-2-serve-2-documentmanifest-NoManifest-body
 * insert serverAimed
 * insert profileToValidate(OperationOutcome-profile, http://hl7.org/fhir/StructureDefinition/OperationOutcome)
 * insert variablePatientToken(XXX_Schulte, Bearer aae7b5aa-d796-4fba-b4d3-852d9043ee66)
-* insert variableCorrelationId
 
 * test[+].id = "scenario2-2-serve-2-documentmanifest"
 * test[=].name = "Scenario 2.2"

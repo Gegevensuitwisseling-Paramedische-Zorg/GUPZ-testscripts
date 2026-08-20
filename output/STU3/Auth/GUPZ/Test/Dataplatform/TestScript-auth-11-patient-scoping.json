@@ -28,11 +28,6 @@
     {
       "name": "auth-11-token-patient-2",
       "description": "T9: valid token for the second test patient, XXX_Schulte."
-    },
-    {
-      "name": "X-Correlation-ID",
-      "defaultValue": "${UUID}",
-      "description": "X-Correlation-ID, by default a UUID following the MedMij Afsprakenstelsel. Does not have to be edited, see https://nictiz.atlassian.net/browse/MM-5132 for more information"
     }
   ],
   "test": [
@@ -44,14 +39,6 @@
               {
                 "field": "Authorization",
                 "value": "Bearer ${auth-11-token-patient-1}"
-              },
-              {
-                "field": "MedMij-Request-ID",
-                "value": "${UUID}"
-              },
-              {
-                "field": "X-Correlation-ID",
-                "value": "${X-Correlation-ID}"
               }
             ],
             "type": {
@@ -117,14 +104,6 @@
               {
                 "field": "Authorization",
                 "value": "Bearer ${auth-11-token-patient-2}"
-              },
-              {
-                "field": "MedMij-Request-ID",
-                "value": "${UUID}"
-              },
-              {
-                "field": "X-Correlation-ID",
-                "value": "${X-Correlation-ID}"
               }
             ],
             "type": {

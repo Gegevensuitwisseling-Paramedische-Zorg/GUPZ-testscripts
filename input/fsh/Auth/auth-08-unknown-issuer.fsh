@@ -9,7 +9,6 @@ Usage: #definition
 * insert serverAimed
 * insert variableToken(auth-08-token)
 * variable[=].description = "T6: unknown or untrusted iss, otherwise valid."
-* insert variableCorrelationId
 
 * test[+].id = "08"
 * test[=].name = "AUTH-08"

@@ -9,7 +9,6 @@ Usage: #definition
 * insert serverAimed
 * insert variableToken(auth-05-token)
 * variable[=].description = "T1: valid, signed and encrypted. This case sends it without the Bearer prefix."
-* insert variableCorrelationId
 
 * test[+].id = "05"
 * test[=].name = "AUTH-05"
