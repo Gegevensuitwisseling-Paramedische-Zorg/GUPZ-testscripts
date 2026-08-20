@@ -1,11 +1,11 @@
 {
   "goal": "Test",
   "fhirVersion": "STU3",
-  "informationStandard": "GUPZ PDF/A 3.x",
+  "informationStandard": "GUPZ PDF/A",
   "usecase": "GUPZ",
   "role": {
     "name": "Dataplatform",
-    "description": "The GUPZ data platform acting as an MHD Document Responder. Imported from the Nictiz variant for servers without DocumentManifest support; these scripts also test whether a request on DocumentManifest is handled gracefully."
+    "description": "The GUPZ data platform acting as an MHD Document Responder. Imported from the Nictiz variant for servers without DocumentManifest support; these scripts also test whether a request on DocumentManifest is handled gracefully. Written against open-GUPZ commit 2f9057f, 18 August 2026."
   },
   "fhirPackage": [
     {

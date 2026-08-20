@@ -5,6 +5,6 @@
   "usecase": "GUPZ",
   "role": {
     "name": "Dataplatform",
-    "description": "Token and authentication behaviour of the GUPZ data platform. The token is operator input: paste the token that the case describes."
+    "description": "Token and authentication behaviour of the GUPZ data platform. The token is operator input: paste the token that the case describes. Written against open-GUPZ commit 2f9057f, 18 August 2026."
   }
 }
