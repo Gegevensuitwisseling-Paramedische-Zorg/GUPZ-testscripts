@@ -61,14 +61,17 @@ key words, neither question would exist.
 | GUPZ-TOK-002 | Sign then encrypt: JWS inside JWE, with a JWE header carrying `alg` RSA-OAEP, `enc` A256CBC-HS512 and `cty` JWT | MUST | [Token beveiliging][sec-tokensec] |
 | GUPZ-JWS-001 | JWS header carries `alg` with the fixed value `RS256`, `typ` and `kid` | MUST | [Token inhoud][sec-token] |
 | GUPZ-PAY-001 | Payload carries `iat`, `exp` and `iss` | MUST | [Token inhoud][sec-token] |
-| GUPZ-PAY-002 | `aud` is mandatory and `patient` is mandatory for a patient bound request; `provider`, `nbf`, `jti` and `scope` are optional. Each has a prescribed format when present | MUST for `aud`, and for `patient` on a patient bound request; the rest OPTIONAL | [Token inhoud][sec-token] |
+| GUPZ-PAY-002 | `aud`, `sub` and `scope` are mandatory, and `patient` is mandatory for a patient bound request. `sub` carries the BSN of the patient, the same value as `patient`, or of an authorised representative, or a string for a care provider. `provider`, `nbf` and `jti` are optional | MUST for `aud`, `sub` and `scope`, and for `patient` on a patient bound request; the rest OPTIONAL | [Token inhoud][sec-token] |
+| GUPZ-PAY-004 | A token used in a patient bound request is patient specific: a new token per patient | MUST | [Application level security][sec-app] |
+| GUPZ-PAY-005 | The token may bind itself to the client certificate with a `cnf.x5t#S256` claim after RFC 8705 | MAY, expected to become MUST | [Token inhoud][sec-token] |
+| GUPZ-URL-001 | A BSN never appears in a FHIR url or query parameter | MUST | [Risico analyse][sec-risk] |
 | GUPZ-VAL-001 | The platform decrypts the JWE and validates the JWS signature | MUST | [Token beveiliging][sec-tokensec] |
 | GUPZ-VAL-002 | The platform refuses a request unless `now - iat < 900` and `now < exp`, and validates `iss`. The tolerated clock skew is [#77][i77], proposing Dutch NTP and at most 30 seconds | MUST; the clock skew is unresolved | [Token beveiliging][sec-tokensec] |
 | GUPZ-CRY-001 | X.509 keys from a trusted CA, RSA-SHA256 for signing, RSA-OAEP with A256CBC-HS512 for encryption | MUST | [Eisen aan de te gebruiken certificaten][sec-cert2] |
 | GUPZ-JWKS-001 | Both sides publish a JWKS on `/.well-known/jwks.json`: the caller its signing keys, the platform its encryption keys. The platform refetches when a token carries an unknown `kid` | MUST, with manual exchange as the fallback for 22 September | [Key rotation][sec-rot] |
 | GUPZ-VAL-003 | A refused token is answered with 401, a `WWW-Authenticate: Bearer` header carrying `error="invalid_token"`, and an OperationOutcome with `severity` error and `code` `login` | MUST, under review | [Afhandeling van ongeldige tokens][sec-invalid] |
 | GUPZ-VAL-004 | A request outside the scope in the token is answered with 403, `error="insufficient_scope"` with the required scope, and an OperationOutcome with `code` `forbidden` | MUST, under review | [Afhandeling van ontbrekende autorisatie][sec-forbidden] |
-| GUPZ-MED-002 | A DVA fills `scope` with MedMij data service numbers | MUST for a DVA; checking it is a MAY for the platform | [MedMij specifieke eisen][sec-medmij] |
+| GUPZ-MED-002 | A DVA fills `scope` with one or more MedMij data service numbers, separated by a space | MUST for a DVA; checking it is a MAY for the platform | [MedMij specifieke eisen][sec-medmij] |
 
 ## What Conformancelab can and cannot do here
 
@@ -252,34 +255,31 @@ against 403 question closes, and AUTH-12 waits with them.
 | AUTH-08 | Search with token T6, unknown issuer | Refused | GUPZ-VAL-002 | [#27][i27] on which issuers are trusted, [#70][i70] |
 | AUTH-09 | Search with token T7, broken signature | Refused | GUPZ-VAL-001 | [#70][i70] |
 | AUTH-10 | Search with token T8, wrong encryption key | Refused | GUPZ-VAL-001 | [#70][i70] |
-| AUTH-11 | The same search with T1 and with T9 | Each response holds only that patient's documents | not specified | [#73][i73], distinguishing asserts are advisory |
+| AUTH-11 | The same search with T1 and with T9 | Each response holds only that patient's documents | GUPZ-PAY-004, GUPZ-URL-001 | |
 
-AUTH-11 is the case that needed the most argument, and it changed shape on 17 August.
-It began as a refusal case: send a request about one patient with a token for
-another and expect a rejection. Raised as [#73][i73], because `security.md`
-describes `patient` as the BSN of the patient whose data is being requested but
-never says the platform has to check it.
+AUTH-11 is the case that needed the most argument. It began as a refusal case,
+sending a request about one patient with a token for another, and [#73][i73]
+turned it into something better.
 
-The answer settled the design rather than the question. The preference stated in
-[#73][i73] is to carry the BSN in the token and keep it out of request
-parameters, which means there is nothing to compare: a search never names a
-patient. That matches what the scripts already do, since every PDF/A search in
-this repository queries `?status=current` and leaves the patient to the token.
+That issue closed on 18 August with two rules. A BSN never appears in a FHIR url
+or query parameter, and a token used in a patient bound request is patient
+specific, so a new token is made per patient. The BSN itself stays where it was,
+in the `patient` claim, and that claim is what the platform resolves the patient
+from. So there is nothing to compare between request and token, and the refusal
+case cannot exist.
 
-So the refusal case cannot exist, but the risk behind it can still be tested,
-and more directly. The token is now the only thing that selects a patient, so
-the same request sent with two different tokens has to produce two different
-result sets. AUTH-11 sends `?status=current` twice, once per test patient, and
-checks each response both for a document that patient has and for the absence of
-a document only the other patient has. Ellen XXX_Baltus is identified by LOINC
-68688-1 and Eva XXX_Schulte by 68626-1; both codes appear for one patient only in
-the Nictiz fixtures.
+What can be tested is the consequence, and more directly than the original. The
+token is the only thing that selects a patient, so the same request sent with two
+different tokens has to produce two different result sets. AUTH-11 sends
+`?status=current` twice, once per test patient, and checks each response both for
+a document that patient has and for the absence of a document only the other
+patient has. Ellen XXX_Baltus is identified by LOINC 68688-1 and Eva XXX_Schulte
+by 68626-1; both codes appear for one patient only in the Nictiz fixtures.
 
-A platform that ignores the token and returns everything now fails on the first
-assert of each test, because a response holding both patients also holds the
-wrong one. The two absence asserts stay warning only: scoping follows from the
-design, but [#73][i73] has not put it in the specification, and until it does no
-platform should fail on it.
+All four asserts are hard. Until 18 August the two absence asserts were warning
+only, because scoping followed from the design but stood nowhere in the
+specification. It stands there now, as `GUPZ-PAY-004` and `GUPZ-URL-001`, so a
+platform that returns another patient's documents is not conformant.
 
 ## What this set does not cover
 
@@ -305,7 +305,18 @@ fallback.
 
 **Single use of a token.** GUPZ rejected one-time tokens in [#52][i52]: the
 fifteen minute lifetime combined with mTLS is considered sufficient. There is no
-case to write, and this set may reuse a token across cases.
+case to write, and this set may reuse a token across cases, except where
+`GUPZ-PAY-004` requires a token of its own per patient.
+
+**The audit trail.** Since 18 August the platform has to log the value of `sub`.
+A TestScript sees responses, not logs, so this can only be checked by asking a
+supplier to show a log line next to a run. Worth putting on the connectathon
+programme rather than in a script.
+
+**Binding the token to the certificate.** `GUPZ-PAY-005` is a MAY today, and it
+would need Conformancelab to know the thumbprint of the certificate it presents.
+Not testable until that is arranged, and not required until the claim becomes
+mandatory.
 
 **Claim obligations.** Settled on 17 August: `provider` is the name to use,
 `patient` is mandatory for a patient bound request ([#38][i38]) and `aud` is
@@ -329,11 +340,9 @@ what it would assert on.
 5. Arrange the out of band transport check described above. Easier since
    17 August: a G4 certificate is explicitly not required for testing, so what
    has to be agreed is only what does apply on the day.
-6. Get the scoping rule into the specification. [#73][i73] states the preference
-   to keep the BSN out of request parameters; the obligation that follows from
-   it, that the platform limits the response to the patient in the token, is not
-   written down. Once it is, the two AUTH-11 absence asserts go from warning to
-   hard.
+6. Add cases for the claims that became mandatory on 18 August: `sub` and
+   `scope`. Both assert on a refusal, so they wait on the same question as the
+   seven refusal cases.
 7. Add a case for the JWKS endpoint. `security.md` now puts one on
    `/.well-known/jwks.json` at both ends, and the platform's is a plain GET that
    a script can make. GUPZ expects this may not be ready by 22 September, with
@@ -349,6 +358,8 @@ what it would assert on.
 [sec-tokensec]: https://github.com/Gegevensuitwisseling-Paramedische-Zorg/open-GUPZ/blob/main/docs/api/security.md#token-beveiliging
 [sec-medmij]: https://github.com/Gegevensuitwisseling-Paramedische-Zorg/open-GUPZ/blob/main/docs/api/security.md#medmij-specifieke-eisen-op-het-gebied-van-application-level-security
 [sec-rot]: https://github.com/Gegevensuitwisseling-Paramedische-Zorg/open-GUPZ/blob/main/docs/api/security.md#key-rotation
+[sec-app]: https://github.com/Gegevensuitwisseling-Paramedische-Zorg/open-GUPZ/blob/main/docs/api/security.md#application-level-security
+[sec-risk]: https://github.com/Gegevensuitwisseling-Paramedische-Zorg/open-GUPZ/blob/main/docs/api/security.md#risico-analyse
 [sec-invalid]: https://github.com/Gegevensuitwisseling-Paramedische-Zorg/open-GUPZ/blob/main/docs/api/security.md#afhandeling-van-ongeldige-tokens
 [sec-forbidden]: https://github.com/Gegevensuitwisseling-Paramedische-Zorg/open-GUPZ/blob/main/docs/api/security.md#afhandeling-van-ontbrekende-autorisatie
 [i27]: https://github.com/Gegevensuitwisseling-Paramedische-Zorg/open-GUPZ/issues/27

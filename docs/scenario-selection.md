@@ -177,18 +177,19 @@ see [#72][i72].
 
 **The patient is never named in a request.** Every search here queries on status
 and dates, never on a patient identifier: the patient comes from the token.
-[#73][i73] goes further and moves to one token per patient without a BSN at all,
-so the BSN disappears from both the query and the claim. Three rules follow for
-authoring:
+[#73][i73] closed on 18 August with two rules that make this binding. A BSN never
+appears in a FHIR url or query parameter, and a token used in a patient bound
+request is patient specific, so a new token is made per patient. The BSN itself
+stays in the `patient` claim of the token, which is where the platform resolves
+the patient from.
 
-- A script may not search for a patient, by BSN or by any other identifier.
+Three rules follow for authoring here:
+
+- A script may not put a BSN in a url or a query parameter, and may not search
+  for a patient by any other identifier either.
 - A patient reference has to be read out of a response, for instance from
   `DocumentReference.subject`, not constructed.
-- A token belongs to exactly one patient, the model AUTH-11 already uses.
-
-What the token carries instead of the BSN is not yet written down and overlaps
-with `sub` in [#76][i76], so a script can assume nothing about the value, only
-about the binding.
+- A token belongs to exactly one patient, the model AUTH-11 uses.
 
 **`status=current` is already covered.** All Nictiz search scenarios query
 `?status=current`, which lines up with the requirement in [`pdfa.md`][pdfa] that
@@ -210,7 +211,6 @@ validator will actually check. Related:
 [i66]: https://github.com/Gegevensuitwisseling-Paramedische-Zorg/open-GUPZ/issues/66
 [i72]: https://github.com/Gegevensuitwisseling-Paramedische-Zorg/open-GUPZ/issues/72
 [i73]: https://github.com/Gegevensuitwisseling-Paramedische-Zorg/open-GUPZ/issues/73
-[i76]: https://github.com/Gegevensuitwisseling-Paramedische-Zorg/open-GUPZ/issues/76
 [pdfa]: https://github.com/Gegevensuitwisseling-Paramedische-Zorg/open-GUPZ/blob/main/docs/api/pdfa.md
 [medmij]: https://github.com/Gegevensuitwisseling-Paramedische-Zorg/open-GUPZ/blob/main/docs/architecture/medmij.md
 [fo]: https://informatiestandaarden.nictiz.nl/wiki/MedMij:V2020.01/OntwerpPDFA
