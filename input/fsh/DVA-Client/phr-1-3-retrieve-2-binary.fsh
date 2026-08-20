@@ -2,7 +2,7 @@
 // and verified against the original with scripts/compare-testscript.py.
 
 RuleSet: phr-1-3-retrieve-2-binary-meta
-* insert metadataNictiz(phr-1-3-retrieve-2-binary)
+* insert metadata(phr-1-3-retrieve-2-binary)
 * name = "Phr_1_3_retrieve_2_binary"
 * title = "Scenario 1.3 - Retrieve two times one Binary resource"
 * description = "Scenario 1.3 - Retrieve Binary resources of XXX-Baltus."

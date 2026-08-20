@@ -1,17 +1,16 @@
 {
   "resourceType": "TestScript",
   "id": "xis-1-2-serve-0-documentreference-NoManifest-xml",
-  "url": "http://nictiz.nl/fhir/TestScript/xis-1-2-serve-0-documentreference-NoManifest-xml",
+  "url": "http://gupz.nl/fhir/TestScript/xis-1-2-serve-0-documentreference-NoManifest-xml",
   "contact": [
     {
       "telecom": [
         {
-          "system": "email",
-          "value": "kwalificatie@nictiz.nl",
-          "use": "work"
+          "system": "url",
+          "value": "https://github.com/Gegevensuitwisseling-Paramedische-Zorg/GUPZ-testscripts"
         }
       ],
-      "name": "Nictiz"
+      "name": "GUPZ"
     }
   ],
   "extension": [
@@ -270,9 +269,9 @@
       "description": "Serve all current DocumentReference resources of XXX-Baltus that are indexed/created in the period from T-730 to T-365."
     }
   ],
-  "version": "stu3-2.0-patchlevel 2026.30",
+  "version": "0.1.0",
   "status": "active",
-  "publisher": "Nictiz",
+  "publisher": "GUPZ",
   "name": "Xis_1_2_serve_0_documentreference_NoManifest_xml",
   "title": "Scenario 1.2 - Serve zero DocumentReference resources - target NoManifest - XML Format",
   "description": "Scenario 1.2 - Serve DocumentReference resources of XXX-Baltus that are indexed/created in the period from T-730 to T-365."

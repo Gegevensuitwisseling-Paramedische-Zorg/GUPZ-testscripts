@@ -2,7 +2,7 @@
 // and verified against the original with scripts/compare-testscript.py.
 
 RuleSet: phr-1-4-retrieve-0-binary-meta
-* insert metadataNictiz(phr-1-4-retrieve-0-binary)
+* insert metadata(phr-1-4-retrieve-0-binary)
 * name = "Phr_1_4_retrieve_0_binary"
 * title = "Scenario 1.4 - Retrieve zero Binary resources"
 * description = "Scenario 1.4 - Retrieve Binary resource of XXX-Baltus that has a wrong id from retrieved DocumentReference-3."

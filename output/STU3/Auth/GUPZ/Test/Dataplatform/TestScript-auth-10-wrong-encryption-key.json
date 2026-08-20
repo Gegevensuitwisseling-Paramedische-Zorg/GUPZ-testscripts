@@ -1,7 +1,18 @@
 {
   "resourceType": "TestScript",
   "id": "auth-10-wrong-encryption-key",
-  "url": "https://gegevensuitwisseling-paramedische-zorg.github.io/GUPZ-testscripts/TestScript/auth-10-wrong-encryption-key",
+  "url": "http://gupz.nl/fhir/TestScript/auth-10-wrong-encryption-key",
+  "contact": [
+    {
+      "telecom": [
+        {
+          "system": "url",
+          "value": "https://github.com/Gegevensuitwisseling-Paramedische-Zorg/GUPZ-testscripts"
+        }
+      ],
+      "name": "GUPZ"
+    }
+  ],
   "origin": [
     {
       "index": 1,

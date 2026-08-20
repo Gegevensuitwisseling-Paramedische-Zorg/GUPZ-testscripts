@@ -1,7 +1,7 @@
 Instance: auth-09-broken-signature
 InstanceOf: TestScript
 Usage: #definition
-* insert metadataGupz(auth-09-broken-signature)
+* insert metadata(auth-09-broken-signature)
 * name = "Auth_09_broken_signature"
 * title = "AUTH-09 - A token with an invalid signature is refused"
 * description = "security.md has the platform validate the signature with the public signing key of the calling system. The algorithm is RS256, settled in open-GUPZ issue #67 and corrected in the specification on 17 August 2026."

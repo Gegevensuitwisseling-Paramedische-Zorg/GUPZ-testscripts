@@ -14,11 +14,6 @@
 // on a GUPZ decision, so the url will change with it. Nothing depends on the
 // value; Conformancelab identifies a script by its id.
 
-RuleSet: metadataGupz(id)
-* id = "{id}"
-* version = "0.1.0"
-* status = #active
-* publisher = "GUPZ"
 
 // Every case declares its own variable name, prefixed with the case id. That is
 // deliberate: Conformancelab spots a name that occurs in more than one scenario

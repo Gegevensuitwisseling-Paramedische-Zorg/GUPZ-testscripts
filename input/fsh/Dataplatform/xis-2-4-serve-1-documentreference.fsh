@@ -2,7 +2,7 @@
 // and verified against the original with scripts/compare-testscript.py.
 
 RuleSet: xis-2-4-serve-1-documentreference-NoManifest-meta(format, formatLabel)
-* insert metadataNictiz(xis-2-4-serve-1-documentreference-NoManifest-{format})
+* insert metadata(xis-2-4-serve-1-documentreference-NoManifest-{format})
 * name = "Xis_2_4_serve_1_documentreference_NoManifest_{format}"
 * title = "Scenario 2.4 - Serve one DocumentReference resource by resolving reference from DocumentManifest - target NoManifest - {formatLabel} Format"
 * description = "Scenario 2.4 - Serve one DocumentReference resource of XXX-Schulte by resolving a reference in a DocumentManifest resource (scenario 2.3)."

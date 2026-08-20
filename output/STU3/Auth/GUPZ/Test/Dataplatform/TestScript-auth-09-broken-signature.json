@@ -1,7 +1,18 @@
 {
   "resourceType": "TestScript",
   "id": "auth-09-broken-signature",
-  "url": "https://gegevensuitwisseling-paramedische-zorg.github.io/GUPZ-testscripts/TestScript/auth-09-broken-signature",
+  "url": "http://gupz.nl/fhir/TestScript/auth-09-broken-signature",
+  "contact": [
+    {
+      "telecom": [
+        {
+          "system": "url",
+          "value": "https://github.com/Gegevensuitwisseling-Paramedische-Zorg/GUPZ-testscripts"
+        }
+      ],
+      "name": "GUPZ"
+    }
+  ],
   "origin": [
     {
       "index": 1,

@@ -1,17 +1,19 @@
 // Metadata that is identical on every TestScript.
 //
-// NOTE: url, version, publisher and contact still carry the Nictiz values, so
-// that the generated JSON can be compared one to one against the original.
-// Deciding on the GUPZ canonical and on our own publisher and contact details
-// is a separate step.
+// The imported scripts carried Nictiz's url, version, publisher and contact, so
+// that the generated JSON could be compared one to one against the original.
+// That reason lapsed once the material started to deviate on purpose, and
+// publishing somebody else's version number invites the reading that these are
+// the Nictiz qualification scripts, which they are not. They now carry ours.
+//
+// The canonical is provisional. It comes from sushi-config.yaml, which SUSHI
+// uses to derive the url of every Instance.
 
-RuleSet: metadataNictiz(id)
+RuleSet: metadata(id)
 * id = "{id}"
-* url = "http://nictiz.nl/fhir/TestScript/{id}"
-* version = "stu3-2.0-patchlevel 2026.30"
+* version = "0.1.0"
 * status = #active
-* publisher = "Nictiz"
-* contact.name = "Nictiz"
-* contact.telecom.system = #email
-* contact.telecom.value = "kwalificatie@nictiz.nl"
-* contact.telecom.use = #work
+* publisher = "GUPZ"
+* contact.name = "GUPZ"
+* contact.telecom.system = #url
+* contact.telecom.value = "https://github.com/Gegevensuitwisseling-Paramedische-Zorg/GUPZ-testscripts"

@@ -1,7 +1,18 @@
 {
   "resourceType": "TestScript",
   "id": "auth-08-unknown-issuer",
-  "url": "https://gegevensuitwisseling-paramedische-zorg.github.io/GUPZ-testscripts/TestScript/auth-08-unknown-issuer",
+  "url": "http://gupz.nl/fhir/TestScript/auth-08-unknown-issuer",
+  "contact": [
+    {
+      "telecom": [
+        {
+          "system": "url",
+          "value": "https://github.com/Gegevensuitwisseling-Paramedische-Zorg/GUPZ-testscripts"
+        }
+      ],
+      "name": "GUPZ"
+    }
+  ],
   "origin": [
     {
       "index": 1,

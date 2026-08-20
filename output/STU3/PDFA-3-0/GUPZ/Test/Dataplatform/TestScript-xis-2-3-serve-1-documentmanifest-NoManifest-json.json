@@ -1,17 +1,16 @@
 {
   "resourceType": "TestScript",
   "id": "xis-2-3-serve-1-documentmanifest-NoManifest-json",
-  "url": "http://nictiz.nl/fhir/TestScript/xis-2-3-serve-1-documentmanifest-NoManifest-json",
+  "url": "http://gupz.nl/fhir/TestScript/xis-2-3-serve-1-documentmanifest-NoManifest-json",
   "contact": [
     {
       "telecom": [
         {
-          "system": "email",
-          "value": "kwalificatie@nictiz.nl",
-          "use": "work"
+          "system": "url",
+          "value": "https://github.com/Gegevensuitwisseling-Paramedische-Zorg/GUPZ-testscripts"
         }
       ],
-      "name": "Nictiz"
+      "name": "GUPZ"
     }
   ],
   "origin": [
@@ -137,9 +136,9 @@
       "description": "Handle unsupported request for DocumentManifest resources."
     }
   ],
-  "version": "stu3-2.0-patchlevel 2026.30",
+  "version": "0.1.0",
   "status": "active",
-  "publisher": "Nictiz",
+  "publisher": "GUPZ",
   "name": "Xis_2_3_serve_1_documentmanifest_NoManifest_json",
   "title": "Scenario 2.3 - Serve one DocumentManifest resource - target NoManifest - JSON Format",
   "description": "Scenario 2.3 - Serve one DocumentManifest resource of XXX-Schulte."

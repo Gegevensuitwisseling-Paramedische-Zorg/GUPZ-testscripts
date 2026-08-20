@@ -1,7 +1,18 @@
 {
   "resourceType": "TestScript",
   "id": "auth-11-patient-scoping",
-  "url": "https://gegevensuitwisseling-paramedische-zorg.github.io/GUPZ-testscripts/TestScript/auth-11-patient-scoping",
+  "url": "http://gupz.nl/fhir/TestScript/auth-11-patient-scoping",
+  "contact": [
+    {
+      "telecom": [
+        {
+          "system": "url",
+          "value": "https://github.com/Gegevensuitwisseling-Paramedische-Zorg/GUPZ-testscripts"
+        }
+      ],
+      "name": "GUPZ"
+    }
+  ],
   "origin": [
     {
       "index": 1,

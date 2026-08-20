@@ -1,7 +1,18 @@
 {
   "resourceType": "TestScript",
   "id": "auth-06-creation-time-too-old",
-  "url": "https://gegevensuitwisseling-paramedische-zorg.github.io/GUPZ-testscripts/TestScript/auth-06-creation-time-too-old",
+  "url": "http://gupz.nl/fhir/TestScript/auth-06-creation-time-too-old",
+  "contact": [
+    {
+      "telecom": [
+        {
+          "system": "url",
+          "value": "https://github.com/Gegevensuitwisseling-Paramedische-Zorg/GUPZ-testscripts"
+        }
+      ],
+      "name": "GUPZ"
+    }
+  ],
   "origin": [
     {
       "index": 1,

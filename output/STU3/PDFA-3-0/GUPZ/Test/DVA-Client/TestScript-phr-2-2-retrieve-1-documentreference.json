@@ -1,17 +1,16 @@
 {
   "resourceType": "TestScript",
   "id": "phr-2-2-retrieve-1-documentreference",
-  "url": "http://nictiz.nl/fhir/TestScript/phr-2-2-retrieve-1-documentreference",
+  "url": "http://gupz.nl/fhir/TestScript/phr-2-2-retrieve-1-documentreference",
   "contact": [
     {
       "telecom": [
         {
-          "system": "email",
-          "value": "kwalificatie@nictiz.nl",
-          "use": "work"
+          "system": "url",
+          "value": "https://github.com/Gegevensuitwisseling-Paramedische-Zorg/GUPZ-testscripts"
         }
       ],
-      "name": "Nictiz"
+      "name": "GUPZ"
     }
   ],
   "origin": [
@@ -109,9 +108,9 @@
       "description": "Read DocumentReference resource."
     }
   ],
-  "version": "stu3-2.0-patchlevel 2026.30",
+  "version": "0.1.0",
   "status": "active",
-  "publisher": "Nictiz",
+  "publisher": "GUPZ",
   "name": "Phr_2_2_retrieve_1_documentreference",
   "title": "Scenario 2.2 - Retrieve one DocumentReference resource",
   "description": "Scenario 2.2 - Retrieve one DocumentReference resource of XXX-Schulte based on a retrieved reference in a DocumentManifest resource (scenario 2.1)."

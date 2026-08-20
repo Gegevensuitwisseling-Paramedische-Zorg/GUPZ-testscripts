@@ -1,7 +1,7 @@
 Instance: auth-11-patient-scoping
 InstanceOf: TestScript
 Usage: #definition
-* insert metadataGupz(auth-11-patient-scoping)
+* insert metadata(auth-11-patient-scoping)
 * name = "Auth_11_patient_scoping"
 * title = "AUTH-11 - The response is scoped to the patient in the token"
 * description = "Tests whether the platform limits what it returns to the patient in the token. The same search is sent twice, once with a token for each test patient, and each response is checked for a document that only the other patient has. Since open-GUPZ issue #73 closed on 18 August a token used in a patient bound request is patient specific and a BSN never appears in a url or query parameter, so the token is the only thing that selects the patient. All asserts are hard."

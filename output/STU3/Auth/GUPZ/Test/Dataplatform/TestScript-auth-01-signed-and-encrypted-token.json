@@ -1,7 +1,18 @@
 {
   "resourceType": "TestScript",
   "id": "auth-01-signed-and-encrypted-token",
-  "url": "https://gegevensuitwisseling-paramedische-zorg.github.io/GUPZ-testscripts/TestScript/auth-01-signed-and-encrypted-token",
+  "url": "http://gupz.nl/fhir/TestScript/auth-01-signed-and-encrypted-token",
+  "contact": [
+    {
+      "telecom": [
+        {
+          "system": "url",
+          "value": "https://github.com/Gegevensuitwisseling-Paramedische-Zorg/GUPZ-testscripts"
+        }
+      ],
+      "name": "GUPZ"
+    }
+  ],
   "origin": [
     {
       "index": 1,

@@ -174,7 +174,17 @@ change we could have postponed, but it was confined to
 construct before more scripts are written against it. Scenario 2.5, which is
 kept exactly as Nictiz wrote it, still carries the extension.
 
-These four are the only differences between the generated scripts and their
+**The scripts carry GUPZ identity, not Nictiz identity.** The imported scripts
+name Nictiz as publisher, point their `url` at `nictiz.nl` and declare
+`stu3-2.0-patchlevel 2026.30` as their version. They were left that way so the
+generated JSON could be compared one to one against the original, but with four
+deliberate deviations in place that reason lapsed, and publishing somebody
+else's version number invites the reading that these are the Nictiz
+qualification scripts. All 34 scripts now say version `0.1.0`, publisher GUPZ,
+and derive their url from the canonical `http://gupz.nl/fhir`. That canonical is
+provisional, chosen on 20 August 2026 until GUPZ names something better.
+
+These five are the only differences between the generated scripts and their
 originals; everything else compares identical.
 
 ## Where the Nictiz scripts do not simply carry over

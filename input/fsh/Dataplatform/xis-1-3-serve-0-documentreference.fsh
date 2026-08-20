@@ -2,7 +2,7 @@
 // and verified against the original with scripts/compare-testscript.py.
 
 RuleSet: xis-1-3-serve-0-documentreference-NoManifest-meta(format, formatLabel)
-* insert metadataNictiz(xis-1-3-serve-0-documentreference-NoManifest-{format})
+* insert metadata(xis-1-3-serve-0-documentreference-NoManifest-{format})
 * name = "Xis_1_3_serve_0_documentreference_NoManifest_{format}"
 * title = "Scenario 1.3 - Serve zero DocumentReference resources and one OperationOutcome resource - target NoManifest - {formatLabel} Format"
 * description = "Scenario 1.3 - Serve OperationOutome resource for a request with an incorrect search syntax."

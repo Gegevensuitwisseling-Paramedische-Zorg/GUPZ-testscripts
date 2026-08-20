@@ -1,7 +1,7 @@
 Instance: auth-01-signed-and-encrypted-token
 InstanceOf: TestScript
 Usage: #definition
-* insert metadataGupz(auth-01-signed-and-encrypted-token)
+* insert metadata(auth-01-signed-and-encrypted-token)
 * name = "Auth_01_signed_and_encrypted_token"
 * title = "AUTH-01 - A signed and encrypted token is accepted"
 * description = "The happy flow. A correctly formed token, signed and then encrypted as security.md prescribes, must be accepted."

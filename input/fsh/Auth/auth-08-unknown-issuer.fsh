@@ -1,7 +1,7 @@
 Instance: auth-08-unknown-issuer
 InstanceOf: TestScript
 Usage: #definition
-* insert metadataGupz(auth-08-unknown-issuer)
+* insert metadata(auth-08-unknown-issuer)
 * name = "Auth_08_unknown_issuer"
 * title = "AUTH-08 - A token from an unknown issuer is refused"
 * description = "security.md has the platform validate the issuer. Which issuers are trusted and how that trust is established is open, see open-GUPZ issue #27."

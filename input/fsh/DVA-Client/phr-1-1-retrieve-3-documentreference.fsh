@@ -2,7 +2,7 @@
 // and verified against the original with scripts/compare-testscript.py.
 
 RuleSet: phr-1-1-retrieve-3-documentreference-meta
-* insert metadataNictiz(phr-1-1-retrieve-3-documentreference)
+* insert metadata(phr-1-1-retrieve-3-documentreference)
 * name = "Phr_1_1_retrieve_3_documentreference"
 * title = "Scenario 1.1 - Retrieve three DocumentReference resources"
 * description = "Scenario 1.1 - Retrieve three DocumentReference resources of XXX-Baltus."

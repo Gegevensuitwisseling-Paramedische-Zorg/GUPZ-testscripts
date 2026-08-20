@@ -1,17 +1,16 @@
 {
   "resourceType": "TestScript",
   "id": "xis-1-3-serve-0-documentreference-NoManifest-xml",
-  "url": "http://nictiz.nl/fhir/TestScript/xis-1-3-serve-0-documentreference-NoManifest-xml",
+  "url": "http://gupz.nl/fhir/TestScript/xis-1-3-serve-0-documentreference-NoManifest-xml",
   "contact": [
     {
       "telecom": [
         {
-          "system": "email",
-          "value": "kwalificatie@nictiz.nl",
-          "use": "work"
+          "system": "url",
+          "value": "https://github.com/Gegevensuitwisseling-Paramedische-Zorg/GUPZ-testscripts"
         }
       ],
-      "name": "Nictiz"
+      "name": "GUPZ"
     }
   ],
   "origin": [
@@ -105,9 +104,9 @@
       "description": "Serve OperationOutcome resource for the incorrect search request."
     }
   ],
-  "version": "stu3-2.0-patchlevel 2026.30",
+  "version": "0.1.0",
   "status": "active",
-  "publisher": "Nictiz",
+  "publisher": "GUPZ",
   "name": "Xis_1_3_serve_0_documentreference_NoManifest_xml",
   "title": "Scenario 1.3 - Serve zero DocumentReference resources and one OperationOutcome resource - target NoManifest - XML Format",
   "description": "Scenario 1.3 - Serve OperationOutome resource for a request with an incorrect search syntax."

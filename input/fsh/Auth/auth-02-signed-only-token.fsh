@@ -1,7 +1,7 @@
 Instance: auth-02-signed-only-token
 InstanceOf: TestScript
 Usage: #definition
-* insert metadataGupz(auth-02-signed-only-token)
+* insert metadata(auth-02-signed-only-token)
 * name = "Auth_02_signed_only_token"
 * title = "AUTH-02 - A signed but not encrypted token is accepted in connectathon mode"
 * description = "One of the three token variants agreed for the connectathon of 22 September 2026. Deviates from security.md, which prescribes sign then encrypt, so this case only applies to a platform running in connectathon mode."

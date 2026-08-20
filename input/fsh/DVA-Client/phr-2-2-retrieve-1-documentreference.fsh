@@ -2,7 +2,7 @@
 // and verified against the original with scripts/compare-testscript.py.
 
 RuleSet: phr-2-2-retrieve-1-documentreference-meta
-* insert metadataNictiz(phr-2-2-retrieve-1-documentreference)
+* insert metadata(phr-2-2-retrieve-1-documentreference)
 * name = "Phr_2_2_retrieve_1_documentreference"
 * title = "Scenario 2.2 - Retrieve one DocumentReference resource"
 * description = "Scenario 2.2 - Retrieve one DocumentReference resource of XXX-Schulte based on a retrieved reference in a DocumentManifest resource (scenario 2.1)."

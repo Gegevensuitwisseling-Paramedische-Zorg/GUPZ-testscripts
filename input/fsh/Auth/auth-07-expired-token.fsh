@@ -1,7 +1,7 @@
 Instance: auth-07-expired-token
 InstanceOf: TestScript
 Usage: #definition
-* insert metadataGupz(auth-07-expired-token)
+* insert metadata(auth-07-expired-token)
 * name = "Auth_07_expired_token"
 * title = "AUTH-07 - An expired token is refused"
 * description = "security.md has the platform refuse a request once the expiration time has passed."

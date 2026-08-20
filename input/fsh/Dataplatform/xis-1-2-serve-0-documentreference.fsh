@@ -2,7 +2,7 @@
 // and verified against the original with scripts/compare-testscript.py.
 
 RuleSet: xis-1-2-serve-0-documentreference-NoManifest-meta(format, formatLabel)
-* insert metadataNictiz(xis-1-2-serve-0-documentreference-NoManifest-{format})
+* insert metadata(xis-1-2-serve-0-documentreference-NoManifest-{format})
 * name = "Xis_1_2_serve_0_documentreference_NoManifest_{format}"
 * title = "Scenario 1.2 - Serve zero DocumentReference resources - target NoManifest - {formatLabel} Format"
 * description = "Scenario 1.2 - Serve DocumentReference resources of XXX-Baltus that are indexed/created in the period from T-730 to T-365."

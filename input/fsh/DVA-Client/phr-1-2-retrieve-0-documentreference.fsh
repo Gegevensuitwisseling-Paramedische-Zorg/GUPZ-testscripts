@@ -2,7 +2,7 @@
 // and verified against the original with scripts/compare-testscript.py.
 
 RuleSet: phr-1-2-retrieve-0-documentreference-meta
-* insert metadataNictiz(phr-1-2-retrieve-0-documentreference)
+* insert metadata(phr-1-2-retrieve-0-documentreference)
 * name = "Phr_1_2_retrieve_0_documentreference"
 * title = "Scenario 1.2 - Retrieve zero DocumentReference resources"
 * description = "Scenario 1.2 - Retrieve DocumentReference resources of XXX-Baltus that are indexed/created in the period from T-730 to T-365."

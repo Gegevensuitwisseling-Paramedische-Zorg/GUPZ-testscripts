@@ -2,7 +2,7 @@
 // and verified against the original with scripts/compare-testscript.py.
 
 RuleSet: xis-2-2-serve-2-documentmanifest-NoManifest-meta(format, formatLabel)
-* insert metadataNictiz(xis-2-2-serve-2-documentmanifest-NoManifest-{format})
+* insert metadata(xis-2-2-serve-2-documentmanifest-NoManifest-{format})
 * name = "Xis_2_2_serve_2_documentmanifest_NoManifest_{format}"
 * title = "Scenario 2.2 - Serve two DocumentManifest resources - target NoManifest - {formatLabel} Format"
 * description = "Scenario 2.2 - Serve two DocumentManifest resources of XXX-Schulte."

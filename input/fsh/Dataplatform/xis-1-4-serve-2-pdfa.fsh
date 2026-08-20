@@ -2,7 +2,7 @@
 // and verified against the original with scripts/compare-testscript.py.
 
 RuleSet: xis-1-4-serve-2-pdfa-NoManifest-meta(format, formatLabel)
-* insert metadataNictiz(xis-1-4-serve-2-pdfa-NoManifest-{format})
+* insert metadata(xis-1-4-serve-2-pdfa-NoManifest-{format})
 * name = "Xis_1_4_serve_2_pdfa_NoManifest_{format}"
 * title = "Scenario 1.4 - Serve two PDFA documents - target NoManifest - {formatLabel} Format"
 * description = "Scenario 1.4 - Serve two PDFA documents of XXX-Baltus through Binary resources. If PDFA documents are served via an HTTP get, scenario 2.5 should be executed instead."

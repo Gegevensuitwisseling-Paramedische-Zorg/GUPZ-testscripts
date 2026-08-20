@@ -5,11 +5,13 @@
 # supports TestScript R5. See https://fhir.interoplab.eu/ig/authoring.html
 #
 # FSHOnly is enabled: we do not build an ImplementationGuide, only resources.
-# The canonical below is currently unused because every Instance sets its own
+# The canonical below is provisional, chosen on 20 August 2026 until GUPZ names
+# something better. SUSHI derives the url of every Instance from it.
+# Historical note: it used to be unused, because every Instance set its own
 # url; GUPZ still has to decide on the definitive value.
 
 id: eu.gupz.testscripts
-canonical: https://gegevensuitwisseling-paramedische-zorg.github.io/GUPZ-testscripts
+canonical: http://gupz.nl/fhir
 name: GUPZTestscripts
 title: GUPZ TestScripts
 status: draft
