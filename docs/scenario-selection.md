@@ -141,7 +141,8 @@ with a PGO, so it belongs to the interface between PGO and DVA. Between DVA and
 data platform the opposite holds: [`medmij.md`][medmij] has the BSN travel along
 as the patient identifier and the DVA filters it out. Applied unchanged the
 assert rejects conformant behaviour, so it is gone from the converted scripts.
-Raised with GUPZ; scenario 2.5, kept as Nictiz wrote it, still carries it.
+Raised with GUPZ as [#80][i80]; scenario 2.5, kept as Nictiz wrote it, still
+carries it.
 
 The neighbouring assert, that the BSN does not appear in the self link, is
 deliberately kept and is now stronger than it was. The self link echoes the
@@ -156,7 +157,7 @@ framework and offers, in the words of [`medmij.md`][medmij], APIs independent of
 it. Neither header appears anywhere in the specification. Sending them suggested
 an expectation that nothing supports, so they are gone. Whether GUPZ wants a
 correlation id of its own is a fair question, given that the audit trail has to
-log `sub`, and it has been put to them.
+log `sub`, and it has been put to them in [#80][i80].
 
 **The system under test is marked with a profile, not an extension.** The
 imported scripts flag it with `Interoplab-CL-ext-SUT`, a boolean on `origin` and
@@ -223,6 +224,7 @@ validator will actually check. Related:
 [i66]: https://github.com/Gegevensuitwisseling-Paramedische-Zorg/open-GUPZ/issues/66
 [i72]: https://github.com/Gegevensuitwisseling-Paramedische-Zorg/open-GUPZ/issues/72
 [i73]: https://github.com/Gegevensuitwisseling-Paramedische-Zorg/open-GUPZ/issues/73
+[i80]: https://github.com/Gegevensuitwisseling-Paramedische-Zorg/open-GUPZ/issues/80
 [pdfa]: https://github.com/Gegevensuitwisseling-Paramedische-Zorg/open-GUPZ/blob/main/docs/api/pdfa.md
 [medmij]: https://github.com/Gegevensuitwisseling-Paramedische-Zorg/open-GUPZ/blob/main/docs/architecture/medmij.md
 [fo]: https://informatiestandaarden.nictiz.nl/wiki/MedMij:V2020.01/OntwerpPDFA
