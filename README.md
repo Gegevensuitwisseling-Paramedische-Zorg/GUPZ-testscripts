@@ -48,6 +48,7 @@ input/
   static/            files copied verbatim, mirroring the output tree
 output/              generated, and what Conformancelab reads
 scripts/             conversion and comparison helpers
+tools/postman/       the same requests for checking a response by hand
 ```
 
 `input/fsh/` is the source of the TestScripts, `input/static/` holds everything
