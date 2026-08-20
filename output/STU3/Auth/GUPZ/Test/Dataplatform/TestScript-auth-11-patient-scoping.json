@@ -22,11 +22,11 @@
   ],
   "variable": [
     {
-      "name": "token",
+      "name": "auth-11-token-patient-1",
       "description": "T1: valid token for the first test patient, XXX_Baltus."
     },
     {
-      "name": "token-patient-2",
+      "name": "auth-11-token-patient-2",
       "description": "T9: valid token for the second test patient, XXX_Schulte."
     },
     {
@@ -43,7 +43,7 @@
             "requestHeader": [
               {
                 "field": "Authorization",
-                "value": "Bearer ${token}"
+                "value": "Bearer ${auth-11-token-patient-1}"
               },
               {
                 "field": "MedMij-Request-ID",
@@ -116,7 +116,7 @@
             "requestHeader": [
               {
                 "field": "Authorization",
-                "value": "Bearer ${token-patient-2}"
+                "value": "Bearer ${auth-11-token-patient-2}"
               },
               {
                 "field": "MedMij-Request-ID",

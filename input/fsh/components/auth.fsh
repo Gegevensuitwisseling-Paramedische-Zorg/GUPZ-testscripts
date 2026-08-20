@@ -20,13 +20,14 @@ RuleSet: metadataGupz(id)
 * status = #active
 * publisher = "GUPZ"
 
-RuleSet: variableToken
-* variable[+].name = "token"
-
-// AUTH-11 needs two tokens at once, one per test patient, because it compares
-// what the platform returns for each of them.
-RuleSet: variableTokenSecondPatient
-* variable[+].name = "token-patient-2"
+// Every case declares its own variable name, prefixed with the case id. That is
+// deliberate: Conformancelab spots a name that occurs in more than one scenario
+// and offers to fill it once for all of them. For this set that shortcut is a
+// trap, because each case needs a different token. Unique names remove the
+// offer. X-Correlation-ID may stay shared, since a variable with a default is
+// not offered.
+RuleSet: variableToken(name)
+* variable[+].name = "{name}"
 
 // The request itself is incidental: a search that any conformant platform
 // supports, so that the outcome says something about the token and not about
@@ -41,20 +42,15 @@ RuleSet: operationSearchDocumentReference
 * test[=].action[=].operation.origin = 1
 * test[=].action[=].operation.params = "?status=current"
 
-RuleSet: headersWithBearerToken
+RuleSet: headersWithBearerToken(name)
 * test[=].action[=].operation.requestHeader[+].field = "Authorization"
-* test[=].action[=].operation.requestHeader[=].value = "Bearer ${token}"
-* insert headersMedMijTracing
-
-RuleSet: headersWithBearerTokenSecondPatient
-* test[=].action[=].operation.requestHeader[+].field = "Authorization"
-* test[=].action[=].operation.requestHeader[=].value = "Bearer ${token-patient-2}"
+* test[=].action[=].operation.requestHeader[=].value = "Bearer ${{name}}"
 * insert headersMedMijTracing
 
 // The same token, but without the Bearer prefix the specification prescribes.
-RuleSet: headersWithoutBearerPrefix
+RuleSet: headersWithoutBearerPrefix(name)
 * test[=].action[=].operation.requestHeader[+].field = "Authorization"
-* test[=].action[=].operation.requestHeader[=].value = "${token}"
+* test[=].action[=].operation.requestHeader[=].value = "${{name}}"
 * insert headersMedMijTracing
 
 RuleSet: headersMedMijTracing

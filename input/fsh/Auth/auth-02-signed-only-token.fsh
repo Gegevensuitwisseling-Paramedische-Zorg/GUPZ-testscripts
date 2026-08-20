@@ -7,7 +7,7 @@ Usage: #definition
 * description = "One of the three token variants agreed for the connectathon of 22 September 2026. Deviates from security.md, which prescribes sign then encrypt, so this case only applies to a platform running in connectathon mode."
 
 * insert serverAimed
-* insert variableToken
+* insert variableToken(auth-02-token)
 * variable[=].description = "T2: valid, signed, not encrypted."
 * insert variableCorrelationId
 
@@ -15,5 +15,5 @@ Usage: #definition
 * test[=].name = "AUTH-02"
 * test[=].description = "A signed but not encrypted token is accepted in connectathon mode"
 * insert operationSearchDocumentReference
-* insert headersWithBearerToken
+* insert headersWithBearerToken(auth-02-token)
 * insert assertsRequestAccepted

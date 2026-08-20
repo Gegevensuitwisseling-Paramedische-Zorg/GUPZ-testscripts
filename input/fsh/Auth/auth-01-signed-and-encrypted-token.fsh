@@ -7,7 +7,7 @@ Usage: #definition
 * description = "The happy flow. A correctly formed token, signed and then encrypted as security.md prescribes, must be accepted."
 
 * insert serverAimed
-* insert variableToken
+* insert variableToken(auth-01-token)
 * variable[=].description = "T1: valid, signed and encrypted for the test patient."
 * insert variableCorrelationId
 
@@ -15,5 +15,5 @@ Usage: #definition
 * test[=].name = "AUTH-01"
 * test[=].description = "A signed and encrypted token is accepted"
 * insert operationSearchDocumentReference
-* insert headersWithBearerToken
+* insert headersWithBearerToken(auth-01-token)
 * insert assertsRequestAccepted

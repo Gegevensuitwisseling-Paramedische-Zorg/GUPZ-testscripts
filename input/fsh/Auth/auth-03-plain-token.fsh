@@ -7,7 +7,7 @@ Usage: #definition
 * description = "The second connectathon variant: the prescribed content, but neither signed nor encrypted. Note that what plain means exactly has not been agreed; an unsigned JWT per RFC 7519 is a JWS with alg none and an empty signature, which is not the same as a bare base64 payload."
 
 * insert serverAimed
-* insert variableToken
+* insert variableToken(auth-03-token)
 * variable[=].description = "T3: valid content, neither signed nor encrypted."
 * insert variableCorrelationId
 
@@ -15,5 +15,5 @@ Usage: #definition
 * test[=].name = "AUTH-03"
 * test[=].description = "A plain token is accepted in connectathon mode"
 * insert operationSearchDocumentReference
-* insert headersWithBearerToken
+* insert headersWithBearerToken(auth-03-token)
 * insert assertsRequestAccepted

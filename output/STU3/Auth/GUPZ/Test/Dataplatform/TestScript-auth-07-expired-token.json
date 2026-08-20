@@ -22,7 +22,7 @@
   ],
   "variable": [
     {
-      "name": "token",
+      "name": "auth-07-token",
       "description": "T5: exp in the past, otherwise valid."
     },
     {
@@ -39,7 +39,7 @@
             "requestHeader": [
               {
                 "field": "Authorization",
-                "value": "Bearer ${token}"
+                "value": "Bearer ${auth-07-token}"
               },
               {
                 "field": "MedMij-Request-ID",

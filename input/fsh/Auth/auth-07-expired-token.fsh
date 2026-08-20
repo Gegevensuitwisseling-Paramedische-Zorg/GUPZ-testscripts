@@ -7,7 +7,7 @@ Usage: #definition
 * description = "security.md has the platform refuse a request once the expiration time has passed."
 
 * insert serverAimed
-* insert variableToken
+* insert variableToken(auth-07-token)
 * variable[=].description = "T5: exp in the past, otherwise valid."
 * insert variableCorrelationId
 
@@ -15,5 +15,5 @@ Usage: #definition
 * test[=].name = "AUTH-07"
 * test[=].description = "An expired token is refused"
 * insert operationSearchDocumentReference
-* insert headersWithBearerToken
+* insert headersWithBearerToken(auth-07-token)
 * insert assertsRequestRefused

@@ -22,7 +22,7 @@
   ],
   "variable": [
     {
-      "name": "token",
+      "name": "auth-10-token",
       "description": "T8: encrypted with a public key that is not the platform's."
     },
     {
@@ -39,7 +39,7 @@
             "requestHeader": [
               {
                 "field": "Authorization",
-                "value": "Bearer ${token}"
+                "value": "Bearer ${auth-10-token}"
               },
               {
                 "field": "MedMij-Request-ID",

@@ -22,7 +22,7 @@
   ],
   "variable": [
     {
-      "name": "token",
+      "name": "auth-01-token",
       "description": "T1: valid, signed and encrypted for the test patient."
     },
     {
@@ -39,7 +39,7 @@
             "requestHeader": [
               {
                 "field": "Authorization",
-                "value": "Bearer ${token}"
+                "value": "Bearer ${auth-01-token}"
               },
               {
                 "field": "MedMij-Request-ID",

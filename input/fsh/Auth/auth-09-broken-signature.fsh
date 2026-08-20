@@ -7,7 +7,7 @@ Usage: #definition
 * description = "security.md has the platform validate the signature with the public signing key of the calling system. The algorithm is RS256, settled in open-GUPZ issue #67 and corrected in the specification on 17 August 2026."
 
 * insert serverAimed
-* insert variableToken
+* insert variableToken(auth-09-token)
 * variable[=].description = "T7: signature broken, for example signed with a different key."
 * insert variableCorrelationId
 
@@ -15,5 +15,5 @@ Usage: #definition
 * test[=].name = "AUTH-09"
 * test[=].description = "A token with an invalid signature is refused"
 * insert operationSearchDocumentReference
-* insert headersWithBearerToken
+* insert headersWithBearerToken(auth-09-token)
 * insert assertsRequestRefused

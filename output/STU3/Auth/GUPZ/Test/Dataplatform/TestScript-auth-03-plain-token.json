@@ -22,7 +22,7 @@
   ],
   "variable": [
     {
-      "name": "token",
+      "name": "auth-03-token",
       "description": "T3: valid content, neither signed nor encrypted."
     },
     {
@@ -39,7 +39,7 @@
             "requestHeader": [
               {
                 "field": "Authorization",
-                "value": "Bearer ${token}"
+                "value": "Bearer ${auth-03-token}"
               },
               {
                 "field": "MedMij-Request-ID",

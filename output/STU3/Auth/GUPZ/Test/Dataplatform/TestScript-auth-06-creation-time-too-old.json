@@ -22,7 +22,7 @@
   ],
   "variable": [
     {
-      "name": "token",
+      "name": "auth-06-token",
       "description": "T4: iat more than fifteen minutes in the past, otherwise valid."
     },
     {
@@ -39,7 +39,7 @@
             "requestHeader": [
               {
                 "field": "Authorization",
-                "value": "Bearer ${token}"
+                "value": "Bearer ${auth-06-token}"
               },
               {
                 "field": "MedMij-Request-ID",

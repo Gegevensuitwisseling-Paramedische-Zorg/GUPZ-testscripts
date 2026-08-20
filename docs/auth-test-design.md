@@ -76,10 +76,18 @@ key words, neither question would exist.
 ## What Conformancelab can and cannot do here
 
 **The token is operator input.** A TestScript variable without a default, sent
-as `Authorization: Bearer ${token}`; the operator pastes the token the case
-describes. The Nictiz PDF/A scripts use the same mechanism, so it is proven on
-this engine, and it lets GUPZ supply pre-signed tokens without the engine having
-to sign anything, which matters because Conformancelab cannot produce a JWE.
+as `Authorization: Bearer ${auth-01-token}` and so on; the operator pastes the
+token the case describes. The Nictiz PDF/A scripts use the same mechanism, so it
+is proven on this engine, and it lets GUPZ supply pre-signed tokens without the
+engine having to sign anything, which matters because Conformancelab cannot
+produce a JWE.
+
+Each case names its variable after itself rather than calling it `token`. The
+engine spots a variable name that occurs in more than one scenario and offers to
+fill it once for all of them, which is a useful shortcut in most sets and a trap
+in this one: every case here needs a different token. Unique names remove the
+offer. `X-Correlation-ID` stays shared, because a variable with a default is not
+offered.
 
 **A token can be read, but that does not help here.** Since 18 August a regex
 mapper, `Interoplab-CL-ext-assert-input-variable` and `base64Decode` can be

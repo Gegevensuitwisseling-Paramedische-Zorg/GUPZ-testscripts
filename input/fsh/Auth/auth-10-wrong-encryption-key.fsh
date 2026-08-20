@@ -7,7 +7,7 @@ Usage: #definition
 * description = "A token the platform cannot decrypt with its private encryption key must be refused. Since open-GUPZ issue #68 the JWE profile is fixed: alg RSA-OAEP, enc A256CBC-HS512, cty JWT."
 
 * insert serverAimed
-* insert variableToken
+* insert variableToken(auth-10-token)
 * variable[=].description = "T8: encrypted with a public key that is not the platform's."
 * insert variableCorrelationId
 
@@ -15,5 +15,5 @@ Usage: #definition
 * test[=].name = "AUTH-10"
 * test[=].description = "A token encrypted with the wrong key is refused"
 * insert operationSearchDocumentReference
-* insert headersWithBearerToken
+* insert headersWithBearerToken(auth-10-token)
 * insert assertsRequestRefused

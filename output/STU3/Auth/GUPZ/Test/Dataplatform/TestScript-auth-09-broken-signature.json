@@ -22,7 +22,7 @@
   ],
   "variable": [
     {
-      "name": "token",
+      "name": "auth-09-token",
       "description": "T7: signature broken, for example signed with a different key."
     },
     {
@@ -39,7 +39,7 @@
             "requestHeader": [
               {
                 "field": "Authorization",
-                "value": "Bearer ${token}"
+                "value": "Bearer ${auth-09-token}"
               },
               {
                 "field": "MedMij-Request-ID",

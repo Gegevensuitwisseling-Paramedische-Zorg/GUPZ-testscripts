@@ -22,7 +22,7 @@
   ],
   "variable": [
     {
-      "name": "token",
+      "name": "auth-05-token",
       "description": "T1: valid, signed and encrypted. This case sends it without the Bearer prefix."
     },
     {
@@ -39,7 +39,7 @@
             "requestHeader": [
               {
                 "field": "Authorization",
-                "value": "${token}"
+                "value": "${auth-05-token}"
               },
               {
                 "field": "MedMij-Request-ID",

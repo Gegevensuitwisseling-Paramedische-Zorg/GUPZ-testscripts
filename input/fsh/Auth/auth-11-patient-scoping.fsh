@@ -7,9 +7,9 @@ Usage: #definition
 * description = "Tests whether the platform limits what it returns to the patient in the token. The same search is sent twice, once with a token for each test patient, and each response is checked for a document that only the other patient has. Since open-GUPZ issue #73 closed on 18 August a token used in a patient bound request is patient specific and a BSN never appears in a url or query parameter, so the token is the only thing that selects the patient. All asserts are hard."
 
 * insert serverAimed
-* insert variableToken
+* insert variableToken(auth-11-token-patient-1)
 * variable[=].description = "T1: valid token for the first test patient, XXX_Baltus."
-* insert variableTokenSecondPatient
+* insert variableToken(auth-11-token-patient-2)
 * variable[=].description = "T9: valid token for the second test patient, XXX_Schulte."
 * insert variableCorrelationId
 
@@ -17,7 +17,7 @@ Usage: #definition
 * test[=].name = "AUTH-11a"
 * test[=].description = "A search with the token of the first patient returns that patient's documents"
 * insert operationSearchDocumentReference
-* insert headersWithBearerToken
+* insert headersWithBearerToken(auth-11-token-patient-1)
 * insert assertsRequestAccepted
 * test[=].action[+].assert
   * description = "Confirm that the returned Bundle contains a DocumentReference with LOINC code 68688-1, which belongs to the first test patient."
@@ -36,7 +36,7 @@ Usage: #definition
 * test[=].name = "AUTH-11b"
 * test[=].description = "The same search with the token of the second patient returns that patient's documents"
 * insert operationSearchDocumentReference
-* insert headersWithBearerTokenSecondPatient
+* insert headersWithBearerToken(auth-11-token-patient-2)
 * insert assertsRequestAccepted
 * test[=].action[+].assert
   * description = "Confirm that the returned Bundle contains a DocumentReference with LOINC code 68626-1, which belongs to the second test patient."
