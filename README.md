@@ -69,6 +69,13 @@ Three Test Sets, all of them built.
   points that still limit some of them, is in
   [docs/auth-test-design.md](docs/auth-test-design.md).
 
+Every set that calls the data platform takes its token as operator input: a
+variable with no default that is filled in when the run is set up. Conformancelab
+cannot produce the nested JWT that open-GUPZ prescribes, so the token is made
+outside the engine, with the `jwtcli` tool in the open-GUPZ repository, and
+pasted in. The PDF/A Dataplatform set takes one token per test patient, two in
+total, because a token used in a patient bound request is patient specific.
+
 [docs/auth-situations.md](docs/auth-situations.md) places both in the wider
 picture: which authentication situations exist on this interface at all, who is
 the system under test in each, and where each situation is described in

@@ -57,8 +57,7 @@
   "variable": [
     {
       "name": "patient-token-XXX_Baltus",
-      "defaultValue": "Bearer f92b6141-55db-46d5-a3ae-874b69907d22",
-      "description": "OAuth Token for patient 'XXX_Baltus'"
+      "description": "GUPZ token for test patient 'XXX_Baltus'. Paste the nested JWT issued for this patient; the script adds the Bearer prefix. A token used in a patient bound request is patient specific since open-GUPZ issue #73 closed on 18 August, so each test patient needs a token of their own."
     },
     {
       "name": "T",
@@ -74,7 +73,7 @@
             "requestHeader": [
               {
                 "field": "Authorization",
-                "value": "${patient-token-XXX_Baltus}"
+                "value": "Bearer ${patient-token-XXX_Baltus}"
               }
             ],
             "type": {

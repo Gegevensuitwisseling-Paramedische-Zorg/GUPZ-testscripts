@@ -15,7 +15,7 @@ RuleSet: xis-2-1-serve-1-documentreference-NoManifest-body
 * extension[=].extension[=].valueString = "../_reference/rules/assert_response_queryParamsInSelfLink.groovy"
 * insert serverAimed
 * insert profileToValidate(Bundle-profile, http://hl7.org/fhir/StructureDefinition/Bundle)
-* insert variablePatientToken(XXX_Schulte, Bearer aae7b5aa-d796-4fba-b4d3-852d9043ee66)
+* insert variablePatientToken(XXX_Schulte)
 
 * test[+].id = "scenario2-1-serve-1-documentreference"
 * test[=].name = "Scenario 2.1"

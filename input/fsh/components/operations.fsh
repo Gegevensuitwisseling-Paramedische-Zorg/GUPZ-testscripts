@@ -10,10 +10,15 @@
 // requires; the data platform sits outside that framework, so they are dropped.
 // See scenario-selection.md.
 
+// The Bearer prefix lives here and not in the variable, so the operator pastes
+// the bare token. The imported scripts carried the prefix inside the default
+// value, which made it easy to paste a token and end up with a header that has
+// no scheme at all. Same construction as the auth Test Set.
+
 RuleSet: requestHeadersBaltus
 * test[=].action[=].operation.requestHeader[+].field = "Authorization"
-* test[=].action[=].operation.requestHeader[=].value = "${patient-token-XXX_Baltus}"
+* test[=].action[=].operation.requestHeader[=].value = "Bearer ${patient-token-XXX_Baltus}"
 
 RuleSet: requestHeadersSchulte
 * test[=].action[=].operation.requestHeader[+].field = "Authorization"
-* test[=].action[=].operation.requestHeader[=].value = "${patient-token-XXX_Schulte}"
+* test[=].action[=].operation.requestHeader[=].value = "Bearer ${patient-token-XXX_Schulte}"

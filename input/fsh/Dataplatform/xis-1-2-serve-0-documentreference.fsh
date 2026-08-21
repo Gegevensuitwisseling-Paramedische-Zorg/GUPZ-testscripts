@@ -15,7 +15,7 @@ RuleSet: xis-1-2-serve-0-documentreference-NoManifest-body
 * extension[=].extension[=].valueString = "../_reference/rules/assert_response_queryParamsInSelfLink.groovy"
 * insert serverAimed
 * insert profileToValidate(Bundle-profile, http://hl7.org/fhir/StructureDefinition/Bundle)
-* insert variablePatientToken(XXX_Baltus, Bearer f92b6141-55db-46d5-a3ae-874b69907d22)
+* insert variablePatientToken(XXX_Baltus)
 * variable[+].name = "T"
 * variable[=].defaultValue = "${CURRENTDATE}"
 * variable[=].description = "Date that data and queries are expected to be relative to."

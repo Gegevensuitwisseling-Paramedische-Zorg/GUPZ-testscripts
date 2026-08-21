@@ -10,7 +10,7 @@ RuleSet: xis-2-3-serve-1-documentmanifest-NoManifest-meta(format, formatLabel)
 RuleSet: xis-2-3-serve-1-documentmanifest-NoManifest-body
 * insert serverAimed
 * insert profileToValidate(OperationOutcome-profile, http://hl7.org/fhir/StructureDefinition/OperationOutcome)
-* insert variablePatientToken(XXX_Schulte, Bearer aae7b5aa-d796-4fba-b4d3-852d9043ee66)
+* insert variablePatientToken(XXX_Schulte)
 * variable[+].name = "T"
 * variable[=].defaultValue = "${CURRENTDATE}"
 * variable[=].description = "Date that data and queries are expected to be relative to."

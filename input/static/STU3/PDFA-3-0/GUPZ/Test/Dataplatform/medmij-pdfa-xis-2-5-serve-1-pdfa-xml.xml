@@ -50,8 +50,7 @@
             value="http://hl7.org/fhir/StructureDefinition/Bundle"/>
    <variable>
       <name value="patient-token-XXX_Schulte"/>
-      <defaultValue value="Bearer aae7b5aa-d796-4fba-b4d3-852d9043ee66"/>
-      <description value="OAuth Token for patient 'XXX_Schulte'"/>
+      <description value="GUPZ token for test patient 'XXX_Schulte'. Paste the nested JWT issued for this patient; the script adds the Bearer prefix. A token used in a patient bound request is patient specific since open-GUPZ issue #73 closed on 18 August, so each test patient needs a token of their own."/>
    </variable>
    <variable>
       <name value="pdfa-url"/>
@@ -82,7 +81,7 @@
             <params value="?status=current"/>
             <requestHeader>
                <field value="Authorization"/>
-               <value value="${patient-token-XXX_Schulte}"/>
+               <value value="Bearer ${patient-token-XXX_Schulte}"/>
             </requestHeader>
             <requestHeader>
                <field value="MedMij-Request-ID"/>
@@ -305,7 +304,7 @@
             <origin value="1"/>
             <requestHeader>
                <field value="Authorization"/>
-               <value value="${patient-token-XXX_Schulte}"/>
+               <value value="Bearer ${patient-token-XXX_Schulte}"/>
             </requestHeader>
             <requestHeader>
                <field value="MedMij-Request-ID"/>

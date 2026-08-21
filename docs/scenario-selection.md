@@ -184,7 +184,39 @@ qualification scripts. All 34 scripts now say version `0.1.0`, publisher GUPZ,
 and derive their url from the canonical `http://gupz.nl/fhir`. That canonical is
 provisional, chosen on 20 August 2026 until GUPZ names something better.
 
-These five are the only differences between the generated scripts and their
+**The token is operator input, not a MedMij qualification token.** Every
+imported script defaulted its `Authorization` header to a fixed value such as
+`Bearer f92b6141-55db-46d5-a3ae-874b69907d22`. That is a MedMij qualification
+token: an opaque OAuth token that the Nictiz simulator recognises. A GUPZ data
+platform expects something else entirely, a JWS nested inside a JWE as
+[`security.md`][security] describes, so the imported default cannot work
+anywhere. It is removed rather than replaced. A wrong default runs and fails for
+a reason that has nothing to do with the platform under test, which is worse
+than no default at all.
+
+What is left is a variable the operator fills in, the same construction the auth
+Test Set uses and for the same reason: Conformancelab can sign a JWS but cannot
+produce a nested JWT, and it gives no control over the `kid`, so the token is
+made outside the engine with `jwtcli` and pasted in. The `Bearer` prefix moved
+from the value into the header template, so what is pasted is the bare token.
+
+The scripts already split into two patient groups, `XXX_Baltus` for scenarios
+1.1 to 1.5 and `XXX_Schulte` for 2.1 to 2.5, and that split is kept because
+[#73][i73] requires a token per patient. So the set takes two tokens, one for
+each test patient, and the same search returns different documents depending on
+which one is used.
+
+One detail runs against the rule the auth set follows. There the variable names
+are unique per case, to stop Conformancelab offering to fill a repeated name
+once for all scenarios. Here that offer is wanted: ten scenarios share one
+patient's token, and filling it ten times is only a way to make mistakes. Same
+engine behaviour, opposite choice, because the sets need opposite things.
+
+Raised with GUPZ as point 3 of [#80][i80], where it was written up as affecting
+five DVA-Client scripts. That understated it: the same token sits in all
+eighteen Dataplatform scripts and in the loader as well.
+
+These six are the only differences between the generated scripts and their
 originals; everything else compares identical.
 
 ## Where the Nictiz scripts do not simply carry over
@@ -236,6 +268,7 @@ validator will actually check. Related:
 [i73]: https://github.com/Gegevensuitwisseling-Paramedische-Zorg/open-GUPZ/issues/73
 [i80]: https://github.com/Gegevensuitwisseling-Paramedische-Zorg/open-GUPZ/issues/80
 [pdfa]: https://github.com/Gegevensuitwisseling-Paramedische-Zorg/open-GUPZ/blob/main/docs/api/pdfa.md
+[security]: https://github.com/Gegevensuitwisseling-Paramedische-Zorg/open-GUPZ/blob/main/docs/api/security.md
 [medmij]: https://github.com/Gegevensuitwisseling-Paramedische-Zorg/open-GUPZ/blob/main/docs/architecture/medmij.md
 [fo]: https://informatiestandaarden.nictiz.nl/wiki/MedMij:V2020.01/OntwerpPDFA
 [ig]: https://informatiestandaarden.nictiz.nl/wiki/MedMij:V2020.01/FHIR_PDFA
