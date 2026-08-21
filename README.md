@@ -72,6 +72,8 @@ Three Test Sets, all of them built, plus a fourth that provisions data.
   it before the PDF/A Dataplatform set. It is provisioning rather than a
   conformance test and only works against a server that accepts writes; see
   [docs/scenario-selection.md](docs/scenario-selection.md#the-_loadresources-set).
+  Its tokens are the exception to the rule below: they are fixed in the script
+  and resolve through [Configuration/](Configuration/).
 
 Every set that calls the data platform takes its token as operator input: a
 variable with no default that is filled in when the run is set up. Conformancelab

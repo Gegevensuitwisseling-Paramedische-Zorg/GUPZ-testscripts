@@ -21,13 +21,13 @@ RuleSet: phr-1-1-retrieve-3-documentreference-body
 * test[=].action[=].operation.origin = 1
 * test[=].action[=].operation.encodeRequestUrl = true
 * test[=].action[=].operation.requestHeader[+].field = "Authorization"
-* test[=].action[=].operation.requestHeader[=].value = "Bearer f92b6141-55db-46d5-a3ae-874b69907d22"
+* test[=].action[=].operation.requestHeader[=].value = "Bearer 121c15f1-f352-485e-979e-04a131bc6238"
 * test[=].action[+].assert
-  * description = "Confirm that HTTP header Authorization contains the patient token Bearer f92b6141-55db-46d5-a3ae-874b69907d22"
+  * description = "Confirm that HTTP header Authorization contains the patient token Bearer 121c15f1-f352-485e-979e-04a131bc6238"
   * direction = #request
   * headerField = "Authorization"
   * stopTestOnFail = false
-  * value = "Bearer f92b6141-55db-46d5-a3ae-874b69907d22"
+  * value = "Bearer 121c15f1-f352-485e-979e-04a131bc6238"
   * warningOnly = false
 * test[=].action[+].assert
   * description = "Confirm that query parameter 'patient=' was not present to avoid BSNs in the URL."

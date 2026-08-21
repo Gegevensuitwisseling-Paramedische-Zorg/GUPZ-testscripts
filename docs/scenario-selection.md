@@ -298,13 +298,22 @@ so loading them either fails or, worse, succeeds on a platform that should not
 have accepted them. The fixture files themselves are kept under `_reference`,
 unreferenced, so the comparison against the Nictiz baseline stays possible.
 
-**The three hardcoded tokens became one variable.** The original sends the
-qualification token of the owning patient on the three patient operations and
-`XXX_Baltus`'s token on everything else, including `XXX_Schulte`'s documents.
-That inconsistency is harmless in a simulator that does not check, and it cannot
-be made right under the GUPZ rules anyway, because writes are not covered by
-them. So the set now takes a single `provisioning-token`, empty by default,
-which can be left empty against a server that does not check tokens.
+**The three tokens stay fixed in the script.** They were briefly turned into an
+operator variable, on the reasoning that applies to every other set here, and
+that was wrong. Conformancelab does not ask for a token in this set. The tokens
+resolve through `Configuration/QualificationTokens.json`, a file the engine
+reads when the repository is loaded, which maps a token to the patient it
+belongs to. Take the token out of the script and that link breaks.
+
+That file is now part of this repository, restricted to the three PDF/A patients
+and otherwise unchanged from the Nictiz original. See
+[Configuration/README.md](../Configuration/README.md).
+
+The distinction is worth stating, because it looks like an inconsistency and is
+not. `_LoadResources` writes test data, so a fixed opaque token there is a label
+saying which patient this row belongs to, not a credential being tested. Every
+set that reads from the data platform takes its token as operator input, because
+there the token is the thing under test.
 
 ## Where the Nictiz scripts do not simply carry over
 

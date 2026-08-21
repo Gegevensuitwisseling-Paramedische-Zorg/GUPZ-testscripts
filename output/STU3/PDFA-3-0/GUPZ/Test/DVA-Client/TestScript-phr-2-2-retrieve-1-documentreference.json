@@ -39,7 +39,7 @@
             "requestHeader": [
               {
                 "field": "Authorization",
-                "value": "Bearer aae7b5aa-d796-4fba-b4d3-852d9043ee66"
+                "value": "Bearer 79339c59-4908-4b0d-8b53-4520f9e4c7d5"
               }
             ],
             "type": {
@@ -56,11 +56,11 @@
         },
         {
           "assert": {
-            "description": "Confirm that HTTP header Authorization contains the patient token Bearer aae7b5aa-d796-4fba-b4d3-852d9043ee66",
+            "description": "Confirm that HTTP header Authorization contains the patient token Bearer 79339c59-4908-4b0d-8b53-4520f9e4c7d5",
             "direction": "request",
             "headerField": "Authorization",
             "stopTestOnFail": false,
-            "value": "Bearer aae7b5aa-d796-4fba-b4d3-852d9043ee66",
+            "value": "Bearer 79339c59-4908-4b0d-8b53-4520f9e4c7d5",
             "warningOnly": false
           }
         },
