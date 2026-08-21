@@ -95,6 +95,20 @@ survives three layers of quoting and is easy to get wrong. When it meets an
 element it does not handle it stops with an error instead of silently dropping
 it.
 
+**With one exception: `setup` and `teardown` disappear without a word.** They
+are listed among the elements the generator knows, so it does not stop, but
+nothing writes them out. Nothing has been lost to this so far, because none of
+the converted scripts has a setup; the only file that does is the provisioning
+script, which has not been converted. Check by hand whether the source has a
+`<setup>` or a `<teardown>` before you trust the output, or fix the generator
+first. `compare-testscript.py` also catches it, which is the reason to run it
+every time.
+
+Two more things the generator assumes, both of which the provisioning script
+breaks: that a script has an `origin` and a `destination` carrying the SUT
+extension, and that it has no `copyright`. Neither assumption holds for a script
+that provisions rather than tests.
+
 Then verify the built result against the original, always:
 
 ```

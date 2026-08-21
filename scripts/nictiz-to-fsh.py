@@ -117,10 +117,17 @@ def emit_operation(op, out):
             raise SystemExit(f"operation element not handled by the generator: {tag}")
     headers = [(val(h, "field"), val(h, "value")) for h in op.findall(F + "requestHeader")]
     fields = [h[0] for h in headers]
+    # The imported scripts send three headers, of which only Authorization
+    # survives on this interface; the MedMij tracing headers are dropped. See
+    # docs/scenario-selection.md. The Bearer prefix may or may not be present in
+    # the source, so the patient is read out of the variable name itself.
     if fields == ["Authorization", "MedMij-Request-ID", "X-Correlation-ID"]:
-        token = headers[0][1]
-        patient = token.replace("${patient-token-", "").rstrip("}")
-        out.append(f"* insert requestHeaders{patient.replace('XXX_', '')}")
+        m = re.search(r"\$\{patient-token-XXX_(\w+)\}", headers[0][1])
+        if m is None:
+            raise SystemExit(
+                f"Authorization header not recognised by the generator: {headers[0][1]}"
+            )
+        out.append(f"* insert requestHeaders{m.group(1)}")
     else:
         for field, value in headers:
             out.append(f"* test[=].action[=].operation.requestHeader[+].field = {fsh(field)}")
@@ -146,17 +153,20 @@ def convert(path):
     if two_variants:
         head += [
             f"RuleSet: {slug}-meta(format, formatLabel)",
-            f"* insert metadataNictiz({base_id}-{{format}})",
+            f"* insert metadata({base_id}-{{format}})",
             f"* name = {fsh(name.replace('_json', '_{format}'))}",
             f"* title = {fsh(title.replace('JSON Format', '{formatLabel} Format'))}",
         ]
     else:
         head += [
             f"RuleSet: {slug}-meta",
-            f"* insert metadataNictiz({base_id})",
+            f"* insert metadata({base_id})",
             f"* name = {fsh(name)}",
-            f"* title = {fsh(title)}",
         ]
+        # Not every imported script carries a title; the provisioning script
+        # does not.
+        if title is not None:
+            head.append(f"* title = {fsh(title)}")
     description = val(root, "description")
     if description:
         head.append(f"* description = {fsh(description)}")
@@ -203,10 +213,15 @@ def convert(path):
     for var in root.findall(F + "variable"):
         vname = val(var, "name")
         if vname.startswith("patient-token-"):
+            # The default is dropped on purpose: the imported scripts default to
+            # a MedMij qualification token, which no GUPZ platform accepts. The
+            # token is operator input. See docs/scenario-selection.md.
             patient = vname.replace("patient-token-", "")
-            body.append(f"* insert variablePatientToken({patient}, {val(var, 'defaultValue')})")
+            body.append(f"* insert variablePatientToken({patient})")
         elif vname == "X-Correlation-ID":
-            body.append("* insert variableCorrelationId")
+            # Skipped: the MedMij tracing headers are not sent on this
+            # interface, so the variable has nothing left to fill.
+            continue
         else:
             body.append(f"* variable[+].name = {fsh(vname)}")
             for tag in ("defaultValue", "description", "expression", "sourceId", "headerField", "path"):
