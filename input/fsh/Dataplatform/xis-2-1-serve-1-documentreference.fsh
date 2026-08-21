@@ -62,6 +62,8 @@ RuleSet: xis-2-1-serve-1-documentreference-NoManifest-body
   * value = "urn:oid:1.2.276.0.7230010.3.1.2.1787205428.3024.1522314975.287798"
   * warningOnly = true
 
+* insert assertsDocumentByBinaryReference
+
 Instance: xis-2-1-serve-1-documentreference-NoManifest-json
 InstanceOf: TestScript
 Usage: #definition

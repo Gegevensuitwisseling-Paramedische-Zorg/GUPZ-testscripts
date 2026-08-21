@@ -62,6 +62,8 @@ RuleSet: xis-1-4-serve-2-pdfa-NoManifest-body
   * stopTestOnFail = false
   * warningOnly = true
 
+* insert assertsDocumentByBinaryReference
+
 * test[+].id = "scenario1-4-serve-pdfa-document-1"
 * test[=].name = "Scenario 1.4 - Serve first PDFA document"
 * test[=].description = "Serve first PDFA document through a Binary resource."

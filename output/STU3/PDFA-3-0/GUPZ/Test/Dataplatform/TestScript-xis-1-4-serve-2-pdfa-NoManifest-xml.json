@@ -289,6 +289,24 @@
             "stopTestOnFail": false,
             "warningOnly": true
           }
+        },
+        {
+          "assert": {
+            "description": "Confirm that every returned DocumentReference offers its document as a reference to a Binary resource. pdfa.md requires the data platform to offer all document references this way, so that the Retrieve Document transaction reads the Binary.",
+            "direction": "response",
+            "expression": "Bundle.entry.select(resource as DocumentReference).content.attachment.all(url.exists() and url.contains('Binary/'))",
+            "stopTestOnFail": false,
+            "warningOnly": false
+          }
+        },
+        {
+          "assert": {
+            "description": "Check that no returned DocumentReference carries its document inline in attachment.data. Assert is set to warning only because pdfa.md requires the reference but does not state in so many words that inline data is forbidden; the profile the fixtures declare, IHE.MHD.Minimal.DocumentReference, puts attachment.data at 0..0, and GUPZ has not adopted that profile in its own text.",
+            "direction": "response",
+            "expression": "Bundle.entry.select(resource as DocumentReference).content.attachment.data.exists().not()",
+            "stopTestOnFail": false,
+            "warningOnly": true
+          }
         }
       ],
       "id": "scenario1-4-serve-documentreference",

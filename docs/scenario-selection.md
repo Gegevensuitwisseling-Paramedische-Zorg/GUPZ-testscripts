@@ -219,6 +219,60 @@ eighteen Dataplatform scripts and in the loader as well.
 These six are the only differences between the generated scripts and their
 originals; everything else compares identical.
 
+## An assert that open-GUPZ requires and the imported set does not have
+
+[`pdfa.md`][pdfa] says the data platform offers every document reference as a
+reference to a Binary resource, so that Retrieve Document reads the Binary.
+Nothing in the imported set tests it. A platform that returns the PDF inline,
+base64 encoded in `DocumentReference.content.attachment.data`, passes every
+other assert in the Dataplatform set. Scenario 1.4 does read a Binary, but it
+reads whatever url the response handed it, so a plain http url gets through
+there as well.
+
+Two asserts were added, in `components/asserts-gupz.fsh`, on the scenarios that
+return documents: 1.1, 1.4 and 2.1.
+
+The first is hard: every returned attachment has a url and that url contains
+`Binary/`. It is matched on containing rather than starting with, because the
+reference may be relative or absolute, and scenario 1.4 already resolves both
+forms.
+
+The second is warning only, which is a judgement worth recording. An attachment
+carrying both a url and inline data still offers the document as a reference, so
+the sentence in `pdfa.md` does not forbid it in so many words. What does forbid
+it is `IHE.MHD.Minimal.DocumentReference`, which puts `attachment.data` at 0..0,
+and that is a Nictiz profile GUPZ has not adopted in its own text. Asserting it
+hard would make a Nictiz artefact normative for GUPZ through the back door. If
+GUPZ confirms that inline data is not allowed, it becomes a hard assert.
+
+### What this exposes in the test data
+
+Scenario 2.1 now fails on the imported fixtures, and for a reason worth stating
+plainly. The only current document of `XXX_Schulte`, DocumentReference
+`kwalificatie4`, carries a plain https url to a PDF on the Nictiz website
+instead of a Binary reference. Nictiz built that patient for the scenario 2.5
+flow, where documents are served over an ordinary url; GUPZ does not allow that
+flow, which is why 1.4 is in scope here and 2.5 is not.
+
+So the imported fixtures cannot all be conformant at once: the data for
+`XXX_Baltus` follows the GUPZ rule and the data for `XXX_Schulte` deliberately
+breaks it. The fix is GUPZ test data rather than a softer assert, and it is one
+more reason the test data specification has to be written. Until then scenario
+2.1 has one red assert that says something about the fixture and nothing about
+the platform.
+
+### What the Nictiz STU3 package does and does not change
+
+Loading the Nictiz STU3 package on the server does not change any of this. Every
+`validateProfileId` in the set points at a base FHIR profile, `Bundle`, `Binary`
+or `OperationOutcome`; not one assert validates against an MHD profile. The
+Nictiz canonicals appear only in the `meta.profile` of the fixtures, so the
+package matters when data is loaded and validated, not when a response is
+judged. Note also that `fhirPackage` in `properties.json` has yet to be
+implemented, so that declaration is documentation rather than working
+configuration.
+
+
 ## The _LoadResources set
 
 A third Test Set under PDF/A writes the fixtures to the target server: three
