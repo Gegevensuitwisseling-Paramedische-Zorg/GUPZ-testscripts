@@ -53,33 +53,50 @@ script that has been converted to FSH, because the generated JSON no longer
 resembles the original XML line by line. For those, use
 `scripts/compare-testscript.py`, which compares content rather than text.
 
-## What stays verbatim
+## What differs from the original
 
-Most of the imported scenarios were converted to FSH, which means we now own
-them: they are generated, and a Nictiz update has to be merged into our sources
-by hand. Three things were deliberately left as they came, in
-`input/static/`, and are copied into `output/` untouched by the build.
+Every difference is deliberate and every one is argued in
+[docs/scenario-selection.md](docs/scenario-selection.md). This table is the
+index; that document holds the reasoning.
 
-**The fixtures and the Groovy rule.** Data rather than structure, and not
-expressible in FSH anyway; see the README.
+| Change | Affects | Where it is argued |
+|---|---|---|
+| The Groovy rule is declared with the Conformancelab extension instead of the Touchstone one | all converted scripts | Deliberate deviations |
+| The assert that no BSN appears anywhere in the Bundle is removed; it rejects conformant behaviour on this interface | all converted scripts | Deliberate deviations |
+| The MedMij tracing headers are no longer sent | all converted scripts | Deliberate deviations |
+| The system under test is marked with a profile on `origin` and `destination` instead of the deprecated SUT extension | all converted scripts | Deliberate deviations |
+| Version, publisher and `url` carry GUPZ identity instead of Nictiz identity | all 34 scripts | Deliberate deviations |
+| The token is operator input; the MedMij qualification token is removed as a default and the `Bearer` prefix moved into the header | all PDF/A Dataplatform scripts and scenario 2.5 | Deliberate deviations |
+| Two asserts added: a document is offered as a reference to a Binary, and not inline | scenarios 1.1, 1.4 and 2.1 | An assert open-GUPZ requires |
+| The five DocumentManifest fixtures and the three hardcoded tokens are gone from the provisioning script | `_LoadResources` | The _LoadResources set |
 
-**Scenario 2.5.** Optional rather than out of scope, so it is kept without being
-part of the GUPZ set. Converting something we do not run would be work without a
-reader.
+Nothing was removed from the set of scenarios: all ten server aimed and all five
+client aimed scenarios are present. Which of them GUPZ actually runs, and which
+are optional or alternatives, is a separate question that
+[docs/scenario-selection.md](docs/scenario-selection.md) answers.
 
-**The provisioning script in `_LoadResources`.** This one is a TestScript, so
-converting it looks natural, but it fits the pattern badly: it declares no
+## What is generated and what is copied
+
+Most imported scenarios were converted to FSH, which means we now own them: they
+are generated, and a Nictiz update has to be merged into our sources by hand.
+The rest sits in `input/static/` and is copied into `output/` by the build.
+
+**The fixtures and the Groovy rule** are still exactly as they came. Data rather
+than structure, and not expressible in FSH anyway; see the README. These can be
+replaced wholesale when Nictiz publishes a new patch release: drop in the new
+file, run the build, done.
+
+**Scenario 2.5 and the provisioning script** are copied rather than generated,
+but they are no longer verbatim: both were edited in place on 21 August 2026, in
+the two rows of the table above that name them. So they now carry the cost of a
+converted script, a comparison and a merge on update, without the benefit of
+being generated. Converting them is the obvious next step and has not been done.
+
+For the provisioning script that is more work than it looks. It declares no
 `origin` and no `destination`, it uses an operation code `purge` that is not in
-the published value set, its `url` does not follow from its `id` and it carries
-no `version`. Converting would mean either making the converter considerably
-more general or editing the script, and editing it breaks the property that
-makes this whole arrangement work.
-
-That property is the point. Anything still verbatim can be replaced wholesale
-when Nictiz publishes a new patch release: drop in the new file, run the build,
-done. For everything we converted, an update is a comparison and a merge
-instead. Keeping the line where it is keeps that cost proportional to what we
-actually changed.
+the published value set, its `url` does not follow from its `id`, it carries no
+`version`, and it has a `setup` block, which the converter silently drops. See
+[docs/authoring.md](docs/authoring.md).
 
 ## Updating from Nictiz
 
