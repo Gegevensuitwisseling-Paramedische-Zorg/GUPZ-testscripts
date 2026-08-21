@@ -290,13 +290,33 @@ what a test data specification still has to describe.
 
 Two changes were made to the imported version.
 
-**The five DocumentManifest fixtures are gone.** No GUPZ scenario reads them.
+**The set is trimmed to what the Dataplatform scenarios need**: two patients,
+six DocumentReference resources and four Binary resources, down from three, nine
+and six.
+
+Out went the five DocumentManifest fixtures. No GUPZ scenario reads them.
 Scenarios 2.2 and 2.3 search for `DocumentManifest` and assert a 404 with an
 OperationOutcome, which is what [#72][i72] settled, and they never retrieve a
 manifest by id. A platform that implements the specification refuses these PUTs,
 so loading them either fails or, worse, succeeds on a platform that should not
 have accepted them. The fixture files themselves are kept under `_reference`,
 unreferenced, so the comparison against the Nictiz baseline stays possible.
+
+Out went the data that belongs to the client aimed side. The third document of
+`XXX_Baltus`, `DocumentReference-kwalificatie3`, points at
+`Binary/foutieve-en-onbekend-id`, a deliberately dangling reference, and appears
+in exactly one place in this repository: the client aimed script
+`phr-1-4-retrieve-0-binary`. `XXX_Ellens` and both of his documents appear in no
+scenario at all. None of it needs to be on a server anyway, because a client
+aimed test is answered by Conformancelab and not by the system under test.
+
+That was not cosmetic. Loading the third Baltus document made scenario 1.1
+return three DocumentReference resources where it asserts two, so the loader was
+failing a scenario with data the scenario was never meant to see.
+
+What stays, on purpose, are the documents of `XXX_Schulte` that are superseded or
+entered-in-error. Scenario 2.1 checks that only current documents come back, and
+that check needs something to filter out.
 
 **The three tokens stay fixed in the script.** They were briefly turned into an
 operator variable, on the reasoning that applies to every other set here, and

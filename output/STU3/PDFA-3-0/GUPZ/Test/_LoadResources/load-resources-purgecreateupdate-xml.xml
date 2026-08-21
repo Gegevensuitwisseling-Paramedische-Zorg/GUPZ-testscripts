@@ -12,7 +12,7 @@
          <use value="work"/>
       </telecom>
    </contact>
-   <description value="Load test resources using the update (PUT) operation of the target FHIR server for use in testing. All resource ids are pre-defined. The target FHIR server is expected to support resource create via the update (PUT) operation for client assigned ids. This is provisioning, not a conformance test: a GUPZ data platform reads only, so this set is meant for a reference server used in a dry run. The five DocumentManifest fixtures from the Nictiz original are left out; no GUPZ scenario reads them and the specification does not support the resource. The access tokens are fixed and resolve through Configuration/QualificationTokens.json."/>
+   <description value="Load test resources using the update (PUT) operation of the target FHIR server for use in testing. All resource ids are pre-defined. The target FHIR server is expected to support resource create via the update (PUT) operation for client assigned ids. This is provisioning, not a conformance test: a GUPZ data platform reads only, so this set is meant for a reference server used in a dry run. Trimmed to what the Dataplatform scenarios need: two patients, six DocumentReference resources and four Binary resources. Left out are the five DocumentManifest fixtures, which no GUPZ scenario reads and which the specification does not support, and the data that belongs to the client aimed side, being the third document of XXX_Baltus and everything of XXX_Ellens. The documents of XXX_Schulte that are superseded or entered-in-error are kept on purpose: scenario 2.1 checks that only current documents come back, which needs something to filter out. The access tokens are fixed and resolve through Configuration/QualificationTokens.json."/>
    <copyright value="© Nictiz 2020"/>
    <fixture id="Binary-pdfa-binary1">
       <autocreate value="false"/>
@@ -42,20 +42,6 @@
          <reference value="../_reference/resources/medmij-pdfa-Binary-kwalificatie4.xml"/>
       </resource>
    </fixture>
-   <fixture id="Binary-pdfa-binary5">
-      <autocreate value="false"/>
-      <autodelete value="false"/>
-      <resource>
-         <reference value="../_reference/resources/medmij-pdfa-Binary-kwalificatie5.xml"/>
-      </resource>
-   </fixture>
-   <fixture id="Binary-pdfa-binary6">
-      <autocreate value="false"/>
-      <autodelete value="false"/>
-      <resource>
-         <reference value="../_reference/resources/medmij-pdfa-Binary-kwalificatie6.xml"/>
-      </resource>
-   </fixture>
    <fixture id="DocumentReference-pdfa-documentreference1">
       <autocreate value="false"/>
       <autodelete value="false"/>
@@ -68,13 +54,6 @@
       <autodelete value="false"/>
       <resource>
          <reference value="../_reference/resources/medmij-pdfa-DocumentReference-kwalificatie2.xml"/>
-      </resource>
-   </fixture>
-   <fixture id="DocumentReference-pdfa-documentreference3">
-      <autocreate value="false"/>
-      <autodelete value="false"/>
-      <resource>
-         <reference value="../_reference/resources/medmij-pdfa-DocumentReference-kwalificatie3.xml"/>
       </resource>
    </fixture>
    <fixture id="DocumentReference-pdfa-documentreference4">
@@ -105,20 +84,6 @@
          <reference value="../_reference/resources/medmij-pdfa-DocumentReference-kwalificatie7.xml"/>
       </resource>
    </fixture>
-   <fixture id="DocumentReference-pdfa-documentreference8">
-      <autocreate value="false"/>
-      <autodelete value="false"/>
-      <resource>
-         <reference value="../_reference/resources/medmij-pdfa-DocumentReference-kwalificatie8.xml"/>
-      </resource>
-   </fixture>
-   <fixture id="DocumentReference-pdfa-documentreference9">
-      <autocreate value="false"/>
-      <autodelete value="false"/>
-      <resource>
-         <reference value="../_reference/resources/medmij-pdfa-DocumentReference-kwalificatie9.xml"/>
-      </resource>
-   </fixture>
    <fixture id="Patient-example-pdfa-kwalificatie1">
       <autocreate value="false"/>
       <autodelete value="false"/>
@@ -131,13 +96,6 @@
       <autodelete value="false"/>
       <resource>
          <reference value="../_reference/resources/medmij-pdfa-Patient-kwalificatie2.xml"/>
-      </resource>
-   </fixture>
-   <fixture id="Patient-example-pdfa-kwalificatie3">
-      <autocreate value="false"/>
-      <autodelete value="false"/>
-      <resource>
-         <reference value="../_reference/resources/medmij-pdfa-Patient-kwalificatie3.xml"/>
       </resource>
    </fixture>
    <variable>
@@ -161,16 +119,6 @@
       <sourceId value="Binary-pdfa-binary4"/>
    </variable>
    <variable>
-      <name value="Binary-pdfa-binary5-id"/>
-      <expression value="Binary.id"/>
-      <sourceId value="Binary-pdfa-binary5"/>
-   </variable>
-   <variable>
-      <name value="Binary-pdfa-binary6-id"/>
-      <expression value="Binary.id"/>
-      <sourceId value="Binary-pdfa-binary6"/>
-   </variable>
-   <variable>
       <name value="DocumentReference-pdfa-documentreference1-id"/>
       <expression value="DocumentReference.id"/>
       <sourceId value="DocumentReference-pdfa-documentreference1"/>
@@ -179,11 +127,6 @@
       <name value="DocumentReference-pdfa-documentreference2-id"/>
       <expression value="DocumentReference.id"/>
       <sourceId value="DocumentReference-pdfa-documentreference2"/>
-   </variable>
-   <variable>
-      <name value="DocumentReference-pdfa-documentreference3-id"/>
-      <expression value="DocumentReference.id"/>
-      <sourceId value="DocumentReference-pdfa-documentreference3"/>
    </variable>
    <variable>
       <name value="DocumentReference-pdfa-documentreference4-id"/>
@@ -206,16 +149,6 @@
       <sourceId value="DocumentReference-pdfa-documentreference7"/>
    </variable>
    <variable>
-      <name value="DocumentReference-pdfa-documentreference8-id"/>
-      <expression value="DocumentReference.id"/>
-      <sourceId value="DocumentReference-pdfa-documentreference8"/>
-   </variable>
-   <variable>
-      <name value="DocumentReference-pdfa-documentreference9-id"/>
-      <expression value="DocumentReference.id"/>
-      <sourceId value="DocumentReference-pdfa-documentreference9"/>
-   </variable>
-   <variable>
       <name value="Patient-example-pdfa-kwalificatie1-id"/>
       <expression value="Patient.id"/>
       <sourceId value="Patient-example-pdfa-kwalificatie1"/>
@@ -224,11 +157,6 @@
       <name value="Patient-example-pdfa-kwalificatie2-id"/>
       <expression value="Patient.id"/>
       <sourceId value="Patient-example-pdfa-kwalificatie2"/>
-   </variable>
-   <variable>
-      <name value="Patient-example-pdfa-kwalificatie3-id"/>
-      <expression value="Patient.id"/>
-      <sourceId value="Patient-example-pdfa-kwalificatie3"/>
    </variable>
    <variable>
       <name value="T"/>
@@ -288,36 +216,10 @@
             <warningOnly value="false"/>
          </assert>
       </action>
-      <action>
-         <operation>
-            <type>
-               <system value="http://fhir.interoplab.eu/fhir/CodeSystem/Interoplab-CL-operation-codes"/>
-               <code value="purge"/>
-            </type>
-            <resource value="Patient"/>
-            <accept value="xml"/>
-            <contentType value="xml"/>
-            <encodeRequestUrl value="true"/>
-            <params value="example-pdfa-kwalificatie3/$purge"/>
-            <requestHeader>
-               <field value="Authorization"/>
-               <value value="Bearer b28f61ba-2359-49d6-b10c-d840e5bc4969"/>
-            </requestHeader>
-         </operation>
-      </action>
-      <action>
-         <assert>
-            <description value="Confirm that the returned HTTP status is 200(OK) or 204(No Content)"/>
-            <operator value="in"/>
-            <responseCode value="200,204"/>
-            <stopTestOnFail value="false"/>
-            <warningOnly value="false"/>
-         </assert>
-      </action>
    </setup>
    <test id="Step1-LoadTestResourceCreate">
       <name value="Step1-LoadTestResourceCreate"/>
-      <description value="Load test resources using the update (PUT) operation of the target FHIR server for use in testing. All resource ids are pre-defined. The target FHIR server is expected to support resource create via the update (PUT) operation for client assigned ids. This is provisioning, not a conformance test: a GUPZ data platform reads only, so this set is meant for a reference server used in a dry run. The five DocumentManifest fixtures from the Nictiz original are left out; no GUPZ scenario reads them and the specification does not support the resource. The access tokens are fixed and resolve through Configuration/QualificationTokens.json."/>
+      <description value="Load test resources using the update (PUT) operation of the target FHIR server for use in testing. All resource ids are pre-defined. The target FHIR server is expected to support resource create via the update (PUT) operation for client assigned ids. This is provisioning, not a conformance test: a GUPZ data platform reads only, so this set is meant for a reference server used in a dry run. Trimmed to what the Dataplatform scenarios need: two patients, six DocumentReference resources and four Binary resources. Left out are the five DocumentManifest fixtures, which no GUPZ scenario reads and which the specification does not support, and the data that belongs to the client aimed side, being the third document of XXX_Baltus and everything of XXX_Ellens. The documents of XXX_Schulte that are superseded or entered-in-error are kept on purpose: scenario 2.1 checks that only current documents come back, which needs something to filter out. The access tokens are fixed and resolve through Configuration/QualificationTokens.json."/>
       <action>
          <operation>
             <type>
@@ -363,34 +265,6 @@
                <value value="Bearer 79339c59-4908-4b0d-8b53-4520f9e4c7d5"/>
             </requestHeader>
             <sourceId value="Patient-example-pdfa-kwalificatie2"/>
-         </operation>
-      </action>
-      <action>
-         <assert>
-            <description value="Confirm that the returned HTTP status is 200(OK) or 201(Created)."/>
-            <operator value="in"/>
-            <responseCode value="200,201"/>
-            <stopTestOnFail value="false"/>
-            <warningOnly value="false"/>
-         </assert>
-      </action>
-      <action>
-         <operation>
-            <type>
-               <system value="http://hl7.org/fhir/restful-interaction"/>
-               <code value="update"/>
-            </type>
-            <resource value="Patient"/>
-            <description value="PUT Patient/example-pdfa-kwalificatie3"/>
-            <accept value="xml"/>
-            <contentType value="xml"/>
-            <encodeRequestUrl value="true"/>
-            <params value="/${Patient-example-pdfa-kwalificatie3-id}"/>
-            <requestHeader>
-               <field value="Authorization"/>
-               <value value="Bearer b28f61ba-2359-49d6-b10c-d840e5bc4969"/>
-            </requestHeader>
-            <sourceId value="Patient-example-pdfa-kwalificatie3"/>
          </operation>
       </action>
       <action>
@@ -520,62 +394,6 @@
                <system value="http://hl7.org/fhir/restful-interaction"/>
                <code value="update"/>
             </type>
-            <resource value="Binary"/>
-            <description value="PUT Binary/pdfa-binary5"/>
-            <accept value="xml"/>
-            <contentType value="xml"/>
-            <encodeRequestUrl value="true"/>
-            <params value="/${Binary-pdfa-binary5-id}"/>
-            <requestHeader>
-               <field value="Authorization"/>
-               <value value="Bearer 121c15f1-f352-485e-979e-04a131bc6238"/>
-            </requestHeader>
-            <sourceId value="Binary-pdfa-binary5"/>
-         </operation>
-      </action>
-      <action>
-         <assert>
-            <description value="Confirm that the returned HTTP status is 200(OK) or 201(Created)."/>
-            <operator value="in"/>
-            <responseCode value="200,201"/>
-            <stopTestOnFail value="false"/>
-            <warningOnly value="false"/>
-         </assert>
-      </action>
-      <action>
-         <operation>
-            <type>
-               <system value="http://hl7.org/fhir/restful-interaction"/>
-               <code value="update"/>
-            </type>
-            <resource value="Binary"/>
-            <description value="PUT Binary/pdfa-binary6"/>
-            <accept value="xml"/>
-            <contentType value="xml"/>
-            <encodeRequestUrl value="true"/>
-            <params value="/${Binary-pdfa-binary6-id}"/>
-            <requestHeader>
-               <field value="Authorization"/>
-               <value value="Bearer 121c15f1-f352-485e-979e-04a131bc6238"/>
-            </requestHeader>
-            <sourceId value="Binary-pdfa-binary6"/>
-         </operation>
-      </action>
-      <action>
-         <assert>
-            <description value="Confirm that the returned HTTP status is 200(OK) or 201(Created)."/>
-            <operator value="in"/>
-            <responseCode value="200,201"/>
-            <stopTestOnFail value="false"/>
-            <warningOnly value="false"/>
-         </assert>
-      </action>
-      <action>
-         <operation>
-            <type>
-               <system value="http://hl7.org/fhir/restful-interaction"/>
-               <code value="update"/>
-            </type>
             <resource value="DocumentReference"/>
             <description value="PUT DocumentReference/pdfa-documentreference1"/>
             <accept value="xml"/>
@@ -615,34 +433,6 @@
                <value value="Bearer 121c15f1-f352-485e-979e-04a131bc6238"/>
             </requestHeader>
             <sourceId value="DocumentReference-pdfa-documentreference2"/>
-         </operation>
-      </action>
-      <action>
-         <assert>
-            <description value="Confirm that the returned HTTP status is 200(OK) or 201(Created)."/>
-            <operator value="in"/>
-            <responseCode value="200,201"/>
-            <stopTestOnFail value="false"/>
-            <warningOnly value="false"/>
-         </assert>
-      </action>
-      <action>
-         <operation>
-            <type>
-               <system value="http://hl7.org/fhir/restful-interaction"/>
-               <code value="update"/>
-            </type>
-            <resource value="DocumentReference"/>
-            <description value="PUT DocumentReference/pdfa-documentreference3"/>
-            <accept value="xml"/>
-            <contentType value="xml"/>
-            <encodeRequestUrl value="true"/>
-            <params value="/${DocumentReference-pdfa-documentreference3-id}"/>
-            <requestHeader>
-               <field value="Authorization"/>
-               <value value="Bearer 121c15f1-f352-485e-979e-04a131bc6238"/>
-            </requestHeader>
-            <sourceId value="DocumentReference-pdfa-documentreference3"/>
          </operation>
       </action>
       <action>
@@ -755,62 +545,6 @@
                <value value="Bearer 121c15f1-f352-485e-979e-04a131bc6238"/>
             </requestHeader>
             <sourceId value="DocumentReference-pdfa-documentreference7"/>
-         </operation>
-      </action>
-      <action>
-         <assert>
-            <description value="Confirm that the returned HTTP status is 200(OK) or 201(Created)."/>
-            <operator value="in"/>
-            <responseCode value="200,201"/>
-            <stopTestOnFail value="false"/>
-            <warningOnly value="false"/>
-         </assert>
-      </action>
-      <action>
-         <operation>
-            <type>
-               <system value="http://hl7.org/fhir/restful-interaction"/>
-               <code value="update"/>
-            </type>
-            <resource value="DocumentReference"/>
-            <description value="PUT DocumentReference/pdfa-documentreference8"/>
-            <accept value="xml"/>
-            <contentType value="xml"/>
-            <encodeRequestUrl value="true"/>
-            <params value="/${DocumentReference-pdfa-documentreference8-id}"/>
-            <requestHeader>
-               <field value="Authorization"/>
-               <value value="Bearer 121c15f1-f352-485e-979e-04a131bc6238"/>
-            </requestHeader>
-            <sourceId value="DocumentReference-pdfa-documentreference8"/>
-         </operation>
-      </action>
-      <action>
-         <assert>
-            <description value="Confirm that the returned HTTP status is 200(OK) or 201(Created)."/>
-            <operator value="in"/>
-            <responseCode value="200,201"/>
-            <stopTestOnFail value="false"/>
-            <warningOnly value="false"/>
-         </assert>
-      </action>
-      <action>
-         <operation>
-            <type>
-               <system value="http://hl7.org/fhir/restful-interaction"/>
-               <code value="update"/>
-            </type>
-            <resource value="DocumentReference"/>
-            <description value="PUT DocumentReference/pdfa-documentreference9"/>
-            <accept value="xml"/>
-            <contentType value="xml"/>
-            <encodeRequestUrl value="true"/>
-            <params value="/${DocumentReference-pdfa-documentreference9-id}"/>
-            <requestHeader>
-               <field value="Authorization"/>
-               <value value="Bearer 121c15f1-f352-485e-979e-04a131bc6238"/>
-            </requestHeader>
-            <sourceId value="DocumentReference-pdfa-documentreference9"/>
          </operation>
       </action>
       <action>

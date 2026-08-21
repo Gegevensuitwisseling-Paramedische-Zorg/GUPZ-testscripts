@@ -68,7 +68,7 @@ index; that document holds the reasoning.
 | Version, publisher and `url` carry GUPZ identity instead of Nictiz identity | all 34 scripts | Deliberate deviations |
 | The token is operator input; the MedMij qualification token is removed as a default and the `Bearer` prefix moved into the header | all PDF/A Dataplatform scripts and scenario 2.5 | Deliberate deviations |
 | Two asserts added: a document is offered as a reference to a Binary, and not inline | scenarios 1.1, 1.4 and 2.1 | An assert open-GUPZ requires |
-| The five DocumentManifest fixtures are gone from the provisioning script | `_LoadResources` | The _LoadResources set |
+| The provisioning script is trimmed to what the Dataplatform scenarios need: the DocumentManifest fixtures and the data belonging to the client aimed side are gone | `_LoadResources` | The _LoadResources set |
 | `Configuration/QualificationTokens.json` is carried over, restricted to the three PDF/A patients | the whole repository | Configuration/README.md |
 
 Nothing was removed from the set of scenarios: all ten server aimed and all five

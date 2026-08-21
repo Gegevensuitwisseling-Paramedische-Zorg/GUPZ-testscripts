@@ -5,8 +5,9 @@ Picked up by Conformancelab when the repository is loaded.
 ## QualificationTokens.json
 
 Maps an access token to the test patient it belongs to. The structure is taken
-from the Nictiz material, restricted to the three PDF/A patients; the entries for
-the other information standards are left out.
+from the Nictiz material, restricted to the two patients that GUPZ actually uses;
+the entries for the other information standards, and the one for XXX_Ellens, are
+left out. Ellens appears in no scenario on either side and is no longer loaded.
 
 **The tokens themselves are new and must stay different from the Nictiz ones.**
 Reusing theirs would mean two entries claiming the same token on an engine that

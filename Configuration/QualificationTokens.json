@@ -12,12 +12,5 @@
         "familyName": "XXX_Schulte",
         "bsn": "999910784",
         "qualificationScript": "GUPZ PDF/A"
-    },
-    {
-        "accessToken": "Bearer b28f61ba-2359-49d6-b10c-d840e5bc4969",
-        "resourceId": "example-pdfa-kwalificatie3",
-        "familyName": "XXX_Ellens",
-        "bsn": "999910863",
-        "qualificationScript": "GUPZ PDF/A"
     }
 ]
