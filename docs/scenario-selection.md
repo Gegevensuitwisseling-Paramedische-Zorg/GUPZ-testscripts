@@ -219,6 +219,39 @@ eighteen Dataplatform scripts and in the loader as well.
 These six are the only differences between the generated scripts and their
 originals; everything else compares identical.
 
+## The _LoadResources set
+
+A third Test Set under PDF/A writes the fixtures to the target server: three
+patients, six `Binary` resources and nine `DocumentReference` resources, purged
+first and then PUT with client assigned ids. Run it before the Dataplatform set,
+or every scenario fails on missing data rather than on behaviour.
+
+It is provisioning and not a conformance test, and the difference matters.
+[`pdfa.md`][pdfa] describes the data platform as an MHD Document Responder,
+which reads; nothing in the specification says a platform accepts writes over
+FHIR. So this set works against a reference server that happens to allow them,
+which is how a dry run is done, and it is not expected to work against a
+supplier's platform. There the test data comes out of their own PARIS, which is
+what a test data specification still has to describe.
+
+Two changes were made to the imported version.
+
+**The five DocumentManifest fixtures are gone.** No GUPZ scenario reads them.
+Scenarios 2.2 and 2.3 search for `DocumentManifest` and assert a 404 with an
+OperationOutcome, which is what [#72][i72] settled, and they never retrieve a
+manifest by id. A platform that implements the specification refuses these PUTs,
+so loading them either fails or, worse, succeeds on a platform that should not
+have accepted them. The fixture files themselves are kept under `_reference`,
+unreferenced, so the comparison against the Nictiz baseline stays possible.
+
+**The three hardcoded tokens became one variable.** The original sends the
+qualification token of the owning patient on the three patient operations and
+`XXX_Baltus`'s token on everything else, including `XXX_Schulte`'s documents.
+That inconsistency is harmless in a simulator that does not check, and it cannot
+be made right under the GUPZ rules anyway, because writes are not covered by
+them. So the set now takes a single `provisioning-token`, empty by default,
+which can be left empty against a server that does not check tokens.
+
 ## Where the Nictiz scripts do not simply carry over
 
 These are properties of the imported scripts that need a GUPZ decision. Not all

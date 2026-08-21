@@ -59,7 +59,7 @@ imported script is in [docs/authoring.md](docs/authoring.md).
 
 ### Test sets
 
-Three Test Sets, all of them built.
+Three Test Sets, all of them built, plus a fourth that provisions data.
 
 - **PDF/A Dataplatform** and **PDF/A DVA-Client**, testing the document
   interface from either side. Which scenarios are in scope and why is in
@@ -68,6 +68,10 @@ Three Test Sets, all of them built.
   interface. The model, with the requirement each case tests and the open
   points that still limit some of them, is in
   [docs/auth-test-design.md](docs/auth-test-design.md).
+- **PDF/A _LoadResources**, which writes the fixtures to the target server. Run
+  it before the PDF/A Dataplatform set. It is provisioning rather than a
+  conformance test and only works against a server that accepts writes; see
+  [docs/scenario-selection.md](docs/scenario-selection.md#the-_loadresources-set).
 
 Every set that calls the data platform takes its token as operator input: a
 variable with no default that is filled in when the run is set up. Conformancelab
