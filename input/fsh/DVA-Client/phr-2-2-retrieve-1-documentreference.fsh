@@ -21,6 +21,7 @@ RuleSet: phr-2-2-retrieve-1-documentreference-body
 * test[=].action[=].operation.destination = 1
 * test[=].action[=].operation.origin = 1
 * test[=].action[=].operation.encodeRequestUrl = true
+* insert requestHeaderToken(79339c59-4908-4b0d-8b53-4520f9e4c7d5)
 * insert assertsIncomingBearerToken
 * test[=].action[+].assert
   * description = "Confirm that query parameter 'patient=' was not present to avoid BSNs in the URL."

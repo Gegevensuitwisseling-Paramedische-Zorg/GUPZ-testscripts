@@ -8,6 +8,19 @@
 // proxy forwards to, which is what the provisioning set puts there.
 
 
+// The Authorization header the client is expected to send.
+//
+// In a client aimed test the operation describes the request that is expected,
+// and Conformancelab uses that description twice: to match an incoming request,
+// and to build the request itself when a monitor runs the test as Automated.
+// Removing the header therefore removes the token from an automated run, and
+// without a token the server behind the proxy has nothing to scope its answer
+// to. That is why the header stays even though its value is never compared.
+RuleSet: requestHeaderToken(token)
+* test[=].action[=].operation.requestHeader[+].field = "Authorization"
+* test[=].action[=].operation.requestHeader[=].value = "Bearer {token}"
+
+
 // What can be asserted about a GUPZ token from the receiving side.
 //
 // The imported scripts compared the Authorization header to a fixed MedMij

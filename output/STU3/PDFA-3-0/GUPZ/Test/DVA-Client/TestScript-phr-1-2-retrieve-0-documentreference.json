@@ -49,6 +49,12 @@
       "action": [
         {
           "operation": {
+            "requestHeader": [
+              {
+                "field": "Authorization",
+                "value": "Bearer 121c15f1-f352-485e-979e-04a131bc6238"
+              }
+            ],
             "type": {
               "code": "search",
               "system": "http://hl7.org/fhir/restful-interaction"

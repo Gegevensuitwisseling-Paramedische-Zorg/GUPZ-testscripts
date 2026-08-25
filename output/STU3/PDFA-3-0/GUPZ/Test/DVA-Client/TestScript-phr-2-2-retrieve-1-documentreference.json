@@ -42,6 +42,12 @@
       "action": [
         {
           "operation": {
+            "requestHeader": [
+              {
+                "field": "Authorization",
+                "value": "Bearer 79339c59-4908-4b0d-8b53-4520f9e4c7d5"
+              }
+            ],
             "type": {
               "code": "read",
               "system": "http://hl7.org/fhir/restful-interaction"
