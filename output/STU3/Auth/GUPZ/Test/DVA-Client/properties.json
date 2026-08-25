@@ -1,0 +1,10 @@
+{
+  "goal": "Test",
+  "fhirVersion": "STU3",
+  "informationStandard": "GUPZ Auth",
+  "usecase": "GUPZ",
+  "role": {
+    "name": "DVA-Client",
+    "description": "The token a caller produces, judged from the receiving side. Conformancelab plays the data platform and reads what it can of the token that arrives. Written against open-GUPZ commit 0a273ae, 21 August 2026."
+  }
+}

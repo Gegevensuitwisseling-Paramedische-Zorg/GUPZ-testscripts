@@ -44,7 +44,8 @@ input/
     components/      reusable RuleSets
     Dataplatform/    PDF/A, server aimed. One file per scenario, two variants
     DVA-Client/      PDF/A, client aimed
-    Auth/            token and authentication, one file per case
+    Auth/            token and authentication, server aimed, one file per case
+    DVA-Auth/        token and authentication, client aimed
     LoadResources/   the script that writes the fixtures to a server
   static/            files copied verbatim, mirroring the output tree
 Configuration/       token map that the engine reads when the repository loads
@@ -61,8 +62,8 @@ imported script is in [docs/authoring.md](docs/authoring.md).
 
 ### Test sets
 
-Three Test Sets, all of them built and all of them run, plus a fourth that
-provisions data. Thirty-seven TestScripts in total.
+Four Test Sets plus a fifth that provisions data. Thirty-eight TestScripts in
+total.
 
 - **PDF/A Dataplatform** and **PDF/A DVA-Client**, testing the document
   interface from either side. Which scenarios are in scope and why is in
@@ -71,6 +72,9 @@ provisions data. Thirty-seven TestScripts in total.
   interface. The model, with the requirement each case tests and the open
   points that still limit some of them, is in
   [docs/auth-test-design.md](docs/auth-test-design.md).
+- **Auth DVA-Client**, testing the token a caller produces rather than what a
+  platform does with it. How far that reaches without the decryption key, and
+  why, is in [docs/dva-auth-design.md](docs/dva-auth-design.md).
 - **PDF/A _LoadResources**, which writes the fixtures to a server. Run it before
   the PDF/A Dataplatform set; it also feeds the client aimed set, because that is
   the server the proxy forwards a client's requests to. It is provisioning rather
@@ -151,6 +155,7 @@ output/STU3/PDFA-3-0/GUPZ/Test/
   _LoadResources/    the script that writes the fixtures to a server
 output/STU3/Auth/GUPZ/Test/
   Dataplatform/      server aimed: token and authentication behaviour
+  DVA-Client/        client aimed: the token the caller produces
 ```
 
 TestScripts refer to `../_reference/...`, so a Test Set directory has to stay
