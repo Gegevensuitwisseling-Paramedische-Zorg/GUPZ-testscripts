@@ -127,8 +127,9 @@ Minting would cover the happy flow and the two time based cases, since
 `${JWT-ENCODE}` takes a claims object and `${CURRENT-NUMERICDATE}` can set a
 stale `iat`. It would not cover AUTH-09 and AUTH-10, which need control over
 keys, nor the encrypted variant, which needs a JWE the engine cannot produce.
-And the guide does not say which key signs or where the matching public key can
-be found, so a supplier could not verify a minted token at all.
+It also signs with a key of the engine's own, published at `/cl/oauth2/jwks`, so
+a minted token would carry an Interoplab signature rather than the signature of
+the party a test is meant to represent.
 
 Switching later costs little: the token is a variable, so operator input or a
 `${JWT-ENCODE, ...}` default is one line per script. Operator input stays the
@@ -244,8 +245,8 @@ And reading a header into a variable and comparing it with a response element
 uses the regex mapper together with
 `Interoplab-CL-ext-assert-input-variable`, the chain that became available on
 18 August. The same chain covers the rule that `error_description` and
-`diagnostics` must be equal, which is the one part of the refusal response that
-is currently asserted nowhere.
+`diagnostics` must be equal, which is the one part of the refusal
+response that no assert covers yet.
 
 Nothing is built yet. The seven cases keep their soft asserts until the 401
 against 403 question closes, and AUTH-12 waits with them.
@@ -253,7 +254,7 @@ against 403 question closes, and AUTH-12 waits with them.
 | Case | What Conformancelab does | Expected | Requirement | Blocked by |
 |---|---|---|---|---|
 | AUTH-01 | Search with token T1 | Success | GUPZ-TOK-001, GUPZ-VAL-001 | |
-| AUTH-02 | Search with token T2, signed only | Success in connectathon mode | GUPZ-TOK-001 | Configuration requirement is specified nowhere |
+| AUTH-02 | Search with token T2, signed only | Success in connectathon mode | GUPZ-TOK-001 | The configuration requirement is not written down yet |
 | AUTH-03 | Search with token T3, plain | Success in connectathon mode | GUPZ-TOK-001 | Definition of "plain" is open |
 | AUTH-04 | Search without an `Authorization` header | Refused | GUPZ-TOK-001 | [#70][i70] for the exact response |
 | AUTH-05 | Search with a header that is not a Bearer token | Refused | GUPZ-TOK-001 | [#70][i70] |
@@ -284,8 +285,8 @@ patient has. Ellen XXX_Baltus is identified by LOINC 68688-1 and Eva XXX_Schulte
 by 68626-1; both codes appear for one patient only in the Nictiz fixtures.
 
 All four asserts are hard. Until 18 August the two absence asserts were warning
-only, because scoping followed from the design but stood nowhere in the
-specification. It stands there now, as `GUPZ-PAY-004` and `GUPZ-URL-001`, so a
+only, because scoping followed from the design but was not yet written
+down. It is written down now, as `GUPZ-PAY-004` and `GUPZ-URL-001`, so a
 platform that returns another patient's documents is not conformant.
 
 ## What this set does not cover

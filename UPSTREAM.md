@@ -65,7 +65,7 @@ index; that document holds the reasoning.
 | The assert that no BSN appears anywhere in the Bundle is removed; it rejects conformant behaviour on this interface | all converted scripts | Deliberate deviations |
 | The MedMij tracing headers are no longer sent | all converted scripts | Deliberate deviations |
 | The system under test is marked with a profile on `origin` and `destination` instead of the deprecated SUT extension | all converted scripts | Deliberate deviations |
-| Version, publisher and `url` carry GUPZ identity instead of Nictiz identity | all 34 scripts | Deliberate deviations |
+| Version, publisher and `url` carry GUPZ identity instead of Nictiz identity | all 37 scripts | Deliberate deviations |
 | The token is operator input; the MedMij qualification token is removed as a default and the `Bearer` prefix moved into the header | all PDF/A Dataplatform scripts and scenario 2.5 | Deliberate deviations |
 | Two asserts added: a document is offered as a reference to a Binary, and not inline | scenarios 1.1, 1.4 and 2.1 | An assert open-GUPZ requires |
 | The provisioning script is trimmed to what the Dataplatform scenarios need: the DocumentManifest fixtures and the data belonging to the client aimed side are gone, and it is now generated from FSH | `_LoadResources` | The _LoadResources set |

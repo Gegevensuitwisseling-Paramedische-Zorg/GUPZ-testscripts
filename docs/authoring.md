@@ -156,17 +156,26 @@ a reason not to; a real client resolves a reference when it needs to.
 To try a client aimed set without a client, a monitor can mark the tests as
 Automated at setup, after which Conformancelab sends the requests itself.
 
-## What the engine supports beyond the published lists
+## Which source to follow
 
-The engine can do more than the implementation guide records, and the difference
-matters when reading somebody else's script or writing a new assert. The operator
-`manualEval` and the operation code `purge` both work and appear in no ValueSet.
-Treat the guide as what has been agreed and the engine as what runs; something
-that exists only in the engine is not a commitment and can change.
+Three sources describe what a TestScript may contain, and they serve different
+purposes.
 
-The assert types and the operators each accepts are listed in the Conformancelab
-manual under Evaluating results. The two that are easy to miss: `headerField`,
-`queryParam` and `path` accept `exists` and `notExists`, while `expression` does
-not, and `defaultManualCompletion` with the operator `manualEval` pauses a run
-until somebody judges the outcome by hand. That last one is a way to put a check
-that cannot be automated inside the run rather than beside it.
+The [Interoplab implementation guide](https://fhir.interoplab.eu/ig/) carries the
+profile, the extensions and the value sets. That is the contract, so build on it
+by default: what is in there is what the platform commits to.
+
+The [Conformancelab manual](https://interoplab.atlassian.net/wiki/spaces/SUP/pages/4085317648)
+explains what the platform does with a script at run time, which the guide does
+not cover. Two things in it are easy to miss and useful here: `headerField`,
+`queryParam` and `path` accept the operators `exists` and `notExists` while
+`expression` does not, and `defaultManualCompletion` with the operator
+`manualEval` pauses a run until somebody judges the outcome by hand. That last
+one is a way to put a check that cannot be automated inside the run rather than
+beside it.
+
+A run itself is the third source, and the most direct one. The imported
+provisioning script uses the operation code `purge`, which is not in the
+published value set and works. Where something like that turns out to be needed,
+say so in the script and raise it with Interoplab, so the behaviour a test
+depends on ends up in the guide rather than only in a comment here.

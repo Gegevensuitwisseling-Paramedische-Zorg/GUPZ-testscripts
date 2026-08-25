@@ -61,7 +61,8 @@ imported script is in [docs/authoring.md](docs/authoring.md).
 
 ### Test sets
 
-Three Test Sets, all of them built, plus a fourth that provisions data.
+Three Test Sets, all of them built and all of them run, plus a fourth that
+provisions data. Thirty-seven TestScripts in total.
 
 - **PDF/A Dataplatform** and **PDF/A DVA-Client**, testing the document
   interface from either side. Which scenarios are in scope and why is in
