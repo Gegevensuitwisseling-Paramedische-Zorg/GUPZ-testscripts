@@ -74,7 +74,7 @@ receive an error saying the resource is not supported. Reasoning confirmed in
 | 2.2 Serve two DocumentManifest resources | request on DocumentManifest | optional | yes | Kept deliberately. Not to test manifests, but to test the graceful failure that constraint 2 implies |
 | 2.3 Serve one DocumentManifest resource | request on DocumentManifest with a date range | optional | yes | Same as 2.2 |
 | 2.4 Serve one DocumentReference by resolving a reference from a DocumentManifest | request on DocumentManifest | optional | yes | Same as 2.2 |
-| 2.5 Serve one PDF/A document | retrieve through an HTTP reference instead of a Binary | optional, alternative to 1.4 | not required | Replaced by 1.4 because of constraint 3. A vendor is free to support HTTP references as well, so the scenario is kept in the repository but is not part of the GUPZ set |
+| 2.5 Serve one PDF/A document | retrieve through an HTTP reference instead of a Binary | optional, alternative to 1.4 | not required | Replaced by 1.4 because of constraint 3. Kept in the repository but not part of the GUPZ set, and it is an open question whether it belongs here at all; see below |
 | 3.1 Receive one document | the server receives a document | belongs to [PDF/A Ontvangen][no] | no | ITI-65. Constraint 1 |
 | 3.2 Receive two documents | the server receives two documents | belongs to [PDF/A Ontvangen][no] | no | Same as 3.1 |
 
@@ -220,6 +220,40 @@ eighteen Dataplatform scripts and in the loader as well.
 
 These six are the only differences between the generated scripts and their
 originals; everything else compares identical.
+
+## Open: does scenario 2.5 belong here at all
+
+Scenario 2.5 serves a document over an ordinary http url instead of through a
+Binary resource. It is the alternative to 1.4, and the qualification lets a
+vendor pick either one.
+
+GUPZ does not. [`pdfa.md`][pdfa] says the data platform offers every document
+reference as a reference to a Binary, which is why 1.4 is the retrieve scenario
+here and why the hard assert described below exists. A platform that implements
+the specification therefore cannot pass 2.5, and one that does pass it is
+serving documents in a way GUPZ has ruled out.
+
+The run of 21 August confirmed this from the other side. Scenario 2.5 failed on
+its control test, which sends a request without an `Authorization` header and
+expects it to be refused. That control is worth having and does not depend on
+how the document is served.
+
+So the choice is threefold and it has not been made.
+
+- **Drop it.** Cleanest reading of the specification. The set then contains only
+  scenarios a conformant platform can pass, which matters on a connectathon
+  where a red result should mean something.
+- **Keep it as it is.** A vendor is free to support http references in addition
+  to Binary, and then the scenario says something. The cost is a scenario that
+  is permanently red for everyone who follows the specification exactly.
+- **Keep only the control test**, the request without an `Authorization` header,
+  and move it into the auth set where it belongs. That preserves the part that
+  applies to every platform and drops the part that does not.
+
+The third looks best from here, but it is a scope question for GUPZ rather than
+an authoring decision, so nothing has been changed. Related: the same question
+decided [#61][i61] in favour of 1.4, without saying what should then happen to
+2.5.
 
 ## An assert that open-GUPZ requires and the imported set does not have
 
