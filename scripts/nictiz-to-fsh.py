@@ -97,10 +97,15 @@ def emit_operation(op, out):
     # accept is deliberately absent here: it differs per variant and is set on
     # the Instance. Everything else that the Nictiz scripts use is covered.
     for tag in ("resource", "label", "description", "params", "url",
-                "contentType", "requestId", "responseId", "sourceId", "targetId"):
+                "requestId", "responseId", "sourceId", "targetId"):
         v = val(op, tag)
         if v is not None:
             out.append(f"* test[=].action[=].operation.{tag} = {fsh(v)}")
+    # contentType is a code, not a string. Only scenario 2.5 sets it, which is
+    # why this went unnoticed until that script was converted.
+    v = val(op, "contentType")
+    if v is not None:
+        out.append(f"* test[=].action[=].operation.contentType = #{v}")
     for tag in ("destination", "origin"):
         v = val(op, tag)
         if v is not None:

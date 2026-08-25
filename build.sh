@@ -9,8 +9,8 @@
 #   input/fsh/     TestScripts, written in FSH and built with SUSHI
 #   input/static/  files that are copied verbatim, mirroring the output tree:
 #                  the Test Set properties, the fixtures under _reference, the
-#                  Groovy rule and the Nictiz scripts that have not been
-#                  converted, which is scenario 2.5 and nothing else
+#                  Groovy rule. No TestScript lives there; they all come from
+#                  input/fsh/
 #
 # One file is not copied verbatim. Conformancelab treats every directory holding
 # a properties.json as a Test Set, and it scans the whole repository, so a

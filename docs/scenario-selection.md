@@ -28,13 +28,14 @@ Sources referenced below:
 
 | | |
 |---|---|
-| Dataplatform | 1.1, 1.2, 1.3, 1.4, 1.5, 2.1, 2.2, 2.3, 2.4 built from FSH, eighteen TestScripts |
+| Dataplatform | 1.1 through 1.5 and 2.1 through 2.5 built from FSH, twenty TestScripts |
 | DVA-Client | 1.1, 1.2, 1.3, 1.4, 2.2 built from FSH, five TestScripts |
-| Kept as imported XML | Dataplatform 2.5, because it is optional rather than out of scope |
+| Provisioning | the script that writes the fixtures, built from FSH, one TestScript |
 | Removed | Dataplatform 3.1 and 3.2, DVA-Client 2.1, 3.1 and 3.2 |
 
-Everything converted was compared with its Nictiz original and matches it apart
-from the two deliberate deviations listed below, so the set can be run as it
+Every script here is generated from FSH; nothing is imported XML any more. Each
+one was compared with its Nictiz original and matches it apart from the
+deliberate deviations listed below, so the set can be run as it
 stands. Removed scenarios remain available through the tag
 `nictiz-baseline-2026.30` and the `nictiz` remote.
 
@@ -141,8 +142,9 @@ with a PGO, so it belongs to the interface between PGO and DVA. Between DVA and
 data platform the opposite holds: [`medmij.md`][medmij] has the BSN travel along
 as the patient identifier and the DVA filters it out. Applied unchanged the
 assert rejects conformant behaviour, so it is gone from the converted scripts.
-Raised with GUPZ as [#80][i80]; scenario 2.5, kept as Nictiz wrote it, still
-carries it.
+Raised with GUPZ as [#80][i80]. Scenario 2.5 was the last script still carrying
+it; since that scenario was converted on 21 August 2026 the assert is gone from
+the whole repository.
 
 The neighbouring assert, that the BSN does not appear in the self link, is
 deliberately kept and is now stronger than it was. The self link echoes the

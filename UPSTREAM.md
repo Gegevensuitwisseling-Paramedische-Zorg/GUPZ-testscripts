@@ -95,11 +95,15 @@ with `compare-testscript.py`: every fixture, variable and action matches the
 original path for path, and the only differences are the GUPZ identity, an added
 title, and the long explanation no longer being repeated on the test.
 
-**Scenario 2.5** is still copied rather than generated, and is no longer
-verbatim either: it was edited in place on 21 August 2026, in the row of the
-table above that names the token. It therefore carries the cost of a converted
-script, a comparison and a merge on update, without the benefit of being
-generated. Converting it is the obvious next step and has not been done.
+**Scenario 2.5** was converted on the same day, and with it the last imported
+TestScript left the repository. It now carries every deviation the other scripts
+carry, including the removal of the BSN assert, which it was the last to hold. A
+comparison by content shows exactly one assert missing and the other
+twenty-four identical.
+
+Nothing under `input/static/` is a TestScript any more. What is left there is
+data and configuration: the fixtures, the Groovy rule and the four Test Set
+property files.
 
 ## Updating from Nictiz
 

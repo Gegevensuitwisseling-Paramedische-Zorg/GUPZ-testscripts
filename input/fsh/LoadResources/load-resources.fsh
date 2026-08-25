@@ -9,7 +9,6 @@ Usage: #definition
 * insert metadata(resources-purgecreateupdate-xml)
 * name = "Load_Test_Resources_Purge_Create_Update_XML"
 * title = "Load the test resources onto a server"
-* copyright = "© Nictiz 2020"
 * description = "Load test resources using the update (PUT) operation of the target FHIR server for use in testing. All resource ids are pre-defined. The target FHIR server is expected to support resource create via the update (PUT) operation for client assigned ids. This is provisioning, not a conformance test: a GUPZ data platform reads only, so this set is meant for a reference server used in a dry run. Trimmed to what the Dataplatform scenarios need: two patients, six DocumentReference resources and four Binary resources. Left out are the five DocumentManifest fixtures, which no GUPZ scenario reads and which the specification does not support, and the data that belongs to the client aimed side, being the third document of XXX_Baltus and everything of XXX_Ellens. The documents of XXX_Schulte that are superseded or entered-in-error are kept on purpose: scenario 2.1 checks that only current documents come back, which needs something to filter out. The access tokens are fixed and resolve through Configuration/QualificationTokens.json."
 
 // The four PDF documents, then the nine document references that point at them,
