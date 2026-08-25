@@ -87,10 +87,22 @@ open-GUPZ repository, and pasted in. The PDF/A Dataplatform set takes one token
 per test patient, two in total, because a token used in a patient bound request is
 patient specific.
 
-**On the client side there is no token to supply**, because the system under test
-brings its own. What is asserted there is that the `Authorization` header exists
-and uses the Bearer scheme. Comparing it to a fixed value is impossible: a GUPZ
-token is encrypted and differs on every run.
+**On the client side the token comes the other way round.** Conformancelab shows
+the request it expects, header included, and the system under test sends that.
+The token in it is a fixed opaque value, and it is there to pick a patient: the
+server behind the test scopes its answer to the patient that token belongs to, so
+sending a different one changes what comes back and the counts stop matching.
+
+That token is test scaffolding, not an example of a GUPZ token. A real GUPZ token
+is a JWS inside a JWE, minted per run, and it cannot be used here because a value
+that changes every run cannot be mapped to a patient in advance. Which means this
+set says nothing about the token a caller produces; the asserts on it go no
+further than that the `Authorization` header exists and uses the Bearer scheme.
+Testing the token itself needs a set of its own, and that one does not exist yet.
+
+Against a real data platform none of this applies. There the caller mints its own
+token and the platform resolves the patient from the `patient` claim, as
+`security.md` describes.
 
 ### How a client aimed run works
 
