@@ -13,6 +13,7 @@ RuleSet: phr-1-1-retrieve-3-documentreference-body
 * test[+].id = "scenario1-1-retrieve-3-documentreference"
 * test[=].name = "Scenario 1.1"
 * test[=].description = "Query all current DocumentReference resources."
+* insert allowExtraRequests
 * test[=].action[+].operation.type = http://hl7.org/fhir/restful-interaction#search
 * test[=].action[=].operation.resource = "DocumentReference"
 * test[=].action[=].operation.description = "Test PHR client to retrieve DocumentReference resources."
@@ -20,15 +21,7 @@ RuleSet: phr-1-1-retrieve-3-documentreference-body
 * test[=].action[=].operation.destination = 1
 * test[=].action[=].operation.origin = 1
 * test[=].action[=].operation.encodeRequestUrl = true
-* test[=].action[=].operation.requestHeader[+].field = "Authorization"
-* test[=].action[=].operation.requestHeader[=].value = "Bearer 121c15f1-f352-485e-979e-04a131bc6238"
-* test[=].action[+].assert
-  * description = "Confirm that HTTP header Authorization contains the patient token Bearer 121c15f1-f352-485e-979e-04a131bc6238"
-  * direction = #request
-  * headerField = "Authorization"
-  * stopTestOnFail = false
-  * value = "Bearer 121c15f1-f352-485e-979e-04a131bc6238"
-  * warningOnly = false
+* insert assertsIncomingBearerToken
 * test[=].action[+].assert
   * description = "Confirm that query parameter 'patient=' was not present to avoid BSNs in the URL."
   * direction = #request

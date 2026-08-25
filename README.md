@@ -70,19 +70,43 @@ Three Test Sets, all of them built, plus a fourth that provisions data.
   interface. The model, with the requirement each case tests and the open
   points that still limit some of them, is in
   [docs/auth-test-design.md](docs/auth-test-design.md).
-- **PDF/A _LoadResources**, which writes the fixtures to the target server. Run
-  it before the PDF/A Dataplatform set. It is provisioning rather than a
-  conformance test and only works against a server that accepts writes; see
-  [docs/scenario-selection.md](docs/scenario-selection.md#the-_loadresources-set).
+- **PDF/A _LoadResources**, which writes the fixtures to a server. Run it before
+  the PDF/A Dataplatform set; it also feeds the client aimed set, because that is
+  the server the proxy forwards a client's requests to. It is provisioning rather
+  than a conformance test and only works against a server that accepts writes;
+  see [docs/scenario-selection.md](docs/scenario-selection.md#the-_loadresources-set).
   Its tokens are the exception to the rule below: they are fixed in the script
   and resolve through [Configuration/](Configuration/).
 
-Every set that calls the data platform takes its token as operator input: a
-variable with no default that is filled in when the run is set up. Conformancelab
-cannot produce the nested JWT that open-GUPZ prescribes, so the token is made
-outside the engine, with the `jwtcli` tool in the open-GUPZ repository, and
-pasted in. The PDF/A Dataplatform set takes one token per test patient, two in
-total, because a token used in a patient bound request is patient specific.
+**Where the token comes from.** Every set that reads from the data platform takes
+its token as operator input: a variable with no default that is filled in when the
+run is set up. Conformancelab cannot produce the nested JWT that open-GUPZ
+prescribes, so the token is made outside the engine, with the `jwtcli` tool in the
+open-GUPZ repository, and pasted in. The PDF/A Dataplatform set takes one token
+per test patient, two in total, because a token used in a patient bound request is
+patient specific.
+
+**On the client side there is no token to supply**, because the system under test
+brings its own. What is asserted there is that the `Authorization` header exists
+and uses the Bearer scheme. Comparing it to a fixed value is impossible: a GUPZ
+token is encrypted and differs on every run.
+
+### How a client aimed run works
+
+Worth knowing before touching those five scripts, because it is not what it looks
+like. Conformancelab does not answer the requests. The system under test calls the
+address it is given, the proxy forwards the request to a FHIR server and returns
+that answer, and the engine watches: it matches the request against the operation
+that is active and evaluates the asserts. So no stubs have to be written for
+ordinary FHIR traffic, and what matters instead is that the right fixtures are on
+the server the proxy forwards to.
+
+Two consequences for authoring. Extra requests between operations fail the active
+operation unless the test sets the request mode to `extra-allowed`, and a real
+client resolves references when it needs to rather than when the script says so;
+all five scripts therefore set it. And a monitor can mark client tests as
+Automated, after which Conformancelab sends the requests itself, which is how the
+set can be tried without a real client.
 
 [docs/auth-situations.md](docs/auth-situations.md) places both in the wider
 picture: which authentication situations exist on this interface at all, who is

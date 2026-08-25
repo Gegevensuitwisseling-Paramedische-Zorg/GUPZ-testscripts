@@ -309,6 +309,45 @@ implemented, so that declaration is documentation rather than working
 configuration.
 
 
+## Client aimed testing: how it actually works
+
+Established on 25 August 2026 from the Conformancelab manuals and, where those
+and the IG disagreed, from the engine itself.
+
+**Conformancelab does not answer these requests.** When the system under test
+calls the address it is given, the proxy forwards the request to a FHIR server
+and returns that answer; the engine watches, matches the request against the
+operation that is active, and evaluates the asserts. So no stubs have to be
+written for ordinary FHIR traffic. What matters is that the right fixtures are on
+the server the proxy forwards to, which is what `_LoadResources` puts there. The
+`stub` operation type does exist, but it is a WireMock stub meant to catch a
+redirect after a `browser-interaction`, so for flows like OAuth.
+
+**The token cannot be compared to a fixed value.** The imported scripts assert
+that the `Authorization` header equals a MedMij qualification token. A GUPZ token
+is a JWS inside a JWE, minted per run and valid for fifteen minutes, so its value
+differs every time. What is stable is that the header is present and uses the
+Bearer scheme, and that is what the two asserts in
+`components/client-asserts.fsh` now say. `exists` is not an operator in base
+FHIR, so it is carried by the Conformancelab extension for additional operators;
+`contains` is standard. This settles point 3 of [#80][i80].
+
+Reading the claims out of the token is possible in principle, by chaining the
+regex mapper, `assert-input-variable` and the `base64Decode` mapper function, but
+for a JWE only the outer header is readable, which holds `alg`, `enc` and `kid`.
+That is a separate set and it is not built.
+
+**Extra requests have to be allowed.** By default the order of requests is fixed
+and anything in between fails the operation that was active, which says nothing
+about conformance. A real client resolves a reference when it needs to, not when
+the script says so. All five scripts therefore set the request mode to
+`extra-allowed`, which keeps the order of the defined operations but tolerates
+requests between them.
+
+**The set can be tried without a real client.** A monitor can mark client tests
+as Automated, after which Conformancelab sends the requests the system under test
+would have sent. That makes a dry run possible before any supplier connects.
+
 ## The _LoadResources set
 
 A third Test Set under PDF/A writes the fixtures to the target server: three

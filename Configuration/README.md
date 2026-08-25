@@ -32,3 +32,11 @@ therefore takes its token as operator input. See
 `qualificationScript` reads `GUPZ PDF/A`, matching the information standard in
 `properties.json`. The engine does nothing with it, so it is a label for whoever
 opens this file.
+
+## Where the provisioned resources go
+
+The `_LoadResources` set writes to the FHIR server named by `serverAlias` in its
+`properties.json`, which is `gupz`. That value is a default rather than a hard
+setting: when a provisioning is created from the Manage screen the target server
+can be overruled there. The same server sits behind the client aimed tests, so
+the fixtures this set writes are what a client under test reads back.

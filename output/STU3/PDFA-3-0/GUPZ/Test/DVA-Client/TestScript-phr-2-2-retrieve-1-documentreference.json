@@ -33,15 +33,15 @@
   ],
   "test": [
     {
+      "extension": [
+        {
+          "url": "http://fhir.interoplab.eu/fhir/StructureDefinition/Interoplab-CL-ext-test-request-mode",
+          "valueCode": "extra-allowed"
+        }
+      ],
       "action": [
         {
           "operation": {
-            "requestHeader": [
-              {
-                "field": "Authorization",
-                "value": "Bearer 79339c59-4908-4b0d-8b53-4520f9e4c7d5"
-              }
-            ],
             "type": {
               "code": "read",
               "system": "http://hl7.org/fhir/restful-interaction"
@@ -56,11 +56,27 @@
         },
         {
           "assert": {
-            "description": "Confirm that HTTP header Authorization contains the patient token Bearer 79339c59-4908-4b0d-8b53-4520f9e4c7d5",
+            "extension": [
+              {
+                "url": "http://fhir.interoplab.eu/fhir/StructureDefinition/Interoplab-CL-ext-assert-additional-operators",
+                "valueCode": "exists"
+              }
+            ],
+            "description": "Confirm that the request carries an Authorization header. Its value cannot be compared to a fixed string, because a GUPZ token is encrypted and differs on every run.",
             "direction": "request",
             "headerField": "Authorization",
             "stopTestOnFail": false,
-            "value": "Bearer 79339c59-4908-4b0d-8b53-4520f9e4c7d5",
+            "warningOnly": false
+          }
+        },
+        {
+          "assert": {
+            "description": "Confirm that the Authorization header uses the Bearer scheme, as security.md prescribes.",
+            "direction": "request",
+            "headerField": "Authorization",
+            "operator": "contains",
+            "value": "Bearer ",
+            "stopTestOnFail": false,
             "warningOnly": false
           }
         },

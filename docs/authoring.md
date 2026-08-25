@@ -125,3 +125,48 @@ here: it drops `stopTestOnFail` everywhere, including where the value is `false`
 (you will notice, because the element is 1..1 in R5 and SUSHI refuses to build),
 and for a `profile` carrying an element id it keeps the id and loses the
 canonical (you will not notice).
+
+## Authoring for the client aimed set
+
+Conformancelab does not answer the requests in a client aimed test. The system
+under test calls the address it is given, the proxy forwards the request to a
+FHIR server and returns that answer, and the engine watches: it matches the
+request against the operation that is active and evaluates the asserts. Three
+things follow.
+
+**No stubs for ordinary FHIR traffic.** What decides the answer is the content of
+the server the proxy forwards to, which the provisioning set fills. The `stub`
+operation type is a WireMock stub meant to catch a redirect after a
+`browser-interaction`, so for flows like OAuth, and not for a FHIR read.
+
+**Assert on the request, not on a fixed token.** `headerField` accepts `exists`
+and `notExists`, carried by the Conformancelab extension for additional
+operators, and `contains`, which is standard. That is enough to say a token is
+present and uses the Bearer scheme. It is not enough to say what is inside it: a
+GUPZ token is a JWS inside a JWE, so only the outer header is readable at all,
+and reading even that means chaining the regex mapper, `assert-input-variable`
+and the `base64Decode` mapper function.
+
+**Allow extra requests.** By default the order of requests is fixed and anything
+in between fails the operation that was active, which says nothing about
+conformance. `Interoplab-CL-ext-test-request-mode` on `TestScript.test` takes
+`default`, `extra-allowed` or `random-order`. Use `extra-allowed` unless there is
+a reason not to; a real client resolves a reference when it needs to.
+
+To try a client aimed set without a client, a monitor can mark the tests as
+Automated at setup, after which Conformancelab sends the requests itself.
+
+## What the engine supports beyond the published lists
+
+The engine can do more than the implementation guide records, and the difference
+matters when reading somebody else's script or writing a new assert. The operator
+`manualEval` and the operation code `purge` both work and appear in no ValueSet.
+Treat the guide as what has been agreed and the engine as what runs; something
+that exists only in the engine is not a commitment and can change.
+
+The assert types and the operators each accepts are listed in the Conformancelab
+manual under Evaluating results. The two that are easy to miss: `headerField`,
+`queryParam` and `path` accept `exists` and `notExists`, while `expression` does
+not, and `defaultManualCompletion` with the operator `manualEval` pauses a run
+until somebody judges the outcome by hand. That last one is a way to put a check
+that cannot be automated inside the run rather than beside it.
