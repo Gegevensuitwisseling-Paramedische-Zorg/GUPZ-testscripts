@@ -323,6 +323,14 @@ the server the proxy forwards to, which is what `_LoadResources` puts there. The
 `stub` operation type does exist, but it is a WireMock stub meant to catch a
 redirect after a `browser-interaction`, so for flows like OAuth.
 
+**The server behind the proxy scopes its answer to the token.** Established in an
+automated run on 25 August: with the `Authorization` header present, a search on
+`?status=current` returns only the documents of the patient the token belongs to,
+and `Configuration/QualificationTokens.json` is what makes that mapping. Take the
+header out of the operation and the scoping disappears with it, because
+Conformancelab builds an automated request from the operation description. So the
+header stays on every client operation even though its value is never compared.
+
 **The token cannot be compared to a fixed value.** The imported scripts assert
 that the `Authorization` header equals a MedMij qualification token. A GUPZ token
 is a JWS inside a JWE, minted per run and valid for fifteen minutes, so its value
@@ -371,9 +379,9 @@ what a test data specification still has to describe.
 
 Two changes were made to the imported version.
 
-**The set is trimmed to what the Dataplatform scenarios need**: two patients,
-six DocumentReference resources and four Binary resources, down from three, nine
-and six.
+**The set is trimmed to what the scenarios need**: two patients, seven
+DocumentReference resources and four Binary resources, down from three, nine and
+six.
 
 Out went the five DocumentManifest fixtures. No GUPZ scenario reads them.
 Scenarios 2.2 and 2.3 search for `DocumentManifest` and assert a 404 with an
@@ -383,17 +391,22 @@ so loading them either fails or, worse, succeeds on a platform that should not
 have accepted them. The fixture files themselves are kept under `_reference`,
 unreferenced, so the comparison against the Nictiz baseline stays possible.
 
-Out went the data that belongs to the client aimed side. The third document of
-`XXX_Baltus`, `DocumentReference-kwalificatie3`, points at
-`Binary/foutieve-en-onbekend-id`, a deliberately dangling reference, and appears
-in exactly one place in this repository: the client aimed script
-`phr-1-4-retrieve-0-binary`. `XXX_Ellens` and both of his documents appear in no
-scenario at all. None of it needs to be on a server anyway, because a client
-aimed test is answered by Conformancelab and not by the system under test.
+Out went `XXX_Ellens` and both of his documents, who appear in no scenario on
+either side.
 
-That was not cosmetic. Loading the third Baltus document made scenario 1.1
-return three DocumentReference resources where it asserts two, so the loader was
-failing a scenario with data the scenario was never meant to see.
+The third document of `XXX_Baltus` went out too and came back, which is worth
+recording because it exposes something the two role sets disagree about. It was
+removed on 21 August because the server aimed scenario 1.1 asserts two current
+documents for that patient and was getting three. It was put back on 25 August
+because the client aimed scenario 1.1 asserts three, and that set has nowhere
+else to read from.
+
+Both numbers are right for the interface they were written for. In the Nictiz
+arrangement they never met: the server scenarios run against the supplier's own
+system and the client scenarios against a simulated one. Here both run against
+the same server, so one of them has to be off by one. It is the server aimed
+dry run, because that set is meant for a supplier's platform anyway and reading
+from ours is a convenience. One more argument for a test data specification.
 
 What stays, on purpose, are the documents of `XXX_Schulte` that are superseded or
 entered-in-error. Scenario 2.1 checks that only current documents come back, and

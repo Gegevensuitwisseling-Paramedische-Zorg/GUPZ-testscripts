@@ -9,16 +9,19 @@ Usage: #definition
 * insert metadata(resources-purgecreateupdate-xml)
 * name = "Load_Test_Resources_Purge_Create_Update_XML"
 * title = "Load the test resources onto a server"
-* description = "Load test resources using the update (PUT) operation of the target FHIR server for use in testing. All resource ids are pre-defined. The target FHIR server is expected to support resource create via the update (PUT) operation for client assigned ids. This is provisioning, not a conformance test: a GUPZ data platform reads only, so this set is meant for a reference server used in a dry run. Trimmed to what the Dataplatform scenarios need: two patients, six DocumentReference resources and four Binary resources. Left out are the five DocumentManifest fixtures, which no GUPZ scenario reads and which the specification does not support, and the data that belongs to the client aimed side, being the third document of XXX_Baltus and everything of XXX_Ellens. The documents of XXX_Schulte that are superseded or entered-in-error are kept on purpose: scenario 2.1 checks that only current documents come back, which needs something to filter out. The access tokens are fixed and resolve through Configuration/QualificationTokens.json."
+* description = "Load test resources using the update (PUT) operation of the target FHIR server for use in testing. All resource ids are pre-defined. The target FHIR server is expected to support resource create via the update (PUT) operation for client assigned ids. This is provisioning, not a conformance test: a GUPZ data platform reads only, so this set is meant for a reference server used in a dry run. Trimmed to what the scenarios on both sides need: two patients, seven DocumentReference resources and four Binary resources. Left out are the five DocumentManifest fixtures, which no GUPZ scenario reads and which the specification does not support, and everything of XXX_Ellens, who appears in no scenario on either side. The documents of XXX_Schulte that are superseded or entered-in-error are kept on purpose: scenario 2.1 checks that only current documents come back, which needs something to filter out. The access tokens are fixed and resolve through Configuration/QualificationTokens.json."
 
-// The four PDF documents, then the nine document references that point at them,
-// then the two patients they belong to.
+// The four PDF documents, then the document references that point at them, then
+// the two patients they belong to. Document reference 3 has a deliberately
+// dangling Binary reference; the client aimed scenario 1.4 reads it and expects
+// a 404, and scenario 1.1 counts on it being there.
 * insert loadFixture(Binary, pdfa-binary1, medmij-pdfa-Binary-kwalificatie1.xml)
 * insert loadFixture(Binary, pdfa-binary2, medmij-pdfa-Binary-kwalificatie2.xml)
 * insert loadFixture(Binary, pdfa-binary3, medmij-pdfa-Binary-kwalificatie3.xml)
 * insert loadFixture(Binary, pdfa-binary4, medmij-pdfa-Binary-kwalificatie4.xml)
 * insert loadFixture(DocumentReference, pdfa-documentreference1, medmij-pdfa-DocumentReference-kwalificatie1.xml)
 * insert loadFixture(DocumentReference, pdfa-documentreference2, medmij-pdfa-DocumentReference-kwalificatie2.xml)
+* insert loadFixture(DocumentReference, pdfa-documentreference3, medmij-pdfa-DocumentReference-kwalificatie3.xml)
 * insert loadFixture(DocumentReference, pdfa-documentreference4, medmij-pdfa-DocumentReference-kwalificatie4.xml)
 * insert loadFixture(DocumentReference, pdfa-documentreference5, medmij-pdfa-DocumentReference-kwalificatie5.xml)
 * insert loadFixture(DocumentReference, pdfa-documentreference6, medmij-pdfa-DocumentReference-kwalificatie6.xml)
@@ -49,6 +52,7 @@ Usage: #definition
 * insert putFixture(Binary, pdfa-binary4, 121c15f1-f352-485e-979e-04a131bc6238)
 * insert putFixture(DocumentReference, pdfa-documentreference1, 121c15f1-f352-485e-979e-04a131bc6238)
 * insert putFixture(DocumentReference, pdfa-documentreference2, 121c15f1-f352-485e-979e-04a131bc6238)
+* insert putFixture(DocumentReference, pdfa-documentreference3, 121c15f1-f352-485e-979e-04a131bc6238)
 * insert putFixture(DocumentReference, pdfa-documentreference4, 121c15f1-f352-485e-979e-04a131bc6238)
 * insert putFixture(DocumentReference, pdfa-documentreference5, 121c15f1-f352-485e-979e-04a131bc6238)
 * insert putFixture(DocumentReference, pdfa-documentreference6, 121c15f1-f352-485e-979e-04a131bc6238)
