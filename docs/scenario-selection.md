@@ -280,6 +280,12 @@ patients, six `Binary` resources and nine `DocumentReference` resources, purged
 first and then PUT with client assigned ids. Run it before the Dataplatform set,
 or every scenario fails on missing data rather than on behaviour.
 
+The set is generated from FSH like everything else here, in
+`input/fsh/LoadResources/` with its building blocks in
+`components/provisioning.fsh`. Twelve fixtures, twelve writes and two purges
+come down to a handful of parameterised inserts, which matters because this file
+gets rewritten wholesale the moment GUPZ has test data of its own.
+
 It is provisioning and not a conformance test, and the difference matters.
 [`pdfa.md`][pdfa] describes the data platform as an MHD Document Responder,
 which reads; nothing in the specification says a platform accepts writes over

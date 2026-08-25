@@ -45,7 +45,9 @@ input/
     Dataplatform/    PDF/A, server aimed. One file per scenario, two variants
     DVA-Client/      PDF/A, client aimed
     Auth/            token and authentication, one file per case
+    LoadResources/   the script that writes the fixtures to a server
   static/            files copied verbatim, mirroring the output tree
+Configuration/       token map that the engine reads when the repository loads
 output/              generated, and what Conformancelab reads
 scripts/             conversion and comparison helpers
 tools/postman/       the same requests for checking a response by hand
@@ -109,7 +111,7 @@ output/STU3/PDFA-3-0/GUPZ/Test/
   Dataplatform/      server aimed: the data platform is the system under test
   DVA-Client/        client aimed: the calling party is the system under test
   _reference/        fixtures (resources) and Groovy rules
-  _LoadResources/    provisioning script that loads the fixtures onto a server
+  _LoadResources/    the script that writes the fixtures to a server
 output/STU3/Auth/GUPZ/Test/
   Dataplatform/      server aimed: token and authentication behaviour
 ```

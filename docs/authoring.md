@@ -97,17 +97,17 @@ it.
 
 **With one exception: `setup` and `teardown` disappear without a word.** They
 are listed among the elements the generator knows, so it does not stop, but
-nothing writes them out. Nothing has been lost to this so far, because none of
-the converted scripts has a setup; the only file that does is the provisioning
-script, which has not been converted. Check by hand whether the source has a
-`<setup>` or a `<teardown>` before you trust the output, or fix the generator
-first. `compare-testscript.py` also catches it, which is the reason to run it
-every time.
+nothing writes them out. Nothing has been lost to this so far. Check by hand
+whether the source has a `<setup>` or a `<teardown>` before you trust the
+output, or fix the generator first. `compare-testscript.py` also catches it,
+which is the reason to run it every time.
 
-Two more things the generator assumes, both of which the provisioning script
-breaks: that a script has an `origin` and a `destination` carrying the SUT
-extension, and that it has no `copyright`. Neither assumption holds for a script
-that provisions rather than tests.
+Two more things the generator assumes: that a script has an `origin` and a
+`destination` carrying the SUT extension, and that it has no `copyright`. The
+provisioning script breaks all three assumptions, which is why it was written as
+FSH by hand instead, in `input/fsh/LoadResources/`. Handwritten FSH is fine as
+long as `compare-testscript.py` still says `IDENTICAL` on everything that was
+meant to stay the same.
 
 Then verify the built result against the original, always:
 

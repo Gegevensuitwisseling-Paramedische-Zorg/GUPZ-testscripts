@@ -68,7 +68,7 @@ index; that document holds the reasoning.
 | Version, publisher and `url` carry GUPZ identity instead of Nictiz identity | all 34 scripts | Deliberate deviations |
 | The token is operator input; the MedMij qualification token is removed as a default and the `Bearer` prefix moved into the header | all PDF/A Dataplatform scripts and scenario 2.5 | Deliberate deviations |
 | Two asserts added: a document is offered as a reference to a Binary, and not inline | scenarios 1.1, 1.4 and 2.1 | An assert open-GUPZ requires |
-| The provisioning script is trimmed to what the Dataplatform scenarios need: the DocumentManifest fixtures and the data belonging to the client aimed side are gone | `_LoadResources` | The _LoadResources set |
+| The provisioning script is trimmed to what the Dataplatform scenarios need: the DocumentManifest fixtures and the data belonging to the client aimed side are gone, and it is now generated from FSH | `_LoadResources` | The _LoadResources set |
 | `Configuration/QualificationTokens.json` is carried over, restricted to the three PDF/A patients | the whole repository | Configuration/README.md |
 
 Nothing was removed from the set of scenarios: all ten server aimed and all five
@@ -87,17 +87,19 @@ than structure, and not expressible in FSH anyway; see the README. These can be
 replaced wholesale when Nictiz publishes a new patch release: drop in the new
 file, run the build, done.
 
-**Scenario 2.5 and the provisioning script** are copied rather than generated,
-but they are no longer verbatim: both were edited in place on 21 August 2026, in
-the two rows of the table above that name them. So they now carry the cost of a
-converted script, a comparison and a merge on update, without the benefit of
-being generated. Converting them is the obvious next step and has not been done.
+**The provisioning script** was converted to FSH on 21 August 2026 and its XML
+is gone. It was written by hand rather than run through the generator, because
+the generator assumes an `origin`, a `destination` and no `copyright`, none of
+which holds there, and it silently drops `setup`. The conversion was verified
+with `compare-testscript.py`: every fixture, variable and action matches the
+original path for path, and the only differences are the GUPZ identity, an added
+title, and the long explanation no longer being repeated on the test.
 
-For the provisioning script that is more work than it looks. It declares no
-`origin` and no `destination`, it uses an operation code `purge` that is not in
-the published value set, its `url` does not follow from its `id`, it carries no
-`version`, and it has a `setup` block, which the converter silently drops. See
-[docs/authoring.md](docs/authoring.md).
+**Scenario 2.5** is still copied rather than generated, and is no longer
+verbatim either: it was edited in place on 21 August 2026, in the row of the
+table above that names the token. It therefore carries the cost of a converted
+script, a comparison and a merge on update, without the benefit of being
+generated. Converting it is the obvious next step and has not been done.
 
 ## Updating from Nictiz
 

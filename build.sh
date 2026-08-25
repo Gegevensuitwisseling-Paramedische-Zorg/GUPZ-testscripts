@@ -9,8 +9,8 @@
 #   input/fsh/     TestScripts, written in FSH and built with SUSHI
 #   input/static/  files that are copied verbatim, mirroring the output tree:
 #                  the Test Set properties, the fixtures under _reference, the
-#                  Groovy rule, the provisioning script and the Nictiz scripts
-#                  that have not been converted
+#                  Groovy rule and the Nictiz scripts that have not been
+#                  converted, which is scenario 2.5 and nothing else
 #
 # One file is not copied verbatim. Conformancelab treats every directory holding
 # a properties.json as a Test Set, and it scans the whole repository, so a
@@ -51,6 +51,7 @@ for f in "$SRC"/TestScript-*.json; do
     TestScript-xis-*)  dest="$OUT/STU3/PDFA-3-0/GUPZ/Test/Dataplatform" ;;
     TestScript-phr-*)  dest="$OUT/STU3/PDFA-3-0/GUPZ/Test/DVA-Client" ;;
     TestScript-auth-*) dest="$OUT/STU3/Auth/GUPZ/Test/Dataplatform" ;;
+    TestScript-resources-*) dest="$OUT/STU3/PDFA-3-0/GUPZ/Test/_LoadResources" ;;
     *)
       echo "ERROR: no destination known for $name" >&2
       echo "Add a branch to the case statement in build.sh." >&2
