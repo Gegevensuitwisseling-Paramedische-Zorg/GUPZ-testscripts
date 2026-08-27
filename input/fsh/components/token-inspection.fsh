@@ -110,3 +110,43 @@ RuleSet: assertsNoBsnInUrl
   * requestURL = "fhir.nl/fhir/NamingSystem/bsn"
   * stopTestOnFail = false
   * warningOnly = false
+
+
+// Handing the caller a refusal, and judging what it does with it.
+//
+// Conformancelab can answer from a WireMock mapping instead of forwarding to a
+// FHIR server. That is how a client is shown a response no real server would
+// conveniently produce on demand, a refused token for instance.
+//
+// The mapping lives in a `.stub` file under `_stub/`, is declared as a fixture,
+// and an operation of type `stub` points at that fixture. From then on the
+// engine records the exchange and evaluates the asserts that follow.
+RuleSet: stubFixture(id, file)
+* fixture[+].id = "{id}"
+* fixture[=].autocreate = false
+* fixture[=].autodelete = false
+* fixture[=].resource.reference = "../_stub/{file}"
+
+// Set the description on the operation after inserting this. A RuleSet argument
+// splits on commas, so any sentence worth reading has to be written outside one.
+RuleSet: operationServeStub(id)
+* test[=].action[+].operation.type = $CL-operation-codes#stub
+* test[=].action[=].operation.sourceId = "{id}"
+* test[=].action[=].operation.destination = 1
+* test[=].action[=].operation.origin = 1
+* test[=].action[=].operation.encodeRequestUrl = true
+
+// What happens next cannot be read off the wire. open-GUPZ says what a platform
+// must return but nothing about what a caller must then do, so inventing an
+// assert would invent a requirement. A manual assert is the honest instrument:
+// it pauses the run and puts the question to whoever is watching, and the answer
+// lands in the report like any other result.
+//
+// The default is `fail`, so a check nobody looked at does not quietly pass.
+// Set the description on the assert after inserting this, for the same reason.
+RuleSet: assertManualJudgement
+* test[=].action[+].assert
+  * direction = #response
+  * defaultManualCompletion = #fail
+  * stopTestOnFail = false
+  * warningOnly = false
