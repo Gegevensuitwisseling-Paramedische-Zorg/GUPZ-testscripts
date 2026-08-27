@@ -28,14 +28,29 @@ cd tools/dva-sim && python3 serve.py
 
 Then open <http://127.0.0.1:8765>. It listens on localhost and nowhere else.
 
-The page shows one card per scenario, with what that scenario judges and a button
-to send the request it expects. The cards are read from the built TestScripts
-under `output/`, not written out by hand, so they cannot drift: add a script, run
-`./build.sh`, refresh the page.
+The page groups the scenarios by Test Set, gives the exact name to look for in
+Conformancelab, and says how to get from there to a running test. Under each
+heading is one card per scenario: what it judges, which token to use and why, the
+request it is waiting for, and a button.
 
-Fill in the destination base URL once, at the top. Everything else has a sensible
-default. The dropdown for sending it wrong on purpose applies to whichever card
-you press, so you can send the same scenario correctly and then break it.
+Only one field is global, the destination base URL. Everything else sits on the
+card it belongs to, already set the way that scenario needs it. Three ways the
+choice differs, and the card says which applies:
+
+- **Mint a token.** For a scenario that judges the token itself, so it has to be
+  one you made rather than one handed to you.
+- **The token the script prescribes.** For a scenario that counts documents. The
+  server scopes its answer to the patient the token belongs to, so the counts
+  only add up with that one. The card names the patient.
+- **It does not matter.** For a scenario Conformancelab answers itself from a
+  stub, where nothing about the token decides anything.
+
+Start the run in Conformancelab before sending. A request that arrives while no
+run is active is not attached to anything, and the page says so.
+
+Everything on the cards is read from the built TestScripts under `output/`, down
+to the Test Set name and the list of asserts, so it cannot drift: add a script,
+run `./build.sh`, refresh the page.
 
 ## Running one request from the command line
 
