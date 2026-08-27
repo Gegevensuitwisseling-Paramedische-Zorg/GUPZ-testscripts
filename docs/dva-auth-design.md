@@ -122,17 +122,28 @@ not hold.
 deciding. Each refusal gets its own scenario, and a caller has to handle both
 whichever way the question is settled. So this set is not waiting on that issue.
 
-### Why the judgement is manual
+### Why the judgement is manual, and how one is written
 
 `security.md` says what a platform must return. It says nothing about what a
 caller must then do, and asserting something anyway would invent a requirement
 rather than test one. So the assert pauses the run and puts the question to
-whoever is watching, through `defaultManualCompletion`. The answer lands in the
-report like any other result.
+whoever is watching. The answer lands in the report like any other result.
 
-The default is `fail`, so a check nobody looked at does not quietly pass. It also
-means an unattended run of this set always fails, which is correct: it needs both
-a real caller and somebody watching.
+What makes an assert manual is `operator` `manualEval` and nothing else. The
+engine picks a validator by operator, so that one word is the whole mechanism.
+R5 also has a field `defaultManualCompletion`, which looks like it should do the
+job and does not: the engine stores it and acts on the operator. Written the
+wrong way round the first time, and both scenarios then failed instead of
+waiting, which is a confusing way to fail because nothing about the response was
+wrong.
+
+`manualEval` appears in neither the base FHIR operator list nor the
+Conformancelab one for additional operators, so it lives only in the engine.
+Used anyway, because there is no other way to record a human judgement inside a
+run, and because the imported material relies on it too.
+
+An unattended run of this set therefore never finishes: it waits. That is
+correct. It needs a real caller and somebody watching.
 
 The questions are deliberately concrete. After a 401: did the caller report the
 failure and stop, rather than repeat the same request with the same token or fall
