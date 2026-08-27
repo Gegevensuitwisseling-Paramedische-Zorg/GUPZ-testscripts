@@ -43,7 +43,7 @@ input/
     aliases.fsh
     components/      reusable RuleSets
     Dataplatform/    PDF/A, server aimed. One file per scenario, two variants
-    DVA-Client/      PDF/A, client aimed
+    DVA/             PDF/A, client aimed
     Auth/            token and authentication, server aimed, one file per case
     DVA-Auth/        token and authentication, client aimed
     LoadResources/   the script that writes the fixtures to a server
@@ -52,6 +52,7 @@ Configuration/       token map that the engine reads when the repository loads
 output/              generated, and what Conformancelab reads
 scripts/             conversion and comparison helpers
 tools/postman/       the same requests for checking a response by hand
+tools/dva-sim/       stands in for a DVA, on the command line or in a browser
 ```
 
 `input/fsh/` is the source of the TestScripts, `input/static/` holds everything
@@ -65,14 +66,14 @@ imported script is in [docs/authoring.md](docs/authoring.md).
 Four Test Sets plus a fifth that provisions data. Thirty-eight TestScripts in
 total.
 
-- **PDF/A Dataplatform** and **PDF/A DVA-Client**, testing the document
+- **PDF/A Dataplatform** and **PDF/A DVA**, testing the document
   interface from either side. Which scenarios are in scope and why is in
   [docs/scenario-selection.md](docs/scenario-selection.md).
 - **Auth Dataplatform**, testing the token and authentication part of the
   interface. The model, with the requirement each case tests and the open
   points that still limit some of them, is in
   [docs/auth-test-design.md](docs/auth-test-design.md).
-- **Auth DVA-Client**, testing the token a caller produces rather than what a
+- **Auth DVA**, testing the token a caller produces rather than what a
   platform does with it. How far that reaches without the decryption key, and
   why, is in [docs/dva-auth-design.md](docs/dva-auth-design.md).
 - **PDF/A _LoadResources**, which writes the fixtures to a server. Run it before
@@ -150,12 +151,12 @@ build renames them, see [docs/authoring.md](docs/authoring.md).
 ```
 output/STU3/PDFA-3-0/GUPZ/Test/
   Dataplatform/      server aimed: the data platform is the system under test
-  DVA-Client/        client aimed: the calling party is the system under test
+  DVA/               client aimed: the calling party is the system under test
   _reference/        fixtures (resources) and Groovy rules
   _LoadResources/    the script that writes the fixtures to a server
 output/STU3/Auth/GUPZ/Test/
   Dataplatform/      server aimed: token and authentication behaviour
-  DVA-Client/        client aimed: the token the caller produces
+  DVA/               client aimed: the token the caller produces
 ```
 
 TestScripts refer to `../_reference/...`, so a Test Set directory has to stay
@@ -171,6 +172,17 @@ The PDF/A scripts were imported from the qualification material published by
 Nictiz and adapted for GUPZ. See [UPSTREAM.md](UPSTREAM.md) for the exact
 source, the commit that was imported, the licensing situation and how to pull in
 changes from Nictiz or offer changes back to them.
+
+### Which version of the specification this was written against
+
+`0a273ae` in
+[open-GUPZ](https://github.com/Gegevensuitwisseling-Paramedische-Zorg/open-GUPZ),
+21 August 2026. A commit rather than a release number, because the changelog
+there does not reliably track what changed.
+
+Stated once, here. It used to sit in the description of every Test Set role,
+where it showed up on the screen where somebody picks a role and answered a
+question nobody was asking. Those descriptions now say who the role is for.
 
 ## How we work
 

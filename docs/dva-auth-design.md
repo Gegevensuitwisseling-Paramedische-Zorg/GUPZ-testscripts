@@ -122,32 +122,58 @@ not hold.
 deciding. Each refusal gets its own scenario, and a caller has to handle both
 whichever way the question is settled. So this set is not waiting on that issue.
 
-### Why the judgement is manual
+### Why the judgement is manual, and how one is written
 
 `security.md` says what a platform must return. It says nothing about what a
 caller must then do, and asserting something anyway would invent a requirement
 rather than test one. So the assert pauses the run and puts the question to
-whoever is watching, through `defaultManualCompletion`. The answer lands in the
-report like any other result.
+whoever is watching. The answer lands in the report like any other result.
 
-The default is `fail`, so a check nobody looked at does not quietly pass. It also
-means an unattended run of this set always fails, which is correct: it needs both
-a real caller and somebody watching.
+What makes an assert manual is `operator` `manualEval` and nothing else. The
+engine picks a validator by operator, so that one word is the whole mechanism.
+R5 also has a field `defaultManualCompletion`, which looks like it should do the
+job and does not: the engine stores it and acts on the operator. Written the
+wrong way round the first time, and both scenarios then failed instead of
+waiting, which is a confusing way to fail because nothing about the response was
+wrong.
+
+`manualEval` appears in neither the base FHIR operator list nor the
+Conformancelab one for additional operators, so it lives only in the engine.
+Used anyway, because there is no other way to record a human judgement inside a
+run, and because the imported material relies on it too.
+
+An unattended run of this set therefore never finishes: it waits. That is
+correct. It needs a real caller and somebody watching.
 
 The questions are deliberately concrete. After a 401: did the caller report the
 failure and stop, rather than repeat the same request with the same token or fall
 back to a request without one. After a 403: did it use the `scope` parameter,
 which exists precisely so a caller can ask for what it lacks.
 
-### One thing to verify before relying on this
+### A stub answers on a different address
 
-The stub operations name `destination` 1, the same destination the rest of the
-set uses. Guidance being prepared for the implementation guide gives a stub its
-own destination with a url starting `${STUB-ENDPOINT}`. That is on a branch and
-not published, and the scripts this repository was modelled on used a single
-destination before it existed. So this should work as written, but it has not
-been run. If a stub does not answer, a destination of its own is the first thing
-to try.
+Established on 27 August, after the first attempt left the operation sitting on
+"Waiting for request". Nothing was wrong with the script or with the platform; the
+request went to the wrong place.
+
+Conformancelab reaches these scenarios by two separate paths. A FHIR request goes
+to `/q/<organization id>/<usecase>/<version>/fhir`, which the proxy routes to a
+FHIR server; the engine watches that traffic and matches it against an operation.
+A stub is not on that path at all. It is served by the engine itself, at
+`/cl/<organization id>/`, which the proxy routes straight through, stripping the
+id into a header. Only requests arriving there reach the filter that answers from
+a WireMock mapping.
+
+Both addresses are on the same host and share the same organization id, so one
+base url is enough to work out the other. The simulator in `tools/dva-sim` does
+that: a card whose operation is a stub sends to the derived address and shows it
+before sending.
+
+Guidance being prepared for the implementation guide will let a destination
+declare its own url, with `${STUB-ENDPOINT}` resolving to exactly this address.
+That is not live yet: the engine deliberately does not store `destination.url`
+while its placeholders cannot be resolved. So a single destination is right for
+now, and the address is the caller's problem rather than the script's.
 
 ## What is not covered
 

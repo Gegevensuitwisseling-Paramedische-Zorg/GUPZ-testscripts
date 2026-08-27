@@ -182,3 +182,12 @@ provisioning script uses the operation code `purge`, which is not in the
 published value set and works. Where something like that turns out to be needed,
 say so in the script and raise it with Interoplab, so the behaviour a test
 depends on ends up in the guide rather than only in a comment here.
+
+## A tidy-up still to do
+
+The directories under `input/fsh/` do not name the four Test Sets consistently.
+`Dataplatform` and `DVA` are the two PDF/A sets and `Auth` and `DVA-Auth` the two
+authentication ones, so the same word means a role in one place and a standard in
+another. Nothing depends on it, because `build.sh` routes on the filename prefix
+and not on the directory, but it is worth straightening when the branch is
+merged.

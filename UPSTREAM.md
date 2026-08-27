@@ -69,8 +69,8 @@ index; that document holds the reasoning.
 | The token is operator input; the MedMij qualification token is removed as a default and the `Bearer` prefix moved into the header | all PDF/A Dataplatform scripts and scenario 2.5 | Deliberate deviations |
 | Two asserts added: a document is offered as a reference to a Binary, and not inline | scenarios 1.1, 1.4 and 2.1 | An assert open-GUPZ requires |
 | The provisioning script is trimmed to what the Dataplatform scenarios need: the DocumentManifest fixtures and the data belonging to the client aimed side are gone, and it is now generated from FSH | `_LoadResources` | The _LoadResources set |
-| The token assert on the client side no longer compares to a fixed value; it checks that the header exists and uses the Bearer scheme | the five DVA-Client scripts | Client aimed testing |
-| The five client scripts allow extra requests between operations | the five DVA-Client scripts | Client aimed testing |
+| The token assert on the client side no longer compares to a fixed value; it checks that the header exists and uses the Bearer scheme | the five DVA scripts | Client aimed testing |
+| The five client scripts allow extra requests between operations | the five DVA scripts | Client aimed testing |
 | `Configuration/QualificationTokens.json` is carried over, restricted to the three PDF/A patients | the whole repository | Configuration/README.md |
 
 Nothing was removed from the set of scenarios: all ten server aimed and all five

@@ -29,9 +29,9 @@ Sources referenced below:
 | | |
 |---|---|
 | Dataplatform | 1.1 through 1.5 and 2.1 through 2.5 built from FSH, twenty TestScripts |
-| DVA-Client | 1.1, 1.2, 1.3, 1.4, 2.2 built from FSH, five TestScripts |
+| DVA | 1.1, 1.2, 1.3, 1.4, 2.2 built from FSH, five TestScripts |
 | Provisioning | the script that writes the fixtures, built from FSH, one TestScript |
-| Removed | Dataplatform 3.1 and 3.2, DVA-Client 2.1, 3.1 and 3.2 |
+| Removed | Dataplatform 3.1 and 3.2, DVA 2.1, 3.1 and 3.2 |
 
 Every script here is generated from FSH; nothing is imported XML any more. Each
 one was compared with its Nictiz original and matches it apart from the
@@ -83,7 +83,30 @@ qualification, Ellen XXX_Baltus (fBSN 999910796) with two DocumentReferences and
 no manifest, and Eva XXX_Schulte (fBSN 999910784) with two DocumentReferences and
 three DocumentManifests. The fixtures live in `_reference/resources`.
 
-## Client aimed set: DVA-Client
+## Why the role is called DVA and not DVA-Client
+
+The imported material calls the two roles `XIS-Server-NoManifest` and
+`PHR-Client`, and the rename on 14 August carried the suffix across without
+anyone deciding to. It came off on 27 August, for two reasons.
+
+The pair was not symmetric. One role named the party, the other named the party
+and its role, so `Dataplatform` sat next to `DVA-Client` where the honest pair is
+`Dataplatform` and `DVA`.
+
+And the suffix invited exactly the wrong reading. `DVA-Client` can be taken as
+the DVA in the client role, which is what was meant, or as the client of a DVA,
+which is the PGO and is not on this interface at all. Kickstart asks for the role
+of the system being tested, so the value should name that system and nothing
+more.
+
+Open beyond the name: `DVA` is right while the connectathon covers only the link
+between a DVA and a data platform, but [#74][i74] settles that the generic token
+profile applies to every caller, a NIS or a referral platform included. The role
+will eventually be the calling party rather than the DVA. Not renamed to
+something vaguer now, because vagueness costs more today than precision will cost
+later.
+
+## Client aimed set: DVA
 
 Imported from the Nictiz `PHR-Client` scripts. Here the calling party is the
 system under test, which in a MedMij context is the DVA. This set is second
@@ -215,7 +238,7 @@ patient's token, and filling it ten times is only a way to make mistakes. Same
 engine behaviour, opposite choice, because the sets need opposite things.
 
 Raised with GUPZ as point 3 of [#80][i80], where it was written up as affecting
-five DVA-Client scripts. That understated it: the same token sits in all
+five client scripts. That understated it: the same token sits in all
 eighteen Dataplatform scripts and in the loader as well.
 
 These six are the only differences between the generated scripts and their
@@ -485,6 +508,7 @@ validator will actually check. Related:
 [i66]: https://github.com/Gegevensuitwisseling-Paramedische-Zorg/open-GUPZ/issues/66
 [i72]: https://github.com/Gegevensuitwisseling-Paramedische-Zorg/open-GUPZ/issues/72
 [i73]: https://github.com/Gegevensuitwisseling-Paramedische-Zorg/open-GUPZ/issues/73
+[i74]: https://github.com/Gegevensuitwisseling-Paramedische-Zorg/open-GUPZ/issues/74
 [i80]: https://github.com/Gegevensuitwisseling-Paramedische-Zorg/open-GUPZ/issues/80
 [pdfa]: https://github.com/Gegevensuitwisseling-Paramedische-Zorg/open-GUPZ/blob/main/docs/api/pdfa.md
 [security]: https://github.com/Gegevensuitwisseling-Paramedische-Zorg/open-GUPZ/blob/main/docs/api/security.md

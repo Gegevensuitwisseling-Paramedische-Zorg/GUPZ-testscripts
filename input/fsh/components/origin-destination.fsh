@@ -1,7 +1,7 @@
 // Which side is the system under test.
 //
 // serverAimed: the data platform is the server under test and Conformancelab
-// acts as the client. clientAimed is the mirror image, used by the DVA-Client
+// acts as the client. clientAimed is the mirror image, used by the DVA
 // scripts.
 //
 // The system under test is the side that does not carry a Conformancelab

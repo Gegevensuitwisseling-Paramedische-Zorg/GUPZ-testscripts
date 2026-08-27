@@ -73,8 +73,7 @@
         },
         {
           "assert": {
-            "direction": "response",
-            "defaultManualCompletion": "fail",
+            "operator": "manualEval",
             "stopTestOnFail": false,
             "warningOnly": false,
             "description": "Confirm that the caller reported the failure and stopped. It must not repeat the same request with the same token, and it must not fall back to a request without one."
@@ -108,8 +107,7 @@
         },
         {
           "assert": {
-            "direction": "response",
-            "defaultManualCompletion": "fail",
+            "operator": "manualEval",
             "stopTestOnFail": false,
             "warningOnly": false,
             "description": "Confirm that the caller reported the failure and made use of the scope parameter, which names the scope it would have to request. Repeating the same request unchanged is wrong."

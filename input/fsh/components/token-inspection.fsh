@@ -142,11 +142,21 @@ RuleSet: operationServeStub(id)
 // it pauses the run and puts the question to whoever is watching, and the answer
 // lands in the report like any other result.
 //
-// The default is `fail`, so a check nobody looked at does not quietly pass.
-// Set the description on the assert after inserting this, for the same reason.
+// The operator is what makes it manual. The engine picks the validator by
+// operator, so `manualEval` is the whole mechanism; the run then waits and shows
+// the description as the question to answer. Setting the R5 field
+// `defaultManualCompletion` instead does nothing, which is how this was first
+// written and why both scenarios failed rather than waiting.
+//
+// `manualEval` is in neither the base FHIR operator list nor the Conformancelab
+// one for additional operators, so it exists only in the engine. Used here
+// because there is no other way to record a human judgement in a run, and
+// because the imported material relies on it too.
+//
+// Set the description on the assert after inserting this: a RuleSet argument
+// splits on commas.
 RuleSet: assertManualJudgement
 * test[=].action[+].assert
-  * direction = #response
-  * defaultManualCompletion = #fail
+  * operator = #manualEval
   * stopTestOnFail = false
   * warningOnly = false
