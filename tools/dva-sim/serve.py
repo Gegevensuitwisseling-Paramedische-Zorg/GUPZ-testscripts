@@ -88,8 +88,9 @@ def describe_test(script, test, tokens):
     if stub is not None:
         mode, patient, why = "mint", "baltus", (
             "Conformancelab answers this one itself, from a WireMock mapping, so "
-            "the token does not decide anything. Send any GET and look at what "
-            "comes back.")
+            "the token does not decide anything. This request goes to the stub "
+            "endpoint rather than the FHIR one, which is worked out from the same "
+            "base url; the address is shown below before you send.")
         path = "DocumentReference?status=current"
     elif request and request.get("prescribed_token"):
         who = tokens.get(request["prescribed_token"].replace("Bearer ", ""), "")
@@ -115,6 +116,7 @@ def describe_test(script, test, tokens):
         "mode": mode,
         "patient": patient,
         "why": why,
+        "is_stub": stub is not None,
     }
 
 
@@ -246,6 +248,9 @@ function card(st, s, si, i) {
           <option value="garbled">damage the token</option>
         </select></div>
     </div>
+    ${s.is_stub ? `<div class="warnbox">This one goes to the stub endpoint,
+      <code id="stubaddr${si}-${i}">worked out from the base url above</code>, and not to the
+      FHIR path. A stub is served by the engine itself and the FHIR path never reaches it.</div>` : ''}
     <label>Request</label>
     <input class="path" value="${esc(s.path)}">
     ${s.unresolved ? `<div class="warnbox">This path holds a variable that Conformancelab fills in
@@ -272,7 +277,8 @@ function go(si, i, btn) {
       token: c.querySelector('.own').value.trim(),
       prescribed: SETS[si].scenarios[i].prescribed || '',
       patient: c.querySelector('.patient').value,
-      bsn_in_url: c.querySelector('.bsn').checked
+      bsn_in_url: c.querySelector('.bsn').checked,
+      is_stub: SETS[si].scenarios[i].is_stub
     })})
    .then(r => r.json()).then(d => out.textContent = d.text)
    .catch(e => out.textContent = 'failed: ' + e);
@@ -332,7 +338,13 @@ def run(req):
     args = argparse.Namespace(path=req.get("path", ""),
                               bsn_in_url=req.get("bsn_in_url", False),
                               patient=req.get("patient", "baltus"))
-    url = dva_sim.build_url(req["endpoint"], args)
+    base = req["endpoint"]
+    if req.get("is_stub"):
+        try:
+            base = dva_sim.stub_endpoint(base)
+        except ValueError as e:
+            return str(e)
+    url = dva_sim.build_url(base, args)
     headers = {"Accept": "application/fhir+json"}
     auth = dva_sim.authorization_header(token, req.get("flavour", "valid"))
     if auth is not None:

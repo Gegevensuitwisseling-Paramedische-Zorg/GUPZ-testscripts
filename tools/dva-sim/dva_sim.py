@@ -15,6 +15,7 @@ Standard library only. Python 3.9 or later.
 import argparse
 import json
 import os
+import re
 import shutil
 import subprocess
 import sys
@@ -64,6 +65,26 @@ def mint_token(args, patient):
     if token.count(".") != 4:
         sys.exit(f"jwtcli did not return a compact JWE:\n{token[:200]}")
     return token
+
+
+def stub_endpoint(base):
+    """Turn the destination base url into the address a stub listens on.
+
+    A stub does not hang off the FHIR path. The proxy routes
+    /q/<id>/<usecase>/<version>/fhir to the FHIR server, and /cl/<id>/... to the
+    engine, stripping the id into a header on the way. Only the second one
+    reaches the filter that answers from a WireMock mapping, so a request meant
+    for a stub has to go there.
+
+    Both are derived from the same organization id, so the one address the
+    operator pastes is enough for both.
+    """
+    m = re.match(r"(https?://[^/]+)/[qd]/([^/]+)/", base.rstrip("/") + "/")
+    if not m:
+        raise ValueError(
+            "cannot work out the stub endpoint from " + base + ". Expected a "
+            "destination base url of the form https://host/q/<organization id>/...")
+    return f"{m.group(1)}/cl/{m.group(2)}"
 
 
 def authorization_header(token, flavour):

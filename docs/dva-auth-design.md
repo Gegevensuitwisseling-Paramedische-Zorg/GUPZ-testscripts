@@ -139,15 +139,30 @@ failure and stop, rather than repeat the same request with the same token or fal
 back to a request without one. After a 403: did it use the `scope` parameter,
 which exists precisely so a caller can ask for what it lacks.
 
-### One thing to verify before relying on this
+### A stub answers on a different address
 
-The stub operations name `destination` 1, the same destination the rest of the
-set uses. Guidance being prepared for the implementation guide gives a stub its
-own destination with a url starting `${STUB-ENDPOINT}`. That is on a branch and
-not published, and the scripts this repository was modelled on used a single
-destination before it existed. So this should work as written, but it has not
-been run. If a stub does not answer, a destination of its own is the first thing
-to try.
+Established on 27 August, after the first attempt left the operation sitting on
+"Waiting for request". Nothing was wrong with the script or with the platform; the
+request went to the wrong place.
+
+Conformancelab reaches these scenarios by two separate paths. A FHIR request goes
+to `/q/<organization id>/<usecase>/<version>/fhir`, which the proxy routes to a
+FHIR server; the engine watches that traffic and matches it against an operation.
+A stub is not on that path at all. It is served by the engine itself, at
+`/cl/<organization id>/`, which the proxy routes straight through, stripping the
+id into a header. Only requests arriving there reach the filter that answers from
+a WireMock mapping.
+
+Both addresses are on the same host and share the same organization id, so one
+base url is enough to work out the other. The simulator in `tools/dva-sim` does
+that: a card whose operation is a stub sends to the derived address and shows it
+before sending.
+
+Guidance being prepared for the implementation guide will let a destination
+declare its own url, with `${STUB-ENDPOINT}` resolving to exactly this address.
+That is not live yet: the engine deliberately does not store `destination.url`
+while its placeholders cannot be resolved. So a single destination is right for
+now, and the address is the caller's problem rather than the script's.
 
 ## What is not covered
 

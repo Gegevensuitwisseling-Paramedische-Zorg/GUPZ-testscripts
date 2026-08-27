@@ -45,6 +45,14 @@ choice differs, and the card says which applies:
 - **It does not matter.** For a scenario Conformancelab answers itself from a
   stub, where nothing about the token decides anything.
 
+A scenario answered by a stub goes somewhere else, and the page says so on the
+card. A FHIR request travels to `/q/<organization id>/.../fhir`, which the proxy
+routes to a FHIR server. A stub is served by the engine itself, at
+`/cl/<organization id>/`. Only the second address reaches the code that answers
+from a WireMock mapping, so sending a stub scenario down the FHIR path leaves the
+operation waiting for a request that will never arrive. Both are worked out from
+the one base url you paste.
+
 Start the run in Conformancelab before sending. A request that arrives while no
 run is active is not attached to anything, and the page says so.
 
