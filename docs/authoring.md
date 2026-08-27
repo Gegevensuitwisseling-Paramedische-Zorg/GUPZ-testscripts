@@ -135,12 +135,9 @@ request against the operation that is active and evaluates the asserts. Three
 things follow.
 
 **No stubs for ordinary FHIR traffic.** What decides the answer is the content of
-the server the proxy forwards to, which the provisioning set fills, and which
-`serverAlias` in `properties.json` names. The `stub` operation type exists for
-non-FHIR endpoints, an authorization or token endpoint for instance: the
-operation waits for a request and answers from a WireMock mapping held in a
-fixture. Nothing on this interface needs one, because a caller here sends a FHIR
-request straight away with a token it made itself.
+the server the proxy forwards to, which the provisioning set fills. The `stub`
+operation type is a WireMock stub meant to catch a redirect after a
+`browser-interaction`, so for flows like OAuth, and not for a FHIR read.
 
 **Assert on the request, not on a fixed token.** `headerField` accepts `exists`
 and `notExists`, carried by the Conformancelab extension for additional

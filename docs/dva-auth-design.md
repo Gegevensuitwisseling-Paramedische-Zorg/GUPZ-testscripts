@@ -65,8 +65,6 @@ segments.
 | | No `patient=` in the url | GUPZ-URL-001 | hard |
 | | No `subject=` in the url | GUPZ-URL-001 | hard |
 | | The BSN naming system does not appear in the url | GUPZ-URL-001 | hard |
-| DVA-02a | The caller handles a 401 with `invalid_token` | none | manual |
-| DVA-02b | The caller handles a 403 with `insufficient_scope` | none | manual |
 
 The part count stops the test when it fails, because decoding a header out of
 something that is not a JWE says nothing.
@@ -92,62 +90,6 @@ Two consequences follow. Conformancelab shows the expected request without an
 platform. And an Automated dry run cannot validate this set: with no header
 described, the engine sends no token, and every assert here fails. Only a real
 caller can exercise it.
-
-## Showing the caller a refusal
-
-`security.md` defines two refusals: a 401 with `error=invalid_token` and an
-OperationOutcome carrying `login`, and a 403 with `error=insufficient_scope`, a
-`scope` parameter naming what is needed, and an OperationOutcome carrying
-`forbidden`. The Dataplatform set checks that a platform produces them. DVA-02
-does the reverse: it hands a caller each one and asks what it did with it.
-
-The response comes from a WireMock stub rather than from a server, which is the
-point. A real server refuses when it feels like it; a stub refuses exactly as the
-specification prescribes, every time, in both shapes. The mapping sits in a
-`.stub` file under `_stub/`, is declared as a fixture, and an operation of type
-`stub` points at the fixture.
-
-### The two open ends of #70, and what was done with them
-
-The shape of both responses is settled: status, `WWW-Authenticate` and the
-OperationOutcome code all stand in `security.md`. Two things are not.
-
-**How much detail the text may carry.** In test more is allowed, provided a
-platform can show it switches off. The stubs use the terse form, the one a
-platform must be able to produce, because a caller that copes with a bare
-"The access token expired" copes with a chattier variant too. The reverse does
-not hold.
-
-**When a 401 applies and when a 403.** For these scenarios it does not need
-deciding. Each refusal gets its own scenario, and a caller has to handle both
-whichever way the question is settled. So this set is not waiting on that issue.
-
-### Why the judgement is manual
-
-`security.md` says what a platform must return. It says nothing about what a
-caller must then do, and asserting something anyway would invent a requirement
-rather than test one. So the assert pauses the run and puts the question to
-whoever is watching, through `defaultManualCompletion`. The answer lands in the
-report like any other result.
-
-The default is `fail`, so a check nobody looked at does not quietly pass. It also
-means an unattended run of this set always fails, which is correct: it needs both
-a real caller and somebody watching.
-
-The questions are deliberately concrete. After a 401: did the caller report the
-failure and stop, rather than repeat the same request with the same token or fall
-back to a request without one. After a 403: did it use the `scope` parameter,
-which exists precisely so a caller can ask for what it lacks.
-
-### One thing to verify before relying on this
-
-The stub operations name `destination` 1, the same destination the rest of the
-set uses. Guidance being prepared for the implementation guide gives a stub its
-own destination with a url starting `${STUB-ENDPOINT}`. That is on a branch and
-not published, and the scripts this repository was modelled on used a single
-destination before it existed. So this should work as written, but it has not
-been run. If a stub does not answer, a destination of its own is the first thing
-to try.
 
 ## What is not covered
 
