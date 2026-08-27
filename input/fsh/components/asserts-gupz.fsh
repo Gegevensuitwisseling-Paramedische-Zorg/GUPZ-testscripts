@@ -4,9 +4,10 @@
 // material this repository started from.
 
 
-// pdfa.md: "Het dataplatform biedt alle documentreferenties aan als verwijzing
-// naar een binary resource. Dit betekent dat de Retrieve Document transactie de
-// binary resource bevraagt."
+// pdfa.md requires the data platform to offer every document reference as a
+// reference to a Binary resource, so that the Retrieve Document transaction
+// reads the Binary. The specification is in Dutch; this is what that sentence
+// says.
 //
 // Nothing in the imported set tests this. A platform that returns the PDF
 // inline, base64 encoded in DocumentReference.content.attachment.data, passes
