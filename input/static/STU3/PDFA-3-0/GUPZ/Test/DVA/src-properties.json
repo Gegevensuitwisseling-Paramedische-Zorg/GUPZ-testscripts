@@ -4,7 +4,7 @@
   "informationStandard": "GUPZ PDF/A",
   "usecase": "GUPZ",
   "role": {
-    "name": "DVA-Client",
+    "name": "DVA",
     "description": "Pick this if you retrieve documents from a GUPZ data platform, as a DVA does. Your system calls Conformancelab, which checks that it asks the right questions, handles the answers, and never puts a BSN in a url. Each scenario names the token to use; that token selects the test patient whose documents come back."
   },
   "fhirPackage": [

@@ -49,9 +49,9 @@ for f in "$SRC"/TestScript-*.json; do
   name=$(basename "$f")
   case "$name" in
     TestScript-xis-*)  dest="$OUT/STU3/PDFA-3-0/GUPZ/Test/Dataplatform" ;;
-    TestScript-phr-*)  dest="$OUT/STU3/PDFA-3-0/GUPZ/Test/DVA-Client" ;;
+    TestScript-phr-*)  dest="$OUT/STU3/PDFA-3-0/GUPZ/Test/DVA" ;;
     TestScript-auth-*) dest="$OUT/STU3/Auth/GUPZ/Test/Dataplatform" ;;
-    TestScript-dva-*)  dest="$OUT/STU3/Auth/GUPZ/Test/DVA-Client" ;;
+    TestScript-dva-*)  dest="$OUT/STU3/Auth/GUPZ/Test/DVA" ;;
     TestScript-resources-*) dest="$OUT/STU3/PDFA-3-0/GUPZ/Test/_LoadResources" ;;
     *)
       echo "ERROR: no destination known for $name" >&2

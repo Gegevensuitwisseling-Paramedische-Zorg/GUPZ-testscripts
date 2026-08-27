@@ -43,7 +43,7 @@ input/
     aliases.fsh
     components/      reusable RuleSets
     Dataplatform/    PDF/A, server aimed. One file per scenario, two variants
-    DVA-Client/      PDF/A, client aimed
+    DVA/             PDF/A, client aimed
     Auth/            token and authentication, server aimed, one file per case
     DVA-Auth/        token and authentication, client aimed
     LoadResources/   the script that writes the fixtures to a server
@@ -66,14 +66,14 @@ imported script is in [docs/authoring.md](docs/authoring.md).
 Four Test Sets plus a fifth that provisions data. Thirty-eight TestScripts in
 total.
 
-- **PDF/A Dataplatform** and **PDF/A DVA-Client**, testing the document
+- **PDF/A Dataplatform** and **PDF/A DVA**, testing the document
   interface from either side. Which scenarios are in scope and why is in
   [docs/scenario-selection.md](docs/scenario-selection.md).
 - **Auth Dataplatform**, testing the token and authentication part of the
   interface. The model, with the requirement each case tests and the open
   points that still limit some of them, is in
   [docs/auth-test-design.md](docs/auth-test-design.md).
-- **Auth DVA-Client**, testing the token a caller produces rather than what a
+- **Auth DVA**, testing the token a caller produces rather than what a
   platform does with it. How far that reaches without the decryption key, and
   why, is in [docs/dva-auth-design.md](docs/dva-auth-design.md).
 - **PDF/A _LoadResources**, which writes the fixtures to a server. Run it before
@@ -151,12 +151,12 @@ build renames them, see [docs/authoring.md](docs/authoring.md).
 ```
 output/STU3/PDFA-3-0/GUPZ/Test/
   Dataplatform/      server aimed: the data platform is the system under test
-  DVA-Client/        client aimed: the calling party is the system under test
+  DVA/               client aimed: the calling party is the system under test
   _reference/        fixtures (resources) and Groovy rules
   _LoadResources/    the script that writes the fixtures to a server
 output/STU3/Auth/GUPZ/Test/
   Dataplatform/      server aimed: token and authentication behaviour
-  DVA-Client/        client aimed: the token the caller produces
+  DVA/               client aimed: the token the caller produces
 ```
 
 TestScripts refer to `../_reference/...`, so a Test Set directory has to stay

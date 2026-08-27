@@ -46,7 +46,7 @@ def read_scenarios():
     tokens = qualification_tokens()
     sets = []
     pattern = os.path.join(REPO, "output", "STU3", "*", "GUPZ", "Test",
-                           "DVA-Client", "properties.json")
+                           "DVA", "properties.json")
     for props_path in sorted(glob.glob(pattern)):
         props = json.load(open(props_path))
         folder = os.path.dirname(props_path)
