@@ -5,7 +5,7 @@
   "usecase": "GUPZ",
   "role": {
     "name": "DVA",
-    "description": "Pick this if you call a GUPZ data platform, as a DVA does, and want to know whether the token you produce is right. Your system calls Conformancelab, which reads what it can of the token that arrives: that it is there, that it is encrypted and not merely signed, and that its header declares what the specification prescribes. Send the token you would send to a real platform."
+    "description": "For a caller, such as a DVA. You call us and we check the token you sent. Send the one you would send to a real platform."
   },
   "serverAlias": "gupz"
 }

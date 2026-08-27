@@ -5,7 +5,7 @@
   "usecase": "GUPZ",
   "role": {
     "name": "Dataplatform",
-    "description": "Pick this if you are building a GUPZ data platform and want to know whether its document interface is right. Conformancelab searches for documents, retrieves them through Binary, and works through the error cases, including the graceful refusal GUPZ expects when something asks for a DocumentManifest."
+    "description": "For a data platform. We search for documents, retrieve them through Binary, and work through the error cases."
   },
   "fhirPackage": [
     {
