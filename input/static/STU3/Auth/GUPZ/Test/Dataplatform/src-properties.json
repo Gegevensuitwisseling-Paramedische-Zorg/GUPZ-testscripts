@@ -5,6 +5,6 @@
   "usecase": "GUPZ",
   "role": {
     "name": "Dataplatform",
-    "description": "Token and authentication behaviour of the GUPZ data platform. The token is operator input: paste the token that the case describes. Written against open-GUPZ commit 2f9057f, 18 August 2026."
+    "description": "Pick this if you are building a GUPZ data platform and want to know whether it handles tokens correctly. Conformancelab calls your platform with a valid token and with a series of deliberately wrong ones, and checks that each is accepted or refused the way the specification says. You supply the tokens; every case states which one it needs."
   }
 }

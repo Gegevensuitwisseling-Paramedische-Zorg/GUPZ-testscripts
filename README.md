@@ -173,6 +173,17 @@ Nictiz and adapted for GUPZ. See [UPSTREAM.md](UPSTREAM.md) for the exact
 source, the commit that was imported, the licensing situation and how to pull in
 changes from Nictiz or offer changes back to them.
 
+### Which version of the specification this was written against
+
+`0a273ae` in
+[open-GUPZ](https://github.com/Gegevensuitwisseling-Paramedische-Zorg/open-GUPZ),
+21 August 2026. A commit rather than a release number, because the changelog
+there does not reliably track what changed.
+
+Stated once, here. It used to sit in the description of every Test Set role,
+where it showed up on the screen where somebody picks a role and answered a
+question nobody was asking. Those descriptions now say who the role is for.
+
 ## How we work
 
 Changes go through a branch and a pull request, never straight onto `main`.

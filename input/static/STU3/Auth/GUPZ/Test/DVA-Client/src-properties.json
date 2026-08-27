@@ -5,7 +5,7 @@
   "usecase": "GUPZ",
   "role": {
     "name": "DVA-Client",
-    "description": "The token a caller produces, judged from the receiving side. Conformancelab plays the data platform and reads what it can of the token that arrives. Written against open-GUPZ commit 0a273ae, 21 August 2026."
+    "description": "Pick this if you call a GUPZ data platform, as a DVA does, and want to know whether the token you produce is right. Your system calls Conformancelab, which reads what it can of the token that arrives: that it is there, that it is encrypted and not merely signed, and that its header declares what the specification prescribes. Send the token you would send to a real platform."
   },
   "serverAlias": "gupz"
 }

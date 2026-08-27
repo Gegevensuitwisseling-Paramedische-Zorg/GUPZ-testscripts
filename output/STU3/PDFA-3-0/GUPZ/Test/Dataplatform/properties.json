@@ -5,7 +5,7 @@
   "usecase": "GUPZ",
   "role": {
     "name": "Dataplatform",
-    "description": "The GUPZ data platform acting as an MHD Document Responder. Imported from the Nictiz variant for servers without DocumentManifest support; these scripts also test whether a request on DocumentManifest is handled gracefully. Written against open-GUPZ commit 2f9057f, 18 August 2026."
+    "description": "Pick this if you are building a GUPZ data platform and want to know whether its document interface is right. Conformancelab searches for documents, retrieves them through Binary, and works through the error cases, including the graceful refusal GUPZ expects when something asks for a DocumentManifest."
   },
   "fhirPackage": [
     {
