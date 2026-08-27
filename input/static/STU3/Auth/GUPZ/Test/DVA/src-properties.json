@@ -5,7 +5,7 @@
   "usecase": "GUPZ",
   "role": {
     "name": "DVA",
-    "description": "For a caller, such as a DVA. You call us and we check the token you sent. Send the one you would send to a real platform."
+    "description": "For parties calling a GUPZ data platform, such as a DVA. Goal: establish that the token the calling system produces conforms to the specification. Send the token that would be sent to a live data platform."
   },
   "serverAlias": "gupz"
 }

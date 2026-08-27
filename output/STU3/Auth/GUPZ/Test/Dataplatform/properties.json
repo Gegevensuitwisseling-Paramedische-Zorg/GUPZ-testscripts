@@ -5,6 +5,6 @@
   "usecase": "GUPZ",
   "role": {
     "name": "Dataplatform",
-    "description": "For a data platform. We call you with good and bad tokens and check that each one is accepted or refused as it should be. You supply the tokens."
+    "description": "For parties implementing a GUPZ data platform. Goal: establish that a valid token is accepted and that invalid tokens are refused as the specification requires. The tester supplies the tokens."
   }
 }
