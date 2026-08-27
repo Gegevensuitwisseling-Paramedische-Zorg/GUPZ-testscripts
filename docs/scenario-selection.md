@@ -323,6 +323,15 @@ the server the proxy forwards to, which is what `_LoadResources` puts there. The
 `stub` operation type does exist, but it is a WireMock stub meant to catch a
 redirect after a `browser-interaction`, so for flows like OAuth.
 
+**Which server answers is now declared.** A destination with the Conformancelab
+profile and no `url` of its own resolves to the FHIR server named by
+`serverAlias` in `properties.json`, and falls back to the environment default
+when there is none. Both client aimed sets used to rely on that fallback; they
+now name `gupz`, the same server the provisioning set writes to. Conformancelab
+also allows a `url` per destination, either literal or through
+`${SERVER-ALIAS, <alias>}`, which is the way to let a client set read from a
+different server than the one provisioning fills. Not needed here.
+
 **The server behind the proxy scopes its answer to the token.** Established in an
 automated run on 25 August: with the `Authorization` header present, a search on
 `?status=current` returns only the documents of the patient the token belongs to,
