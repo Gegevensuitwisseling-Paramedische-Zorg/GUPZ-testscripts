@@ -52,6 +52,7 @@ Configuration/       token map that the engine reads when the repository loads
 output/              generated, and what Conformancelab reads
 scripts/             conversion and comparison helpers
 tools/postman/       the same requests for checking a response by hand
+tools/dva-sim/       stands in for a DVA, to drive the client aimed sets
 ```
 
 `input/fsh/` is the source of the TestScripts, `input/static/` holds everything
