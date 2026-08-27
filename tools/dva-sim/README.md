@@ -28,8 +28,8 @@ cd tools/dva-sim && python3 serve.py
 
 Then open <http://127.0.0.1:8765>. It listens on localhost and nowhere else.
 
-The page groups the scenarios by Test Set, gives the exact name to look for in
-Conformancelab, and says how to get from there to a running test. Under each
+The page groups the scenarios the way the Kickstart screen does, first the Test
+Set and then the role, and says how to get from there to a running test. Under each
 heading is one card per scenario: what it judges, which token to use and why, the
 request it is waiting for, and a button.
 

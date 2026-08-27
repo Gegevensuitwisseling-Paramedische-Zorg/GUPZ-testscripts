@@ -50,8 +50,10 @@ def read_scenarios():
     for props_path in sorted(glob.glob(pattern)):
         props = json.load(open(props_path))
         folder = os.path.dirname(props_path)
-        name = " - ".join([props["informationStandard"], props["goal"],
-                           props["usecase"], props.get("role", {}).get("name", "")])
+        # The Kickstart screen shows the information standard and then the role;
+        # goal and usecase do not appear in the picker, so they are not repeated
+        # in the instruction here.
+        name = f"{props['informationStandard']} / {props.get('role', {}).get('name', '')}"
         scenarios = []
         for path in sorted(glob.glob(os.path.join(folder, "TestScript-*.json"))):
             d = json.load(open(path))
@@ -201,11 +203,11 @@ fetch('/api/scenarios').then(r => r.json()).then(sets => {
   document.getElementById('sets').innerHTML = sets.map((st, si) => `
     <div class="setgroup">
       <div class="sethead">
-        <h2>${esc(st.role)} &middot; ${esc(st.standard)}</h2>
-        <div class="setname">${esc(st.name)}</div>
+        <h2>${esc(st.standard)} &middot; ${esc(st.role)}</h2>
         <ol class="steps-to-open">
-          <li>Open that Test Set in Conformancelab and pick the role <b>${esc(st.role)}</b>.</li>
-          <li>Copy the destination base URL into the field above.</li>
+          <li>On the Kickstart screen, pick Test set <b>${esc(st.standard)}</b>,
+              then role <b>${esc(st.role)}</b>.</li>
+          <li>Copy the destination base URL it shows into the field above.</li>
           <li>Press <b>Create test run</b>, then <b>Start test run</b>.</li>
           <li>Work down the cards below in order, and watch the run while you do.</li>
         </ol>
