@@ -18,13 +18,32 @@ is that something.
 It asserts nothing. The asserts are in the TestScripts. This only puts a request
 in front of them.
 
-## Running it
+## Two ways to run it
+
+A page in the browser, which is the easier one:
+
+```bash
+cd tools/dva-sim && python3 serve.py
+```
+
+Then open <http://127.0.0.1:8765>. It listens on localhost and nowhere else.
+
+The page shows one card per scenario, with what that scenario judges and a button
+to send the request it expects. The cards are read from the built TestScripts
+under `output/`, not written out by hand, so they cannot drift: add a script, run
+`./build.sh`, refresh the page.
+
+Fill in the destination base URL once, at the top. Everything else has a sensible
+default. The dropdown for sending it wrong on purpose applies to whichever card
+you press, so you can send the same scenario correctly and then break it.
+
+## Running one request from the command line
 
 Standard library Python, no install. Minting a token needs `dotnet` and the
 `jwtcli` tool from the open-GUPZ repository, plus a key pair.
 
 ```bash
-python3 dva-sim.py --endpoint <destination base url from the Test setup screen>
+python3 dva_sim.py --endpoint <destination base url from the Test setup screen>
 ```
 
 That mints a token for `XXX_Baltus` and sends
@@ -34,13 +53,13 @@ Other things to send:
 
 ```bash
 # the other test patient
-python3 dva-sim.py --endpoint <url> --patient schulte
+python3 dva_sim.py --endpoint <url> --patient schulte
 
 # a token somebody else made, or one from a file
-python3 dva-sim.py --endpoint <url> --token-file ~/Claude/GUPZ/testkeys/T1-baltus.txt
+python3 dva_sim.py --endpoint <url> --token-file ~/Claude/GUPZ/testkeys/T1-baltus.txt
 
 # something else entirely
-python3 dva-sim.py --endpoint <url> --path 'Binary/pdfa-binary1'
+python3 dva_sim.py --endpoint <url> --path 'Binary/pdfa-binary1'
 ```
 
 ## Sending it wrong on purpose

@@ -102,6 +102,20 @@ def show(title, lines):
         print(line)
 
 
+def send(url, headers, timeout=90):
+    """Perform the request and return status, headers and body as text.
+
+    Shared with the browser front end, so that both ways of driving a scenario
+    go through the same code and cannot drift apart.
+    """
+    req = urllib.request.Request(url, headers=headers, method="GET")
+    try:
+        with urllib.request.urlopen(req, timeout=timeout) as r:
+            return r.status, dict(r.headers), r.read()
+    except urllib.error.HTTPError as e:
+        return e.code, dict(e.headers), e.read()
+
+
 def main():
     p = argparse.ArgumentParser(
         description="Send one request to Conformancelab as a DVA would.")
@@ -153,12 +167,8 @@ def main():
                                  f"{shown['Authorization'].count('.') + 1} parts)"
     show("Request", [f"GET {url}"] + [f"{k}: {v}" for k, v in shown.items()])
 
-    req = urllib.request.Request(url, headers=headers, method="GET")
     try:
-        with urllib.request.urlopen(req, timeout=90) as r:
-            status, resp_headers, body = r.status, dict(r.headers), r.read()
-    except urllib.error.HTTPError as e:
-        status, resp_headers, body = e.code, dict(e.headers), e.read()
+        status, resp_headers, body = send(url, headers)
     except urllib.error.URLError as e:
         sys.exit(f"\nCould not reach {url}: {e.reason}")
 
