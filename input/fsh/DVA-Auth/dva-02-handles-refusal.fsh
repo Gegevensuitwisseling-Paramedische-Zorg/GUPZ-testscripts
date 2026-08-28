@@ -10,7 +10,7 @@ Usage: #definition
 * title = "DVA-02 - The caller handles a refused request"
 * description = "Shows the caller the two refusals security.md defines, a 401 for an invalid token and a 403 for a request outside the granted scope, and asks whether it dealt with them properly. The responses come from WireMock stubs, so they are exactly what the specification prescribes rather than whatever a server happens to return. What the caller must do next is not specified anywhere, so the judgement is manual."
 
-* insert clientAimed
+* insert clientAimedStub
 * insert stubFixture(refused-invalid-token, refused-invalid-token.stub)
 * insert stubFixture(refused-insufficient-scope, refused-insufficient-scope.stub)
 

@@ -70,6 +70,8 @@ Every difference is deliberate and argued in
 | The client side token assert checks presence and scheme instead of a fixed value | the five PDF/A DVA scripts | D-15 |
 | The client scripts allow extra requests between operations | the five PDF/A DVA scripts | D-16 |
 | `Configuration/QualificationTokens.json` is carried over, restricted to the PDF/A patients | the whole repository | D-14 |
+| Every destination carries a title | all converted scripts | D-27 |
+| Operations declare the `Interoplab-CL-operation-type` code system, which the IG defines, instead of `Interoplab-CL-operation-codes`, which it does not | `_LoadResources` | D-28 |
 
 No scenario was removed from the import: all ten server aimed and all five
 client aimed scenarios are present. Which of them GUPZ runs is in

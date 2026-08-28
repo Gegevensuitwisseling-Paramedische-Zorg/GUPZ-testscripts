@@ -235,7 +235,7 @@ refuses exactly as the specification prescribes, every time, in both shapes. The
 mapping sits in a `.stub` file under `_stub/`, is declared as a fixture, and an
 operation of type `stub` points at it. Stubs answer on a different address than
 FHIR traffic, see
-[authoring.md](authoring.md#where-a-request-goes).
+[authoring.md](authoring.md#destinations).
 
 Not covered beyond the envelope: the signature, which needs the decrypted inner
 token; and one token per patient, which is observable in principle by capturing

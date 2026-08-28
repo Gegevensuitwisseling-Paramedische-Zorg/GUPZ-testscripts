@@ -295,6 +295,31 @@ exact status code, `WWW-Authenticate` header and `OperationOutcome` are blocked
 on [#70][i70]; the model is written so those asserts can be added without
 restructuring. See [open-points.md OP-01](open-points.md#op-01-401-against-403).
 
+### D-26 A stub scenario declares `${STUB-ENDPOINT}` as its destination
+
+A WireMock stub is not served on the FHIR path. Until the IG published section
+3.2.1 the address had to be worked out from the base URL, which cost a run to
+discover. A `Conformancelab-Server` destination with `url` `${STUB-ENDPOINT}`
+resolves to it, so the address comes out of the setup screen instead. Applies to
+DVA-02, through the `clientAimedStub` RuleSet.
+
+Not adopted: naming the endpoint with a literal URL carrying
+`${ORGANIZATION-ID}`, which is what the neighbouring Nictiz material does. That
+puts an environment into the test material; `${STUB-ENDPOINT}` does not.
+
+### D-27 Every destination carries a title
+
+`Interoplab-CL-ext-destination-title` names a destination on the setup screen.
+Without it an operator fills in a field that says only "destination". The
+imported scripts have none, so this is a deviation from them.
+
+### D-28 Operations use the `Interoplab-CL-operation-type` code system
+
+The imported scripts declare `purge` and `stub` against
+`.../CodeSystem/Interoplab-CL-operation-codes`, which the IG does not define.
+The IG defines `.../CodeSystem/Interoplab-CL-operation-type`. The engine matches
+on the code, so both run, but only one is a defined artefact.
+
 ### D-25 Everything is in English
 
 Documentation, comments, commit messages and the TestScripts themselves. The

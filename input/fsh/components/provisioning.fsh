@@ -29,7 +29,7 @@ RuleSet: loadFixture(kind, id, file)
 // Clear out a patient and everything hanging off it, with the Conformancelab
 // operation code purge.
 RuleSet: purgePatient(id, token)
-* setup.action[+].operation.type = $CL-operation-codes#purge
+* setup.action[+].operation.type = $CL-operation-type#purge
 * setup.action[=].operation.resource = "Patient"
 * setup.action[=].operation.accept = #xml
 * setup.action[=].operation.contentType = #xml
