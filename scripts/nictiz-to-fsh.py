@@ -124,7 +124,7 @@ def emit_operation(op, out):
     fields = [h[0] for h in headers]
     # The imported scripts send three headers, of which only Authorization
     # survives on this interface; the MedMij tracing headers are dropped. See
-    # docs/scenario-selection.md. The Bearer prefix may or may not be present in
+    # decision D-08. The Bearer prefix may or may not be present in
     # the source, so the patient is read out of the variable name itself.
     if fields == ["Authorization", "MedMij-Request-ID", "X-Correlation-ID"]:
         m = re.search(r"\$\{patient-token-XXX_(\w+)\}", headers[0][1])
@@ -220,7 +220,7 @@ def convert(path):
         if vname.startswith("patient-token-"):
             # The default is dropped on purpose: the imported scripts default to
             # a MedMij qualification token, which no GUPZ platform accepts. The
-            # token is operator input. See docs/scenario-selection.md.
+            # token is operator input. See decision D-11.
             patient = vname.replace("patient-token-", "")
             body.append(f"* insert variablePatientToken({patient})")
         elif vname == "X-Correlation-ID":
