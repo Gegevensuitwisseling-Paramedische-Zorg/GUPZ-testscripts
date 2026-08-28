@@ -1,42 +1,35 @@
 # Configuration
 
-Picked up by Conformancelab when the repository is loaded.
+Read by Conformancelab when the repository is loaded.
 
 ## QualificationTokens.json
 
-Maps an access token to the test patient it belongs to. The structure is taken
-from the Nictiz material, restricted to the two patients that GUPZ actually uses;
-the entries for the other information standards, and the one for XXX_Ellens, are
-left out. Ellens appears in no scenario on either side and is no longer loaded.
+Maps an access token to the test patient it belongs to. The structure comes from
+the Nictiz material, restricted to the two patients GUPZ uses; the entries for
+other information standards, and the one for XXX_Ellens, are left out.
 
 **The tokens themselves are new and must stay different from the Nictiz ones.**
 Reusing theirs would mean two entries claiming the same token on an engine that
-holds both sets, and the resolution would depend on which one happened to be
-loaded. The patients they point at are still the Nictiz ones, with Nictiz
-resource ids and BSNs, because the fixtures are; the token is the only part that
-had to change.
+holds both sets, and resolution would depend on which was loaded last. The
+patients they point at are still the Nictiz ones, with Nictiz resource ids and
+BSNs, because the fixtures are.
 
-This is the mechanism the provisioning script in `_LoadResources` relies on. Its
-tokens are fixed in the script and are resolved here, which is why that one set
-does not take its token as operator input the way every other set does. The
-distinction is deliberate: `_LoadResources` writes test data and is not a
-conformance test, so a fixed opaque token there is a label rather than a
-credential.
+This is the mechanism `_LoadResources` relies on, and the reason that one set
+keeps its tokens fixed in the script while every other set takes the token as
+operator input. See decisions D-11 and D-14.
 
 Nothing in the GUPZ token model comes through this file. A GUPZ token is a JWS
-inside a JWE, it is minted per run and it is valid for fifteen minutes, so it
-cannot live in a file that is committed. Every set that tests the data platform
-therefore takes its token as operator input. See
-[docs/scenario-selection.md](../docs/scenario-selection.md).
+inside a JWE, minted per run and valid for fifteen minutes, so it cannot live in
+a committed file.
 
 `qualificationScript` reads `GUPZ PDF/A`, matching the information standard in
-`properties.json`. The engine does nothing with it, so it is a label for whoever
-opens this file.
+`properties.json`. The engine does nothing with it; it is a label for whoever
+opens the file.
 
-## Where the provisioned resources go
+## Target server
 
-The `_LoadResources` set writes to the FHIR server named by `serverAlias` in its
-`properties.json`, which is `gupz`. That value is a default rather than a hard
-setting: when a provisioning is created from the Manage screen the target server
-can be overruled there. The same server sits behind the client aimed tests, so
-the fixtures this set writes are what a client under test reads back.
+`_LoadResources` writes to the FHIR server named by `serverAlias` in its
+`properties.json`, which is `gupz`. That is a default: when a provisioning is
+created from the Manage screen the target server can be overruled there. The
+same server sits behind the client aimed tests, so what this set writes is what
+a client under test reads back.
