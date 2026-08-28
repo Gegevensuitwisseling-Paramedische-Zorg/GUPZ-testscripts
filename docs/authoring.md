@@ -132,16 +132,22 @@ request against the operation that is active. Four consequences for authoring:
   tests as Automated. That does not work for Auth DVA, which prescribes no token
   (D-20).
 
-### Where a request goes
+### Destinations
 
-| Traffic | Address |
+Every destination carries `Interoplab-CL-ext-destination-title`, and that title
+is the name Conformancelab shows at setup. A `Conformancelab-Server` destination
+resolves its address from `url`:
+
+| `url` | Resolves to |
 |---|---|
-| FHIR request | `/q/<organization id>/<usecase>/<version>/fhir` |
-| Stub | `/cl/<organization id>/` |
+| omitted | the server named by `serverAlias` |
+| a literal URL | itself |
+| `${SERVER-ALIAS, <alias>}` | the proxy URL for that alias |
+| `${STUB-ENDPOINT}` | the endpoint where WireMock stubs are served |
 
-Only a request arriving at the second address is answered from a WireMock
-mapping. Both are on the same host and share the organization id, so one base
-URL yields the other.
+A stub is not served on the FHIR path, so a scenario answered from a stub
+declares `${STUB-ENDPOINT}` as its destination and Conformancelab hands that
+address out. Use the `clientAimedStub` RuleSet.
 
 ### Reading a token
 

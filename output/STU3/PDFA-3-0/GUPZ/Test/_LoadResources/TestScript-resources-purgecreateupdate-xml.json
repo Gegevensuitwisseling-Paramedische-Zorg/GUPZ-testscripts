@@ -203,7 +203,7 @@
           ],
           "type": {
             "code": "purge",
-            "system": "http://fhir.interoplab.eu/fhir/CodeSystem/Interoplab-CL-operation-codes"
+            "system": "http://fhir.interoplab.eu/fhir/CodeSystem/Interoplab-CL-operation-type"
           },
           "resource": "Patient",
           "accept": "xml",
@@ -231,7 +231,7 @@
           ],
           "type": {
             "code": "purge",
-            "system": "http://fhir.interoplab.eu/fhir/CodeSystem/Interoplab-CL-operation-codes"
+            "system": "http://fhir.interoplab.eu/fhir/CodeSystem/Interoplab-CL-operation-type"
           },
           "resource": "Patient",
           "accept": "xml",

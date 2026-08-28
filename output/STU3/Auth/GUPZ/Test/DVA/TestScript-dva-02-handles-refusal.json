@@ -24,11 +24,18 @@
   ],
   "destination": [
     {
+      "extension": [
+        {
+          "url": "http://fhir.interoplab.eu/fhir/StructureDefinition/Interoplab-CL-ext-destination-title",
+          "valueString": "Stub endpoint"
+        }
+      ],
       "index": 1,
       "profile": {
         "code": "Conformancelab-Server",
         "system": "http://fhir.interoplab.eu/fhir/CodeSystem/Interoplab-CL-destination-profile"
-      }
+      },
+      "url": "${STUB-ENDPOINT}"
     }
   ],
   "fixture": [
@@ -62,7 +69,7 @@
           "operation": {
             "type": {
               "code": "stub",
-              "system": "http://fhir.interoplab.eu/fhir/CodeSystem/Interoplab-CL-operation-codes"
+              "system": "http://fhir.interoplab.eu/fhir/CodeSystem/Interoplab-CL-operation-type"
             },
             "sourceId": "refused-invalid-token",
             "destination": 1,
@@ -96,7 +103,7 @@
           "operation": {
             "type": {
               "code": "stub",
-              "system": "http://fhir.interoplab.eu/fhir/CodeSystem/Interoplab-CL-operation-codes"
+              "system": "http://fhir.interoplab.eu/fhir/CodeSystem/Interoplab-CL-operation-type"
             },
             "sourceId": "refused-insufficient-scope",
             "destination": 1,

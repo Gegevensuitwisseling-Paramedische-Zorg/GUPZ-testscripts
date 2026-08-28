@@ -11,7 +11,7 @@ This document was split up. Nothing was dropped; every section has a new home.
 | Showing the caller a refusal | [test-sets.md](test-sets.md#auth-dva), [decisions.md D-21](decisions.md#d-21-the-dva-02-stubs-use-the-terse-error-form) |
 | The two open ends of #70 | [open-points.md OP-01](open-points.md#op-01-401-against-403), [decisions.md D-21](decisions.md#d-21-the-dva-02-stubs-use-the-terse-error-form) |
 | Why the judgement is manual, and how one is written | [decisions.md D-22](decisions.md#d-22-the-dva-02-judgement-is-manual) |
-| A stub answers on a different address | [authoring.md](authoring.md#where-a-request-goes) |
+| A stub answers on a different address | [authoring.md](authoring.md#destinations) |
 | What is not covered | [test-sets.md](test-sets.md#auth-dva), [requirements.md](requirements.md#what-no-testscript-covers) |
 
 Start at the [README](../README.md) for the whole set.

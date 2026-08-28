@@ -24,6 +24,12 @@
   ],
   "destination": [
     {
+      "extension": [
+        {
+          "url": "http://fhir.interoplab.eu/fhir/StructureDefinition/Interoplab-CL-ext-destination-title",
+          "valueString": "FHIR endpoint"
+        }
+      ],
       "index": 1,
       "profile": {
         "code": "Conformancelab-Server",

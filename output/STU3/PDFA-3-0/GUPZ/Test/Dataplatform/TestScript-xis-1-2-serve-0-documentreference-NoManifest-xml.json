@@ -39,6 +39,12 @@
   ],
   "destination": [
     {
+      "extension": [
+        {
+          "url": "http://fhir.interoplab.eu/fhir/StructureDefinition/Interoplab-CL-ext-destination-title",
+          "valueString": "Data platform"
+        }
+      ],
       "index": 1,
       "profile": {
         "code": "FHIR-Server",

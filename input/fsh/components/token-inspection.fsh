@@ -128,7 +128,7 @@ RuleSet: stubFixture(id, file)
 // Set the description on the operation after inserting this. A RuleSet argument
 // splits on commas, so any sentence worth reading has to be written outside one.
 RuleSet: operationServeStub(id)
-* test[=].action[+].operation.type = $CL-operation-codes#stub
+* test[=].action[+].operation.type = $CL-operation-type#stub
 * test[=].action[=].operation.sourceId = "{id}"
 * test[=].action[=].operation.destination = 1
 * test[=].action[=].operation.origin = 1
