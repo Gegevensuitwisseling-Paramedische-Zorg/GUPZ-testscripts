@@ -6,7 +6,7 @@
     "response": {
         "status": 401,
         "headers": {
-            "WWW-Authenticate": "Bearer realm=\"${STUB-ENDPOINT}\", error=\"invalid_token\", error_description=\"The access token expired\"",
+            "WWW-Authenticate": "Bearer realm=\"GUPZ\", error=\"invalid_token\", error_description=\"The access token expired\"",
             "Content-Type": "application/fhir+json"
         },
         "jsonBody": {
