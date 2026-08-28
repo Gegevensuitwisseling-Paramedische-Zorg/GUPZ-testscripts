@@ -1,6 +1,6 @@
 // What a caller does when the platform refuses. Two scenarios, one per refusal
-// that security.md defines. See docs/dva-auth-design.md for why the response is
-// stubbed and why the judgement is manual.
+// that security.md defines. See decisions D-21 and D-22 in docs/decisions.md
+// for why the response is stubbed and why the judgement is manual.
 
 Instance: dva-02-handles-refusal
 InstanceOf: TestScript

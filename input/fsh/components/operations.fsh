@@ -8,7 +8,7 @@
 // Only Authorization is sent. The imported scripts also carried
 // MedMij-Request-ID and X-Correlation-ID, which the MedMij Afsprakenstelsel
 // requires; the data platform sits outside that framework, so they are dropped.
-// See scenario-selection.md.
+// See decision D-08 in docs/decisions.md.
 
 // The Bearer prefix lives here and not in the variable, so the operator pastes
 // the bare token. The imported scripts carried the prefix inside the default

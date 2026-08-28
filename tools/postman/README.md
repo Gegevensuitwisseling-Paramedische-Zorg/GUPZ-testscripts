@@ -1,17 +1,16 @@
-# Hand checks with Postman
+# Postman collection
 
-Conformancelab drives the tests: for a server aimed Test Set it is the client
-and it makes the requests itself. This collection does not run anything. It
-holds the same requests so that a response can be inspected by hand, which is
-how you tell whether a failing assert is caused by the script or by the server
-under test.
+The same requests as the server aimed Test Sets, for checking a response by
+hand. It runs nothing; Conformancelab drives the tests.
 
-Two other uses. Before running the full set against a supplier, one request is a
-quick way to find out whether the endpoint answers at all with the certificate
-and the token in place. And for the client aimed Test Set, where Conformancelab
-plays the server and waits to be called, a client has to make the requests;
-Postman can be that client, pointed at the base url Conformancelab shows for the
-run.
+Three uses:
+
+- Telling whether a failing assert is caused by the script or by the server
+  under test.
+- Checking, before a full run, whether a supplier endpoint answers at all with
+  the certificate and the token in place.
+- Acting as the client for a client aimed Test Set, pointed at the base URL
+  Conformancelab shows for the run.
 
 ## Setting up
 
@@ -20,17 +19,16 @@ variables:
 
 | Variable | Meaning |
 |---|---|
-| `baseUrl` | The FHIR base of the server under test. `https://hapi.fhir.org/baseDstu3` answers our searches and is a reasonable dry run target |
-| `token` | The token for the first test patient, generated with `JwtCliTool` |
-| `tokenPatient2` | The token for the second test patient, needed for AUTH-11 |
+| `baseUrl` | FHIR base of the server under test. `https://hapi.fhir.org/baseDstu3` answers our searches and is a reasonable dry run target |
+| `token` | Token for the first test patient, generated with `JwtCliTool` |
+| `tokenPatient2` | Token for the second test patient, needed for AUTH-11 |
 | `binaryId` | The Binary that scenario 1.5 reads and expects not to find |
 
 `MedMij-Request-ID` and `X-Correlation-ID` are filled with a fresh guid per
-request, matching what the scripts send.
+request. The TestScripts no longer send them (decision D-08); the collection
+still does, so that a supplier expecting them is not the variable under
+investigation.
 
-## What to expect against hapi.fhir.org
-
-The searches answer and return a Bundle, so the shape of the request is right.
-The fixtures are not loaded there, so the content is somebody else's. That is the
-point of a dry run: it separates "the request is well formed" from "the platform
-holds the right data".
+Against `hapi.fhir.org` the searches answer and return a Bundle, so the shape of
+the request is right. The fixtures are not loaded there, so the content is
+somebody else's.

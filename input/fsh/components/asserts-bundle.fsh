@@ -8,7 +8,7 @@
 // The last assert calls a Groovy rule. Nictiz declares that with the Touchstone
 // extension; here it is the Conformancelab equivalent
 // Interoplab-CL-ext-assert-rule, which is structurally the same. See
-// docs/scenario-selection.md.
+// decision D-06 in docs/decisions.md.
 
 RuleSet: assertsBundleSearchsetCore
 * test[=].action[+].assert

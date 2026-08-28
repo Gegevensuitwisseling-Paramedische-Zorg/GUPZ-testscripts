@@ -26,8 +26,8 @@ RuleSet: loadFixture(kind, id, file)
 * variable[=].expression = "{kind}.id"
 * variable[=].sourceId = "{kind}-{id}"
 
-// Clear out a patient and everything hanging off it. Uses the Conformancelab
-// operation code purge, which is not in the published FHIR value set.
+// Clear out a patient and everything hanging off it, with the Conformancelab
+// operation code purge.
 RuleSet: purgePatient(id, token)
 * setup.action[+].operation.type = $CL-operation-codes#purge
 * setup.action[=].operation.resource = "Patient"

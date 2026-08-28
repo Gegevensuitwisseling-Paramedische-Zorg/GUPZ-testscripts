@@ -40,7 +40,7 @@
 // than a Binary reference, because Nictiz built that patient for the scenario
 // 2.5 flow. Under the GUPZ rule that data is not conformant, so scenario 2.1
 // fails on it, and it fails on the test data and not on the platform. The fix
-// is GUPZ test data, not a softer assert. See docs/scenario-selection.md.
+// is GUPZ test data, not a softer assert. See docs/open-points.md OP-04.
 RuleSet: assertsDocumentByBinaryReference
 * test[=].action[+].assert
   * description = "Confirm that every returned DocumentReference offers its document as a reference to a Binary resource. pdfa.md requires the data platform to offer all document references this way, so that the Retrieve Document transaction reads the Binary."
