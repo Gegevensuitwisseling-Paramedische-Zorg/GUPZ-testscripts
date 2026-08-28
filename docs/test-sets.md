@@ -3,7 +3,7 @@
 What each set tests, which scenarios are in it and why. The grounds are in
 [decisions.md](decisions.md), the requirements in
 [requirements.md](requirements.md), the engine mechanics in
-[conformancelab.md](conformancelab.md).
+[authoring.md](authoring.md).
 
 | Test Set | Aim | System under test | Scripts | State |
 |---|---|---|---|---|
@@ -227,7 +227,7 @@ token.
 
 The part count stops the test when it fails: decoding a header out of something
 that is not a JWE says nothing. How the header is read is in
-[conformancelab.md](conformancelab.md#reading-a-token).
+[authoring.md](authoring.md#reading-a-token).
 
 DVA-02 hands the caller each refusal from a WireMock stub rather than from a
 server, which is the point: a real server refuses when it feels like it, a stub
@@ -235,7 +235,7 @@ refuses exactly as the specification prescribes, every time, in both shapes. The
 mapping sits in a `.stub` file under `_stub/`, is declared as a fixture, and an
 operation of type `stub` points at it. Stubs answer on a different address than
 FHIR traffic, see
-[conformancelab.md](conformancelab.md#a-stub-answers-on-a-different-address).
+[authoring.md](authoring.md#where-a-request-goes).
 
 Not covered beyond the envelope: the signature, which needs the decrypted inner
 token; and one token per patient, which is observable in principle by capturing

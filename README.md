@@ -88,8 +88,7 @@ output/STU3/Auth/GUPZ/Test/
 | [docs/requirements.md](docs/requirements.md) | Every requirement and what covers it |
 | [docs/decisions.md](docs/decisions.md) | Every deliberate choice, numbered |
 | [docs/open-points.md](docs/open-points.md) | What is not decided, and what it blocks |
-| [docs/conformancelab.md](docs/conformancelab.md) | Engine behaviour the scripts depend on |
-| [docs/authoring.md](docs/authoring.md) | Build, fixtures, conversion, writing |
+| [docs/authoring.md](docs/authoring.md) | Build, fixtures, conversion, writing a script |
 | [UPSTREAM.md](UPSTREAM.md) | What was imported from Nictiz and how to update it |
 
 Written against open-GUPZ commit `0a273ae`, 21 August 2026.

@@ -91,7 +91,7 @@ closest thing available.
    [OP-01](open-points.md#op-01-401-against-403). Two mechanics: the comparison
    has to happen inside one script, because a variable reads from an earlier
    response in the same script, and the comparison itself uses the regex chain
-   in [conformancelab.md](conformancelab.md#reading-a-token).
+   in [authoring.md](authoring.md#reading-a-token).
 2. Cases for `sub` and `scope`, mandatory since 18 August 2026. Both assert on a
    refusal, so they wait on the same question.
 3. A case for the JWKS endpoint, see [OP-10](open-points.md#op-10-jwks).

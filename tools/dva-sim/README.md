@@ -34,7 +34,7 @@ Three ways the token choice differs, and the card says which applies:
 
 A stub scenario goes to a different address than a FHIR request, and the page
 derives both from the one base URL you paste. See
-[docs/conformancelab.md](../../docs/conformancelab.md#a-stub-answers-on-a-different-address).
+[docs/authoring.md](../../docs/authoring.md#where-a-request-goes).
 
 Start the run in Conformancelab before sending. A request arriving while no run
 is active is not attached to anything, and the page says so.

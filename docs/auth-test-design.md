@@ -6,8 +6,8 @@ This document was split up. Nothing was dropped; every section has a new home.
 |---|---|
 | Scope | [test-sets.md](test-sets.md#auth-dataplatform) |
 | What the specification asks | [requirements.md](requirements.md#requirements) |
-| What Conformancelab can and cannot do here | [conformancelab.md](conformancelab.md) |
-| Where the token comes from | [conformancelab.md](conformancelab.md#tokens) |
+| What Conformancelab can and cannot do here | [authoring.md](authoring.md) |
+| Where the token comes from | [authoring.md](authoring.md#tokens) |
 | Why this set uses no stubs | [test-sets.md](test-sets.md#authentication-situations) |
 | Test data GUPZ needs to supply | [test-sets.md](test-sets.md#tokens-t1-to-t9), [open-points.md OP-05](open-points.md#op-05-key-material) |
 | The test model | [test-sets.md](test-sets.md#auth-dataplatform) |
