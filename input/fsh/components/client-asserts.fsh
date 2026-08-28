@@ -32,7 +32,7 @@ RuleSet: requestHeaderToken(token)
 // `exists` is not in the operator list of base FHIR, so it is carried by the
 // Conformancelab extension for additional operators. `contains` is standard.
 //
-// This is as far as the engine goes today without decoding. Reading the claims
+// These two asserts do not look inside the token. Reading the claims
 // out of the token is possible in principle, by chaining the regex mapper,
 // assert-input-variable and the base64Decode mapper function, but for a JWE
 // only the outer header is readable, which holds alg, enc and kid. That is a

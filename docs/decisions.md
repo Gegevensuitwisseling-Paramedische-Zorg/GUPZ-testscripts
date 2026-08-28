@@ -134,7 +134,7 @@ It is removed rather than replaced: a wrong default runs and fails for a reason
 that has nothing to do with the platform under test. What is left is a variable
 the operator fills. The `Bearer` prefix moved from the value into the header
 template, so what is pasted is the bare token. Mechanics in
-[conformancelab.md](conformancelab.md#tokens).
+[authoring.md](authoring.md#tokens).
 
 Raised as point 3 of [#80][i80], where it was written up as affecting five
 client scripts; it affects all eighteen Dataplatform scripts and the loader as
@@ -269,16 +269,9 @@ requirement rather than test one. The assert pauses the run and puts the
 question to whoever is watching; the answer lands in the report like any other
 result.
 
-What makes an assert manual is `operator` `manualEval` and nothing else. The
-engine picks a validator by operator. R5 also has `defaultManualCompletion`,
-which looks like it should do the job and does not: the engine stores it and
-acts on the operator.
-
-`manualEval` appears in neither the base FHIR operator list nor the
-Conformancelab list of additional operators, so it lives only in the engine.
-Used anyway, because there is no other way to record a human judgement inside a
-run, and because the imported material relies on it too. An unattended run of
-this set never finishes: it waits, which is correct.
+The assert carries `operator` `manualEval`. An unattended run of this set
+therefore never finishes: it waits, which is correct. It needs a real caller and
+somebody watching.
 
 The questions are deliberately concrete. After a 401: did the caller report the
 failure and stop, rather than repeat the same request with the same token or

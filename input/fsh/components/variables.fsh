@@ -1,9 +1,7 @@
 // Variables the operator can override when setting up a test run.
 //
-// The token is a plain variable rather than a token minted by Conformancelab.
-// The engine can sign a JWS but cannot produce the nested JWT that open-GUPZ
-// prescribes, and it gives no control over the kid, so a pre-signed token is
-// pasted in instead. The same choice is made in the auth Test Set; see
+// The token is a plain variable rather than one minted during the run. A token
+// cannot be minted in a run, so a pre-signed one is pasted in instead. The same choice is made in the auth Test Set; see
 // components/auth.fsh.
 //
 // The variable carries no default. The imported scripts defaulted to a MedMij

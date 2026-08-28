@@ -1,8 +1,6 @@
 // Reading a token that a caller sends, from the receiving side.
 //
-// This is what makes a client aimed authentication set possible at all, and it
-// only became available with the IG update of 18 August 2026. Before that a
-// token was an opaque string to the engine.
+// This is what makes a client aimed authentication set possible at all.
 //
 // How far it reaches, and why. The token is a nested JWT: a JWS signed by the
 // caller, encrypted into a JWE addressed to the receiving platform. Conformancelab
@@ -119,8 +117,8 @@ RuleSet: assertsNoBsnInUrl
 // conveniently produce on demand, a refused token for instance.
 //
 // The mapping lives in a `.stub` file under `_stub/`, is declared as a fixture,
-// and an operation of type `stub` points at that fixture. From then on the
-// engine records the exchange and evaluates the asserts that follow.
+// and an operation of type `stub` points at that fixture. The exchange is
+// recorded and the asserts that follow are evaluated over it.
 RuleSet: stubFixture(id, file)
 * fixture[+].id = "{id}"
 * fixture[=].autocreate = false
@@ -142,16 +140,8 @@ RuleSet: operationServeStub(id)
 // it pauses the run and puts the question to whoever is watching, and the answer
 // lands in the report like any other result.
 //
-// The operator is what makes it manual. The engine picks the validator by
-// operator, so `manualEval` is the whole mechanism; the run then waits and shows
-// the description as the question to answer. Setting the R5 field
-// `defaultManualCompletion` instead does nothing, which is how this was first
-// written and why both scenarios failed rather than waiting.
-//
-// `manualEval` is in neither the base FHIR operator list nor the Conformancelab
-// one for additional operators, so it exists only in the engine. Used here
-// because there is no other way to record a human judgement in a run, and
-// because the imported material relies on it too.
+// The operator `manualEval` is what makes it manual; the run then waits and
+// shows the description as the question to answer.
 //
 // Set the description on the assert after inserting this: a RuleSet argument
 // splits on commas.

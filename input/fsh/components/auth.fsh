@@ -1,8 +1,8 @@
 // Building blocks for the auth Test Set.
 //
 // Unlike the PDF/A scripts these are ours, not converted from Nictiz. They test
-// what the data platform does with a token, never the token itself: the engine
-// cannot decode a JWT, and for a server aimed test that is no loss.
+// what the data platform does with a token, never the token itself. For a
+// server aimed test that is no loss: we made the token ourselves.
 //
 // The token is a variable without a default. The operator pastes the token that
 // belongs to the case; the variable description says which one. That keeps the

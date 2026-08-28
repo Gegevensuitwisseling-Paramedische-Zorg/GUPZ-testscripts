@@ -15,9 +15,8 @@ in [decisions.md](decisions.md).
 | [OP-08](#op-08-gupz-canonical) | GUPZ canonical | the `url` of every script | GUPZ |
 | [OP-09](#op-09-transport-checks) | Transport checks | GUPZ-TR-001 to TR-004 | GUPZ, Interoplab |
 | [OP-10](#op-10-jwks) | JWKS | GUPZ-JWKS-001 | open-GUPZ [#27][i27] |
-| [OP-11](#op-11-fhirpackage-is-not-enforced) | `fhirPackage` is not enforced | nothing today | Interoplab |
+| [OP-11](#op-11-no-assert-validates-against-an-mhd-profile) | No assert validates against an MHD profile | nothing today | this repository |
 | [OP-12](#op-12-directory-names-under-inputfsh) | Directory names under `input/fsh` | nothing | this repository |
-| [OP-13](#op-13-outbound-truststore-of-the-gupz-proxy) | Outbound truststore of the GUPZ proxy | every server aimed run against a supplier | Interoplab |
 
 ## OP-01 401 against 403
 
@@ -162,19 +161,17 @@ the fallback, so the case should be built but should not fail anyone that day.
 Stubbing the fetch by the platform would make key selection on `kid` testable;
 that is situation 6 in [test-sets.md](test-sets.md#authentication-situations).
 
-## OP-11 `fhirPackage` is not enforced
+## OP-11 No assert validates against an MHD profile
 
-The Test Sets declare `nictiz.fhir.nl.stu3.zib2017` 2.3.2 in `properties.json`.
-The Conformancelab setup guide states that use of `fhirPackage` has yet to be
-implemented, so the declaration records which package the material is written
-against rather than switching on validation against it. Where a profile
-constraint has to hold for a test to mean anything, it needs an assert of its
-own (D-12).
+The Test Sets declare `nictiz.fhir.nl.stu3.zib2017` 2.3.2 in `properties.json`,
+which records the package the material is written against. It does not make a
+response conformant to a profile in it: every `validateProfileId` in the set
+points at a base FHIR profile, `Bundle`, `Binary` or `OperationOutcome`, and the
+Nictiz canonicals appear only in the `meta.profile` of the fixtures.
 
-Every `validateProfileId` in the set points at a base FHIR profile: `Bundle`,
-`Binary` or `OperationOutcome`. The Nictiz canonicals appear only in the
-`meta.profile` of the fixtures, so the package matters when data is loaded, not
-when a response is judged.
+So a profile constraint that has to hold for a test to mean anything needs an
+assert of its own, the way D-12 adds one. Which constraints those are has not
+been worked through.
 
 ## OP-12 Directory names under `input/fsh`
 
@@ -182,20 +179,6 @@ when a response is judged.
 authentication ones, so the same word names a role in one place and a standard
 in another. Nothing depends on it: `build.sh` routes on the filename prefix, not
 on the directory. Straighten it when the branch is merged.
-
-## OP-13 Outbound truststore of the GUPZ proxy
-
-In a server aimed test the Conformancelab proxy is the TLS client calling the
-supplier's endpoint. `tls.client.trustCertificates` for the GUPZ instance holds
-one root, Staat der Nederlanden Private Root CA G1, so anything not chaining to
-it fails with `unable to find valid certification path`. This affects every
-supplier endpoint called on 22 September, while the agreement for that day is
-that PKIoverheid validation can be switched off.
-
-A failed handshake also reaches the engine as a 200, with an empty protocol and
-ciphersuite in the proxy log. The operation and the assert on the response code
-both pass and only the assert on the resource type fails, so a connection
-problem is not recognisable from a result. Both points are with Interoplab.
 
 [pdfa]: https://github.com/Gegevensuitwisseling-Paramedische-Zorg/open-GUPZ/blob/main/docs/api/pdfa.md
 [security]: https://github.com/Gegevensuitwisseling-Paramedische-Zorg/open-GUPZ/blob/main/docs/api/security.md
