@@ -141,7 +141,7 @@ request against the operation that is active. Four consequences for authoring:
 
 Only a request arriving at the second address is answered from a WireMock
 mapping. Both are on the same host and share the organization id, so one base
-URL yields the other; `tools/dva-sim` derives it and shows it before sending.
+URL yields the other.
 
 ### Reading a token
 

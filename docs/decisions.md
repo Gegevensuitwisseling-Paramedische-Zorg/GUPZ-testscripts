@@ -247,7 +247,7 @@ thing being judged.
 Two consequences. Conformancelab shows the expected request without an
 `Authorization` header. And an Automated dry run cannot validate this set: with
 no header described the engine sends no token and every assert fails. Only a
-real caller, or `tools/dva-sim`, can exercise it.
+real caller can exercise it.
 
 ### D-21 The DVA-02 stubs use the terse error form
 
