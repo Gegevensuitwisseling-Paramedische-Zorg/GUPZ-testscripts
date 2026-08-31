@@ -1,5 +1,12 @@
 // Generated from medmij-pdfa-xis-2-5-serve-1-pdfa-json.xml with scripts/nictiz-to-fsh.py
 // and verified against the original with scripts/compare-testscript.py.
+//
+// Three things were taken out of the control test, which is the part of this
+// scenario that survives if D-03 is settled the way we proposed. `contentType`
+// `none` is an STU3 value that R5 does not have, and the operation panel prints
+// it as a Content-Type header that was never sent. The two MedMij tracing
+// headers do not belong here (D-08), and `${X-Correlation-ID}` went out as a
+// literal placeholder because the variable behind it was dropped with them.
 
 RuleSet: xis-2-5-serve-1-pdfa-NoManifest-meta(format, formatLabel)
 * insert metadata(xis-2-5-serve-1-pdfa-NoManifest-{format})
@@ -89,12 +96,7 @@ RuleSet: xis-2-5-serve-1-pdfa-NoManifest-body
 * test[=].action[+].operation.type = http://hl7.org/fhir/http-operations#get
 * test[=].action[=].operation.description = "Test XIS server get operation for a document on a known location, using the fullURL."
 * test[=].action[=].operation.url = "${pdfa-url}"
-* test[=].action[=].operation.contentType = #none
 * test[=].action[=].operation.encodeRequestUrl = true
-* test[=].action[=].operation.requestHeader[+].field = "MedMij-Request-ID"
-* test[=].action[=].operation.requestHeader[=].value = "${UUID}"
-* test[=].action[=].operation.requestHeader[+].field = "X-Correlation-ID"
-* test[=].action[=].operation.requestHeader[=].value = "${X-Correlation-ID}"
 * test[=].action[+].assert
   * description = "Confirm that the returned HTTP status is not 200 (OK)."
   * direction = #response

@@ -142,7 +142,7 @@ the caller. Eleven cases in `output/STU3/Auth/GUPZ/Test/Dataplatform`.
 | AUTH-01 | Search with token T1 | Success | GUPZ-TOK-001, GUPZ-VAL-001 | |
 | AUTH-02 | Search with token T2, signed only | Success in connectathon mode | GUPZ-TOK-001 | The configuration requirement is unwritten, [OP-06](open-points.md#op-06-the-unsigned-token) |
 | AUTH-03 | Search with token T3, plain | Success in connectathon mode | GUPZ-TOK-001 | [OP-06](open-points.md#op-06-the-unsigned-token) |
-| AUTH-04 | Search without an `Authorization` header | Refused | GUPZ-TOK-001 | [OP-01](open-points.md#op-01-the-challenge-when-no-credentials-are-presented) |
+| AUTH-04 | Search without an `Authorization` header | Refused | GUPZ-TOK-001 | Leave the setup screen's authorization header empty, see below. [OP-01](open-points.md#op-01-the-challenge-when-no-credentials-are-presented) |
 | AUTH-05 | Search with a header that is not a Bearer token | Refused | GUPZ-TOK-001 | [OP-01](open-points.md#op-01-the-challenge-when-no-credentials-are-presented) |
 | AUTH-06 | Search with token T4, `iat` too old | Refused | GUPZ-VAL-002 | |
 | AUTH-07 | Search with token T5, expired | Refused | GUPZ-VAL-002 | |
@@ -150,6 +150,16 @@ the caller. Eleven cases in `output/STU3/Auth/GUPZ/Test/Dataplatform`.
 | AUTH-09 | Search with token T7, broken signature | Refused | GUPZ-VAL-001 | |
 | AUTH-10 | Search with token T8, wrong encryption key | Refused | GUPZ-VAL-001 | |
 | AUTH-11 | The same search with T1 and with T9 | Each response holds only that patient's documents | GUPZ-PAY-004, GUPZ-URL-001 | |
+
+### AUTH-04 and the setup screen
+
+The test setup screen has an optional authorization header. Fill it in and the
+engine adds that header to every operation that declares none, which is exactly
+what AUTH-04 relies on not happening. Leave it empty, or the case passes a token
+it was written to withhold.
+
+The same holds for the control test in PDF/A scenario 2.5, which fetches a
+document deliberately without credentials.
 
 ### AUTH-11
 

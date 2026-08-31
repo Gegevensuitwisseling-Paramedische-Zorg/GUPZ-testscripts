@@ -345,23 +345,12 @@
       "action": [
         {
           "operation": {
-            "requestHeader": [
-              {
-                "field": "MedMij-Request-ID",
-                "value": "${UUID}"
-              },
-              {
-                "field": "X-Correlation-ID",
-                "value": "${X-Correlation-ID}"
-              }
-            ],
             "type": {
               "code": "get",
               "system": "http://hl7.org/fhir/http-operations"
             },
             "description": "Test XIS server get operation for a document on a known location, using the fullURL.",
             "url": "${pdfa-url}",
-            "contentType": "none",
             "encodeRequestUrl": true
           }
         },
