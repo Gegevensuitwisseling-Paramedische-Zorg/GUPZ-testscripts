@@ -69,20 +69,36 @@
         },
         {
           "assert": {
-            "description": "Confirm that the returned HTTP status is not 200 (OK).",
+            "description": "Confirm that the returned HTTP status is 401 (Unauthorized).",
             "direction": "response",
-            "operator": "notEquals",
-            "responseCode": "200",
+            "operator": "equals",
+            "responseCode": "401",
             "stopTestOnFail": true,
             "warningOnly": false
           }
         },
         {
           "assert": {
-            "description": "Check if the returned HTTP status is 401 (Unauthorized) or 403 (Forbidden). Assert is set to warning only because open-GUPZ issue #70 does not specify the response to a refused token, so other failure codes may be expected as well.",
+            "extension": [
+              {
+                "url": "http://fhir.interoplab.eu/fhir/StructureDefinition/Interoplab-CL-ext-assert-additional-operators",
+                "valueCode": "exists"
+              }
+            ],
+            "description": "Confirm that the response carries a WWW-Authenticate header, which RFC 6750 section 3 requires on every refusal.",
             "direction": "response",
-            "operator": "in",
-            "responseCode": "401,403",
+            "headerField": "WWW-Authenticate",
+            "stopTestOnFail": false,
+            "warningOnly": false
+          }
+        },
+        {
+          "assert": {
+            "description": "Check whether the WWW-Authenticate header names the error as invalid_token. Warning only: RFC 6750 section 3.1 omits the error code when no credentials were presented, and which of the two applies here is open on open-GUPZ issue #70.",
+            "direction": "response",
+            "headerField": "WWW-Authenticate",
+            "operator": "contains",
+            "value": "error=\"invalid_token\"",
             "stopTestOnFail": false,
             "warningOnly": true
           }

@@ -5,7 +5,7 @@ in [decisions.md](decisions.md).
 
 | Id | Subject | Blocks | Owner |
 |---|---|---|---|
-| [OP-01](#op-01-401-against-403) | 401 against 403 | seven refusal cases, AUTH-12, the `sub` and `scope` cases | open-GUPZ [#70][i70] |
+| [OP-01](#op-01-the-challenge-when-no-credentials-are-presented) | The challenge when no credentials are presented | the error code in AUTH-04 and AUTH-05, AUTH-12, a case for a token that asks beyond its scope | open-GUPZ [#70][i70] |
 | [OP-02](#op-02-two-roles-disagree-on-the-document-count) | Two roles disagree on the document count | PDF/A Dataplatform 1.1 | test data specification |
 | [OP-03](#op-03-scenario-25) | Scenario 2.5 | nothing; it is out of the set | GUPZ |
 | [OP-04](#op-04-test-data-specification) | Test data specification | all three PDF/A sets against a supplier | GUPZ |
@@ -18,27 +18,26 @@ in [decisions.md](decisions.md).
 | [OP-11](#op-11-no-assert-validates-against-an-mhd-profile) | No assert validates against an MHD profile | nothing today | this repository |
 | [OP-12](#op-12-directory-names-under-inputfsh) | Directory names under `input/fsh` | nothing | this repository |
 
-## OP-01 401 against 403
+## OP-01 The challenge when no credentials are presented
 
-[`security.md`][security] settles the shape of both refusals: status code,
-`WWW-Authenticate` header and `OperationOutcome` code. Not settled is which
-failure is a 401 and which a 403; the two lie close together and implementations
-differ. Raised on [#70][i70], 18 August 2026.
+[`security.md`][security] settles the shape of a refusal and D-30 asserts it.
+One question is left. RFC 6750 section 3.1 has a server omit the error code from
+`WWW-Authenticate` when the request carries no credentials at all, while
+`security.md` prescribes `error="invalid_token"` for every refusal. AUTH-04 and
+AUTH-05 sit exactly there, so their error code assert is warning only until
+GUPZ says which reading holds.
 
-A second proposal on that issue is a switch: reveal as much as possible in test,
-nothing in production. GUPZ can live with it provided the closed mode is tested
-too.
+Behind it sits the question pieteckhart raised on [#70][i70], when a 401 applies
+and when a 403. It was never answered and the issue closed over it. It blocks no
+case in this set, because every case here presents a token that has to be
+rejected, which `security.md` answers with a 401. It does block a case that
+would test a valid token asking beyond its scope, and that case cannot be
+written until `scope` has a meaning for callers other than a DVA.
 
-Consequence here: the seven refusal cases keep the soft assert of D-24, and
-AUTH-12, which tests the switch itself, is not built. Neither is affected by the
-mode question otherwise, because the cases assert only what holds in both modes.
-
-| Holds in both modes | Mode dependent |
-|---|---|
-| HTTP 401 | whether `diagnostics` names the cause |
-| `WWW-Authenticate: Bearer` with `error="invalid_token"` | |
-| OperationOutcome with `severity` error and `code` `login` | |
-| `error_description` and `diagnostics` carry the same value | |
+The detail switch is settled: extra detail is allowed in test provided a
+platform can show it switches off. AUTH-12 tests that demonstration and is not
+built, because a TestScript cannot flip a platform between the two modes. It
+belongs on the connectathon programme as a manual assert.
 
 ## OP-02 Two roles disagree on the document count
 

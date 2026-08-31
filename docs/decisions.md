@@ -288,12 +288,28 @@ habit into a rule. It is still reported, because key rotation under [#27][i27]
 has the platform resolve its encryption key from a JWKS and a `kid` is how that
 lookup finds the right one. Raised in [#75][i75].
 
-### D-24 Negative asserts stay soft until #70 closes
+### ~~D-24 Negative asserts stay soft until #70 closes~~
 
-Every refusal case asserts today only that the request did not succeed. The
-exact status code, `WWW-Authenticate` header and `OperationOutcome` are blocked
-on [#70][i70]; the model is written so those asserts can be added without
-restructuring. See [open-points.md OP-01](open-points.md#op-01-401-against-403).
+Reversed by D-30. [#70][i70] closed on 18 August 2026 and
+[`security.md`][security] now settles the shape of a refusal.
+
+### D-30 A refusal is asserted on status, challenge and OperationOutcome
+
+[`security.md`][security] answers a failed token validation with a 401, a
+`WWW-Authenticate` header carrying `error="invalid_token"`, and an
+OperationOutcome with `severity` error and `code` `login`. All three are
+asserted hard. None of them moves with the detail switch of D-21, which only
+widens `error_description` and `diagnostics`; neither of those is asserted.
+
+A 403 answers a valid token that asks beyond its scope. Every case in this set
+presents a token the platform has to reject, so every case expects a 401. The
+open question of when a 403 applies therefore touches no case here.
+
+Two cases present no bearer credentials at all: AUTH-04 sends no header, AUTH-05
+sends one that is not a Bearer token. There the error code stays a warning,
+because RFC 6750 section 3.1 omits it when a request carries no credentials
+while `security.md` prescribes it for every refusal. See
+[open-points.md OP-01](open-points.md#op-01-the-challenge-when-no-credentials-are-presented).
 
 ### D-26 A stub scenario declares `${STUB-ENDPOINT}` as its destination
 

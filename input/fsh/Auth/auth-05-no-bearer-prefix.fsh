@@ -15,4 +15,4 @@ Usage: #definition
 * test[=].description = "A token sent without the Bearer prefix is refused"
 * insert operationSearchDocumentReference
 * insert headersWithoutBearerPrefix(auth-05-token)
-* insert assertsRequestRefused
+* insert assertsNoCredentials

@@ -62,24 +62,64 @@ RuleSet: assertsRequestAccepted
   * stopTestOnFail = false
   * warningOnly = false
 
-// Two layers, following the pattern Nictiz uses for the same problem in PDF/A
-// scenario 2.5. The hard assert only states that the request did not succeed,
-// which is all that can be asserted while open-GUPZ issue #70 leaves the
-// response to a refused token unspecified. The second assert names the codes we
-// expect and is warning only, so a platform that answers differently does not
-// fail on an expectation that is not written down.
-RuleSet: assertsRequestRefused
+// security.md settles the shape of a refusal: a 401 with a WWW-Authenticate
+// header carrying error="invalid_token", and an OperationOutcome with severity
+// error and code login. All three hold whether or not the platform runs in the
+// test mode that allows extra detail; that mode only widens error_description
+// and diagnostics, which is why neither is asserted. See D-30.
+//
+// Every case in this set that presents a token the platform must reject is a
+// token validation failure, which security.md answers with a 401. A 403 belongs
+// to a valid token that asks beyond its scope, which this set does not cover.
+RuleSet: assertsTokenRefused
 * test[=].action[+].assert
-  * description = "Confirm that the returned HTTP status is not 200 (OK)."
+  * description = "Confirm that the returned HTTP status is 401 (Unauthorized)."
   * direction = #response
-  * operator = #notEquals
-  * responseCode = "200"
+  * operator = #equals
+  * responseCode = "401"
   * stopTestOnFail = true
   * warningOnly = false
 * test[=].action[+].assert
-  * description = "Check if the returned HTTP status is 401 (Unauthorized) or 403 (Forbidden). Assert is set to warning only because open-GUPZ issue #70 does not specify the response to a refused token, so other failure codes may be expected as well."
+  * description = "Confirm that the WWW-Authenticate header names the error as invalid_token, as security.md prescribes."
   * direction = #response
-  * operator = #in
-  * responseCode = "401,403"
+  * headerField = "WWW-Authenticate"
+  * operator = #contains
+  * value = "error=\"invalid_token\""
+  * stopTestOnFail = false
+  * warningOnly = false
+* test[=].action[+].assert
+  * description = "Confirm that the body is an OperationOutcome reporting an error with code login, as security.md prescribes."
+  * direction = #response
+  * expression = "OperationOutcome.issue.where(severity = 'error' and code = 'login').exists()"
+  * stopTestOnFail = false
+  * warningOnly = false
+
+// No bearer credentials were presented at all. The status and the challenge are
+// asserted the same way, but not the error code: RFC 6750 section 3.1 has the
+// server omit it when the request carries no credentials, while security.md
+// prescribes invalid_token for every refusal. Until that is settled a platform
+// that follows the RFC must not fail here. See OP-01.
+RuleSet: assertsNoCredentials
+* test[=].action[+].assert
+  * description = "Confirm that the returned HTTP status is 401 (Unauthorized)."
+  * direction = #response
+  * operator = #equals
+  * responseCode = "401"
+  * stopTestOnFail = true
+  * warningOnly = false
+* test[=].action[+].assert
+  * extension[+].url = $CL-ext-assert-additional-operators
+  * extension[=].valueCode = #exists
+  * description = "Confirm that the response carries a WWW-Authenticate header, which RFC 6750 section 3 requires on every refusal."
+  * direction = #response
+  * headerField = "WWW-Authenticate"
+  * stopTestOnFail = false
+  * warningOnly = false
+* test[=].action[+].assert
+  * description = "Check whether the WWW-Authenticate header names the error as invalid_token. Warning only: RFC 6750 section 3.1 omits the error code when no credentials were presented, and which of the two applies here is open on open-GUPZ issue #70."
+  * direction = #response
+  * headerField = "WWW-Authenticate"
+  * operator = #contains
+  * value = "error=\"invalid_token\""
   * stopTestOnFail = false
   * warningOnly = true

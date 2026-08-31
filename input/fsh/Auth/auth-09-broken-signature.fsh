@@ -15,4 +15,4 @@ Usage: #definition
 * test[=].description = "A token with an invalid signature is refused"
 * insert operationSearchDocumentReference
 * insert headersWithBearerToken(auth-09-token)
-* insert assertsRequestRefused
+* insert assertsTokenRefused

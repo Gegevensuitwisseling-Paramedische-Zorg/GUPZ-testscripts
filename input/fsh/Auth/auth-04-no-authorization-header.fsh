@@ -12,4 +12,4 @@ Usage: #definition
 * test[=].name = "AUTH-04"
 * test[=].description = "A request without an Authorization header is refused"
 * insert operationSearchDocumentReference
-* insert assertsRequestRefused
+* insert assertsNoCredentials

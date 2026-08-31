@@ -15,4 +15,4 @@ Usage: #definition
 * test[=].description = "A token encrypted with the wrong key is refused"
 * insert operationSearchDocumentReference
 * insert headersWithBearerToken(auth-10-token)
-* insert assertsRequestRefused
+* insert assertsTokenRefused

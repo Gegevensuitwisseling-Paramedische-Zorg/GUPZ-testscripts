@@ -39,7 +39,7 @@ Written with the key words, neither question would exist. Proposed to GUPZ as
 | GUPZ-TOK-002 | Sign then encrypt: JWS inside JWE, JWE header carrying `alg` RSA-OAEP, `enc` A256CBC-HS512, `cty` JWT | MUST | [Token beveiliging][sec-tokensec] | DVA-01 |
 | GUPZ-JWS-001 | JWS header carries `alg` `RS256`, `typ` and `kid` | MUST | [JWS token inhoud][sec-token] | Not covered, see below |
 | GUPZ-PAY-001 | Payload carries `iat`, `exp` and `iss` | MUST | [JWS token inhoud][sec-token] | Not covered, see below |
-| GUPZ-PAY-002 | `aud`, `sub` and `scope` are mandatory; `patient` is mandatory for a patient bound request. `sub` carries the BSN of the patient, the same value as `patient`, or of an authorised representative, or a string for a care provider. `provider`, `nbf` and `jti` are optional | MUST for `aud`, `sub`, `scope`, and `patient` on a patient bound request; the rest OPTIONAL | [JWS token inhoud][sec-token] | Not covered, blocked on [OP-01](open-points.md#op-01-401-against-403) |
+| GUPZ-PAY-002 | `aud`, `sub` and `scope` are mandatory; `patient` is mandatory for a patient bound request. `sub` carries the BSN of the patient, the same value as `patient`, or of an authorised representative, or a string for a care provider. `provider`, `nbf` and `jti` are optional | MUST for `aud`, `sub`, `scope`, and `patient` on a patient bound request; the rest OPTIONAL | [JWS token inhoud][sec-token] | Not covered; the cases need tokens that do not exist yet, see [OP-05](open-points.md#op-05-key-material) |
 | GUPZ-PAY-004 | A token used in a patient bound request is patient specific | MUST | [Application level security][sec-app] | AUTH-11 |
 | GUPZ-PAY-005 | The token may bind itself to the client certificate with `cnf.x5t#S256` after RFC 8705 | MAY, expected to become MUST | [JWS token inhoud][sec-token] | Not covered, see below |
 | GUPZ-URL-001 | A BSN never appears in a FHIR URL or query parameter | MUST | [Risico analyse][sec-risk] | AUTH-11, DVA-01, and the self link assert in every PDF/A search scenario |
@@ -47,9 +47,9 @@ Written with the key words, neither question would exist. Proposed to GUPZ as
 | GUPZ-VAL-002 | The platform refuses a request unless `now - iat < 900` and `now < exp`, and validates `iss`. Clock skew is [#77][i77]: Dutch NTP and at most 30 seconds | MUST; clock skew unresolved | [Token beveiliging][sec-tokensec] | AUTH-06, AUTH-07, AUTH-08 |
 | GUPZ-CRY-001 | X.509 keys from a trusted CA, RSA-SHA256 for signing, RSA-OAEP with A256CBC-HS512 for encryption | MUST | [Certificaten][sec-cert2] | DVA-01 for the encryption half |
 | GUPZ-JWKS-001 | Both sides publish a JWKS on `/.well-known/jwks.json`; the platform refetches on an unknown `kid` | MUST, manual exchange as the fallback for 22 September | [Key rotation][sec-rot] | [OP-10](open-points.md#op-10-jwks) |
-| GUPZ-VAL-003 | A refused token is answered with 401, `WWW-Authenticate: Bearer` carrying `error="invalid_token"`, and an OperationOutcome with `severity` error and `code` `login` | MUST, under review | [Ongeldige tokens][sec-invalid] | AUTH-04 to AUTH-10 softly (D-24), DVA-02a from the other side |
-| GUPZ-VAL-004 | A request outside the scope in the token is answered with 403, `error="insufficient_scope"` naming the required scope, and an OperationOutcome with `code` `forbidden` | MUST, under review | [Ontbrekende autorisatie][sec-forbidden] | DVA-02b from the other side |
-| GUPZ-MED-002 | A DVA fills `scope` with one or more MedMij data service numbers, separated by a space | MUST for a DVA; checking it is a MAY for the platform | [MedMij specifieke eisen][sec-medmij] | Not covered, blocked on [OP-01](open-points.md#op-01-401-against-403) |
+| GUPZ-VAL-003 | A refused token is answered with 401, `WWW-Authenticate: Bearer` carrying `error="invalid_token"`, and an OperationOutcome with `severity` error and `code` `login` | MUST | [Ongeldige tokens][sec-invalid] | AUTH-04 to AUTH-10 (D-30), DVA-02a from the other side |
+| GUPZ-VAL-004 | A request outside the scope in the token is answered with 403, `error="insufficient_scope"` naming the required scope, and an OperationOutcome with `code` `forbidden` | MUST | [Ontbrekende autorisatie][sec-forbidden] | DVA-02b from the other side; no server aimed case, see [OP-01](open-points.md#op-01-the-challenge-when-no-credentials-are-presented) |
+| GUPZ-MED-002 | A DVA fills `scope` with one or more MedMij data service numbers, separated by a space | MUST for a DVA; checking it is a MAY for the platform | [MedMij specifieke eisen][sec-medmij] | Not covered; the cases need tokens that do not exist yet, see [OP-05](open-points.md#op-05-key-material) |
 
 ## What no TestScript covers
 
@@ -87,17 +87,21 @@ closest thing available.
    wrong key, and assert that the returned `diagnostics` are identical. A
    platform that reveals nothing beyond "expired" or "signature failed" cannot
    distinguish those three, so identical text is what switching the detail off
-   means. Run in the closed mode only. Blocked on
-   [OP-01](open-points.md#op-01-401-against-403). Two mechanics: the comparison
-   has to happen inside one script, because a variable reads from an earlier
-   response in the same script, and the comparison itself uses the regex chain
-   in [authoring.md](authoring.md#reading-a-token).
-2. Cases for `sub` and `scope`, mandatory since 18 August 2026. Both assert on a
-   refusal, so they wait on the same question.
+   means. Run in the closed mode only. A script cannot put a platform into that
+   mode, so the demonstration itself is a manual assert on the connectathon
+   programme. See [OP-01](open-points.md#op-01-the-challenge-when-no-credentials-are-presented).
+   Two mechanics: the comparison has to happen inside one script, because a
+   variable reads from an earlier response in the same script, and the
+   comparison itself uses the regex chain in
+   [authoring.md](authoring.md#reading-a-token).
+2. Cases for `sub` and `scope`, mandatory since 18 August 2026. A missing
+   mandatory claim fails token validation, so both assert the refusal of D-30.
+   They need two tokens that do not exist yet, see
+   [OP-05](open-points.md#op-05-key-material).
 3. A case for the JWKS endpoint, see [OP-10](open-points.md#op-10-jwks).
-4. Tighten the seven refusal cases when [#70][i70] closes: the
-   `WWW-Authenticate` header, the `OperationOutcome` code, and the equality of
-   `error_description` and `diagnostics`.
+4. A case for a valid token that asks beyond its scope, the only refusal
+   `security.md` answers with a 403. It waits on what `scope` means for a caller
+   that is not a DVA.
 
 [sec]: https://github.com/Gegevensuitwisseling-Paramedische-Zorg/open-GUPZ/blob/main/docs/api/security.md
 [sec-tls]: https://github.com/Gegevensuitwisseling-Paramedische-Zorg/open-GUPZ/blob/main/docs/api/security.md#transport-level-security

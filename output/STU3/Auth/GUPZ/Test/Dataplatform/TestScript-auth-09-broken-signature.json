@@ -69,22 +69,32 @@
         },
         {
           "assert": {
-            "description": "Confirm that the returned HTTP status is not 200 (OK).",
+            "description": "Confirm that the returned HTTP status is 401 (Unauthorized).",
             "direction": "response",
-            "operator": "notEquals",
-            "responseCode": "200",
+            "operator": "equals",
+            "responseCode": "401",
             "stopTestOnFail": true,
             "warningOnly": false
           }
         },
         {
           "assert": {
-            "description": "Check if the returned HTTP status is 401 (Unauthorized) or 403 (Forbidden). Assert is set to warning only because open-GUPZ issue #70 does not specify the response to a refused token, so other failure codes may be expected as well.",
+            "description": "Confirm that the WWW-Authenticate header names the error as invalid_token, as security.md prescribes.",
             "direction": "response",
-            "operator": "in",
-            "responseCode": "401,403",
+            "headerField": "WWW-Authenticate",
+            "operator": "contains",
+            "value": "error=\"invalid_token\"",
             "stopTestOnFail": false,
-            "warningOnly": true
+            "warningOnly": false
+          }
+        },
+        {
+          "assert": {
+            "description": "Confirm that the body is an OperationOutcome reporting an error with code login, as security.md prescribes.",
+            "direction": "response",
+            "expression": "OperationOutcome.issue.where(severity = 'error' and code = 'login').exists()",
+            "stopTestOnFail": false,
+            "warningOnly": false
           }
         }
       ],

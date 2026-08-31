@@ -10,6 +10,13 @@ Every release names the open-GUPZ version it was written against. See
 
 ## Unreleased
 
+### Changed
+
+- A refused token is now asserted on the status, the `WWW-Authenticate`
+  challenge and the `OperationOutcome`, instead of only on the request having
+  failed. open-GUPZ [#70](https://github.com/Gegevensuitwisseling-Paramedische-Zorg/open-GUPZ/issues/70)
+  closed and `security.md` settles all three.
+
 ### Added
 
 - Five Test Sets with 39 TestScripts: the MHD document interface and the token
