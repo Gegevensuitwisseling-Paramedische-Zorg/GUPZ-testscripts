@@ -12,6 +12,7 @@ What each set tests, which scenarios are in it and why. The grounds are in
 | PDF/A _LoadResources | Provisioning | none | 1 | Built |
 | Auth Dataplatform | Token and authentication | Data platform | 11 | Built, waiting on keys ([OP-05](open-points.md#op-05-key-material)) |
 | Auth DVA | Token and authentication | Calling party | 2 | Built |
+| Auth Self test | The asserts of this repository | none | 4 | Built, `adminOnly` |
 
 Written against open-GUPZ commit `0a273ae`, 21 August 2026. A commit rather than
 a release number, because the changelog there does not reliably track what
@@ -255,3 +256,31 @@ to drive it.
 [i73]: https://github.com/Gegevensuitwisseling-Paramedische-Zorg/open-GUPZ/issues/73
 [i74]: https://github.com/Gegevensuitwisseling-Paramedische-Zorg/open-GUPZ/issues/74
 [no]: https://informatiestandaarden.nictiz.nl/wiki/MedMij:V2020.01/PDFA_Ontvangen
+
+## Auth Self test
+
+Not a conformance test, and hidden from anyone without the admin role through
+`adminOnly` in its properties. It answers a question about this repository: do
+the refusal asserts of [D-30][d30] fire? They were written against
+`security.md` and have never run, because no platform answers a GUPZ token yet
+and the FHIR server behind the tests accepts everything.
+
+Each scenario answers from a stub and inserts the shipped RuleSet, not a copy,
+so what is exercised is what a supplier gets.
+
+| Scenario | The stub answers | Expected |
+|---|---|---|
+| SELF-01 | the refusal `security.md` prescribes | passes |
+| SELF-02 | 403 with `insufficient_scope` | fails on the status |
+| SELF-03 | 401 without a `WWW-Authenticate` header | fails on the challenge |
+| SELF-04 | 401 whose OperationOutcome carries `forbidden` | fails on the OperationOutcome |
+
+Three scenarios are meant to be red. A mutation that stays green means the
+assert it targets is not testing what it claims, which is the point of running
+it.
+
+A stub operation sends nothing: the engine waits for a request and then
+validates against it and the stubbed answer. So this set needs a caller pointed
+at the stub endpoint the setup screen shows. Any client will do.
+
+[d30]: decisions.md#d-30-a-refusal-is-asserted-on-status-challenge-and-operationoutcome

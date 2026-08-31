@@ -347,6 +347,23 @@ One number is authoritative: `version` in the RuleSet `metadata`, because SUSHI
 does not apply the version from `sushi-config.yaml` to an Instance. `build.sh`
 refuses to build when the two disagree.
 
+### D-31 The refusal asserts are exercised by a hidden self test
+
+An assert that has never run is an assumption. The three asserts of D-30 were
+written against [`security.md`][security] and cannot be exercised against the
+FHIR server behind the tests, which accepts every token.
+
+The set answers from stubs and inserts the shipped RuleSet rather than a copy,
+so a change to D-30 is picked up without touching it. Three of its four
+scenarios are meant to fail; a mutation that stays green means the assert it
+targets does not test what it claims.
+
+`adminOnly` in the properties keeps it out of a supplier's view, which is what
+that property is for. Nictiz uses the same mechanism for a set aimed at their
+own reference server. What is not copied from there is relaxing an assert so
+that the local server passes: a green then says something about the server
+rather than about the specification.
+
 ### D-25 Everything is in English
 
 Documentation, comments, commit messages and the TestScripts themselves. The

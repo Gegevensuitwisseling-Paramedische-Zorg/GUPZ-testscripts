@@ -22,8 +22,9 @@ layout mirrors `output/`, so where a file ends up follows from where it sits.
 A Test Set properties file is called `src-properties.json` in `input/static/`
 and the build renames it, because Conformancelab treats every directory holding
 a `properties.json` as a Test Set and scans the whole repository. Add a Test
-Set, name its properties file `src-properties.json`, and nothing else has to
-change.
+Set, name its properties file `src-properties.json`, and add a branch to the
+case statement in `build.sh` naming where TestScripts with that id prefix go.
+The build stops with an error when a generated script matches no branch.
 
 Two checks before committing:
 

@@ -1,0 +1,115 @@
+{
+  "resourceType": "TestScript",
+  "id": "self-04-wrong-outcome-code",
+  "url": "http://gupz.nl/fhir/TestScript/self-04-wrong-outcome-code",
+  "contact": [
+    {
+      "telecom": [
+        {
+          "system": "url",
+          "value": "https://github.com/Gegevensuitwisseling-Paramedische-Zorg/GUPZ-testscripts"
+        }
+      ],
+      "name": "GUPZ"
+    }
+  ],
+  "origin": [
+    {
+      "index": 1,
+      "profile": {
+        "code": "FHIR-Client",
+        "system": "http://terminology.hl7.org/CodeSystem/testscript-profile-origin-types"
+      }
+    }
+  ],
+  "destination": [
+    {
+      "extension": [
+        {
+          "url": "http://fhir.interoplab.eu/fhir/StructureDefinition/Interoplab-CL-ext-destination-title",
+          "valueString": "Stub endpoint"
+        }
+      ],
+      "index": 1,
+      "profile": {
+        "code": "Conformancelab-Server",
+        "system": "http://fhir.interoplab.eu/fhir/CodeSystem/Interoplab-CL-destination-profile"
+      },
+      "url": "${STUB-ENDPOINT}"
+    }
+  ],
+  "fixture": [
+    {
+      "resource": {
+        "reference": "../_stub/selftest-wrong-outcome-code.stub"
+      },
+      "id": "selftest-wrong-outcome-code",
+      "autocreate": false,
+      "autodelete": false
+    }
+  ],
+  "test": [
+    {
+      "extension": [
+        {
+          "url": "http://fhir.interoplab.eu/fhir/StructureDefinition/Interoplab-CL-ext-test-request-mode",
+          "valueCode": "extra-allowed"
+        }
+      ],
+      "action": [
+        {
+          "operation": {
+            "type": {
+              "code": "stub",
+              "system": "http://fhir.interoplab.eu/fhir/CodeSystem/Interoplab-CL-operation-type"
+            },
+            "sourceId": "selftest-wrong-outcome-code",
+            "destination": 1,
+            "origin": 1,
+            "encodeRequestUrl": true,
+            "description": "Answer with a 401 whose OperationOutcome code is forbidden."
+          }
+        },
+        {
+          "assert": {
+            "description": "Confirm that the returned HTTP status is 401 (Unauthorized).",
+            "direction": "response",
+            "operator": "equals",
+            "responseCode": "401",
+            "stopTestOnFail": true,
+            "warningOnly": false
+          }
+        },
+        {
+          "assert": {
+            "description": "Confirm that the WWW-Authenticate header names the error as invalid_token, as security.md prescribes.",
+            "direction": "response",
+            "headerField": "WWW-Authenticate",
+            "operator": "contains",
+            "value": "error=\"invalid_token\"",
+            "stopTestOnFail": false,
+            "warningOnly": false
+          }
+        },
+        {
+          "assert": {
+            "description": "Confirm that the body is an OperationOutcome reporting an error with code login, as security.md prescribes.",
+            "direction": "response",
+            "expression": "OperationOutcome.issue.where(severity = 'error' and code = 'login').exists()",
+            "stopTestOnFail": false,
+            "warningOnly": false
+          }
+        }
+      ],
+      "id": "self-04",
+      "name": "SELF-04",
+      "description": "Expected outcome: the assert on the OperationOutcome code fails."
+    }
+  ],
+  "version": "0.1.0",
+  "status": "active",
+  "publisher": "GUPZ",
+  "name": "Self_04_wrong_outcome_code",
+  "title": "SELF-04 - The OperationOutcome assert catches the wrong code (must fail)",
+  "description": "Serves a conforming 401 whose OperationOutcome carries code forbidden instead of login. Only the third assert of D-30 must fail."
+}

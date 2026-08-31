@@ -63,6 +63,7 @@ for f in "$SRC"/TestScript-*.json; do
     TestScript-phr-*)  dest="$OUT/STU3/PDFA-3-0/GUPZ/Test/DVA" ;;
     TestScript-auth-*) dest="$OUT/STU3/Auth/GUPZ/Test/Dataplatform" ;;
     TestScript-dva-*)  dest="$OUT/STU3/Auth/GUPZ/Test/DVA" ;;
+    TestScript-self-*) dest="$OUT/STU3/Auth/GUPZ/Test/adminOnly" ;;
     TestScript-resources-*) dest="$OUT/STU3/PDFA-3-0/GUPZ/Test/_LoadResources" ;;
     *)
       echo "ERROR: no destination known for $name" >&2
