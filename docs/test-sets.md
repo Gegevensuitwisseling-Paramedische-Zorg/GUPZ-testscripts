@@ -281,6 +281,15 @@ it.
 
 A stub operation sends nothing: the engine waits for a request and then
 validates against it and the stubbed answer. So this set needs a caller pointed
-at the stub endpoint the setup screen shows. Any client will do.
+at the stub endpoint the setup screen shows. Any client will do, and the mapping
+matches any GET, so the path is free:
+
+```
+curl -i -H "Authorization: Bearer whatever" "<stub endpoint>/DocumentReference?status=current"
+```
+
+Running the set as Automated does nothing. Automation only sends the requests
+the engine would send itself, and a stub operation is not one of them. The same
+holds for DVA-02.
 
 [d30]: decisions.md#d-30-a-refusal-is-asserted-on-status-challenge-and-operationoutcome
