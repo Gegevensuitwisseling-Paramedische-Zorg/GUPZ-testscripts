@@ -53,6 +53,9 @@ the one that carries the discrepancy, since it is meant for a supplier's
 platform anyway and reading from ours is a convenience. Do not resolve it by
 removing the document again. Resolved properly by OP-04.
 
+Observed in the run of 31 August 2026: server aimed 1.1 reports three where it
+expects two.
+
 ## OP-03 Scenario 2.5
 
 Scenario 2.5 serves a document over an ordinary HTTP URL instead of a `Binary`.
@@ -62,13 +65,19 @@ August 2026 confirmed it from the other side: the scenario failed on its control
 test, a request without an `Authorization` header, which is worth having and
 does not depend on how the document is served.
 
+The run of 31 August 2026 added a second obstacle. The url the scenario follows
+comes from the fixture and points at a host outside the test environment, so the
+operation fails before an assert is reached. The scenario cannot be exercised
+here at all.
+
 Three options, none chosen:
 
 1. Drop it. The set then contains only scenarios a conformant platform can pass,
    which matters on a connectathon where a red result should mean something.
 2. Keep it. A vendor may support HTTP references in addition to Binary. Cost: a
    scenario permanently red for everyone who follows the specification.
-3. Keep only the control test and move it into the Auth set.
+3. Keep only the control test and move it into the Auth set, as a case that
+   retrieves a `Binary` without a token and expects the refusal of D-30.
 
 Option 3 looks best from here, but it is a scope question for GUPZ. [#61][i61]
 decided in favour of 1.4 without saying what should happen to 2.5.
@@ -80,7 +89,8 @@ GUPZ rule; `XXX_Schulte` deliberately breaks it, because her only current
 document, DocumentReference `kwalificatie4`, carries a plain HTTPS URL to a PDF
 on the Nictiz website rather than a Binary reference. Nictiz built that patient
 for the 2.5 flow. So scenario 2.1 has one red assert (D-12) that says something
-about the fixture and nothing about the platform.
+about the fixture and nothing about the platform, as the run of 31 August 2026
+confirmed.
 
 Against a supplier the fixtures do not apply at all: the data comes out of their
 own PARIS, and `_LoadResources` is not expected to work there
