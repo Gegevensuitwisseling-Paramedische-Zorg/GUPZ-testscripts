@@ -28,6 +28,17 @@ set -e
 SRC="./fsh-generated/resources"
 OUT="./output"
 
+# The version every TestScript carries comes from the RuleSet metadata: SUSHI
+# does not apply the version in sushi-config.yaml to an Instance. The two are
+# kept equal anyway, so that one number describes the release. See D-29.
+CFG_VERSION=$(awk '/^version:/ {print $2; exit}' sushi-config.yaml)
+FSH_VERSION=$(awk -F'"' '/^\* version =/ {print $2; exit}' input/fsh/components/metadata.fsh)
+if [ "$CFG_VERSION" != "$FSH_VERSION" ]; then
+  echo "ERROR: version mismatch: sushi-config.yaml says $CFG_VERSION, input/fsh/components/metadata.fsh says $FSH_VERSION" >&2
+  exit 1
+fi
+echo "=== 0/4 Version $FSH_VERSION"
+
 echo "=== 1/4 Emptying output/"
 rm -rf "$OUT"
 

@@ -320,12 +320,24 @@ The imported scripts declare `purge` and `stub` against
 The IG defines `.../CodeSystem/Interoplab-CL-operation-type`. The engine matches
 on the code, so both run, but only one is a defined artefact.
 
+### D-29 Semantic Versioning
+
+The repository follows [Semantic Versioning][semver], read from the position of
+a supplier who has already run the material. It stays below 1.0.0 while the
+specification itself is still moving; 1.0.0 is cut when the material sits on
+`main` and has run against a data platform.
+
+One number is authoritative: `version` in the RuleSet `metadata`, because SUSHI
+does not apply the version from `sushi-config.yaml` to an Instance. `build.sh`
+refuses to build when the two disagree.
+
 ### D-25 Everything is in English
 
 Documentation, comments, commit messages and the TestScripts themselves. The
 imported material and the Conformancelab IG are English; open-GUPZ keeps its
 specifications in Dutch.
 
+[semver]: https://semver.org/spec/v2.0.0.html
 [pdfa]: https://github.com/Gegevensuitwisseling-Paramedische-Zorg/open-GUPZ/blob/main/docs/api/pdfa.md
 [security]: https://github.com/Gegevensuitwisseling-Paramedische-Zorg/open-GUPZ/blob/main/docs/api/security.md
 [medmij]: https://github.com/Gegevensuitwisseling-Paramedische-Zorg/open-GUPZ/blob/main/docs/architecture/medmij.md

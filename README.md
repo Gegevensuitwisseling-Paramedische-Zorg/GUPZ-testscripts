@@ -88,8 +88,15 @@ output/STU3/Auth/GUPZ/Test/
 | [docs/open-points.md](docs/open-points.md) | What is not decided, and what it blocks |
 | [docs/authoring.md](docs/authoring.md) | Build, fixtures, conversion, writing a script |
 | [UPSTREAM.md](UPSTREAM.md) | What was imported from Nictiz and how to update it |
+| [CHANGELOG.md](CHANGELOG.md) | What changed per release |
 
 Written against open-GUPZ commit `0a273ae`, 21 August 2026.
+
+## Versions
+
+[Semantic Versioning][semver]. Every TestScript carries the repository version,
+so a run shows which release produced a verdict. Grounds and the release
+procedure: [decisions.md D-29][d29] and [authoring.md][releasing].
 
 ## How we work
 
@@ -100,5 +107,8 @@ branch. Branch name: issue number plus a short description in kebab-case, or
 The licence of this repository (CC0 1.0) covers the work produced by GUPZ, not
 the imported Nictiz files. See [UPSTREAM.md](UPSTREAM.md).
 
+[semver]: https://semver.org/spec/v2.0.0.html
+[d29]: docs/decisions.md#d-29-semantic-versioning
+[releasing]: docs/authoring.md#releasing
 [opengupz]: https://github.com/Gegevensuitwisseling-Paramedische-Zorg/open-GUPZ
 [cl]: https://fhir.interoplab.eu/ig/

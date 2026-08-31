@@ -31,6 +31,24 @@ Two checks before committing:
 2. For anything converted from Nictiz, `compare-testscript.py` reports
    `IDENTICAL`.
 
+## Releasing
+
+Semantic Versioning, see [decisions.md D-29][d29].
+
+1. Raise `version` in `input/fsh/components/metadata.fsh` and in
+   `sushi-config.yaml`. The build refuses to run while the two disagree.
+2. In `CHANGELOG.md`, turn `## Unreleased` into `## [x.y.z] - YYYY-MM-DD` and
+   open a fresh `## Unreleased` above it. Name the open-GUPZ version the release
+   was written against.
+3. `./build.sh`, then commit.
+4. Tag `vx.y.z` and push the tag.
+5. Cut a GitHub Release on that tag with the changelog entry as its notes.
+6. While `main` still carries the pointer README, check that what it says about
+   the branch and the Test Sets is still true.
+
+Every TestScript carries the version, so a run shows which release produced a
+verdict.
+
 ## Adding or changing a fixture
 
 Fixtures are STU3 resources, written by hand as XML or JSON in
@@ -217,6 +235,7 @@ Where a document belongs:
 | What is not decided | [open-points.md](open-points.md) |
 | What was imported and how to update it | [../UPSTREAM.md](../UPSTREAM.md) |
 
+[d29]: decisions.md#d-29-semantic-versioning
 [gofsh]: https://fshschool.org/docs/gofsh/
 [ig]: https://fhir.interoplab.eu/ig/
 [rfc2119]: https://www.rfc-editor.org/rfc/rfc2119
