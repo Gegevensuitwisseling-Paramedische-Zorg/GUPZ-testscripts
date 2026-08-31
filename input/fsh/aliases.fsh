@@ -1,0 +1,15 @@
+Alias: $origin-types = http://terminology.hl7.org/CodeSystem/testscript-profile-origin-types
+Alias: $destination-types = http://terminology.hl7.org/CodeSystem/testscript-profile-destination-types
+Alias: $restful-interaction = http://hl7.org/fhir/restful-interaction
+
+Alias: $CL-TestScript-core = http://fhir.interoplab.eu/fhir/StructureDefinition/Interoplab-CL-TestScript-core
+Alias: $CL-origin-profile = http://fhir.interoplab.eu/fhir/CodeSystem/Interoplab-CL-origin-profile
+Alias: $CL-destination-profile = http://fhir.interoplab.eu/fhir/CodeSystem/Interoplab-CL-destination-profile
+Alias: $CL-operation-type = http://fhir.interoplab.eu/fhir/CodeSystem/Interoplab-CL-operation-type
+Alias: $CL-ext-assert-additional-operators = http://fhir.interoplab.eu/fhir/StructureDefinition/Interoplab-CL-ext-assert-additional-operators
+Alias: $CL-ext-test-request-mode = http://fhir.interoplab.eu/fhir/StructureDefinition/Interoplab-CL-ext-test-request-mode
+Alias: $CL-ext-variable-regex-mapper = http://fhir.interoplab.eu/fhir/StructureDefinition/Interoplab-CL-ext-variable-regex-mapper
+Alias: $CL-ext-assert-input-variable = http://fhir.interoplab.eu/fhir/StructureDefinition/Interoplab-CL-ext-assert-input-variable
+Alias: $CL-ext-assert-mapper-function = http://fhir.interoplab.eu/fhir/StructureDefinition/Interoplab-CL-ext-assert-mapper-function
+Alias: $CL-ext-assert-regex-matches = http://fhir.interoplab.eu/fhir/StructureDefinition/Interoplab-CL-ext-assert-regex-matches
+Alias: $CL-destination-title = http://fhir.interoplab.eu/fhir/StructureDefinition/Interoplab-CL-ext-destination-title

@@ -1,0 +1,284 @@
+{
+  "resourceType": "TestScript",
+  "id": "dva-01-token-envelope",
+  "url": "http://gupz.nl/fhir/TestScript/dva-01-token-envelope",
+  "contact": [
+    {
+      "telecom": [
+        {
+          "system": "url",
+          "value": "https://github.com/Gegevensuitwisseling-Paramedische-Zorg/GUPZ-testscripts"
+        }
+      ],
+      "name": "GUPZ"
+    }
+  ],
+  "origin": [
+    {
+      "index": 1,
+      "profile": {
+        "code": "FHIR-Client",
+        "system": "http://terminology.hl7.org/CodeSystem/testscript-profile-origin-types"
+      }
+    }
+  ],
+  "destination": [
+    {
+      "extension": [
+        {
+          "url": "http://fhir.interoplab.eu/fhir/StructureDefinition/Interoplab-CL-ext-destination-title",
+          "valueString": "FHIR endpoint"
+        }
+      ],
+      "index": 1,
+      "profile": {
+        "code": "Conformancelab-Server",
+        "system": "http://fhir.interoplab.eu/fhir/CodeSystem/Interoplab-CL-destination-profile"
+      }
+    }
+  ],
+  "variable": [
+    {
+      "extension": [
+        {
+          "url": "http://fhir.interoplab.eu/fhir/StructureDefinition/Interoplab-CL-ext-variable-regex-mapper",
+          "valueString": "(?<=Bearer ).*$"
+        }
+      ],
+      "name": "dva-token",
+      "headerField": "Authorization",
+      "sourceId": "dva-01-request",
+      "description": "The token the caller sent, without the Bearer prefix."
+    },
+    {
+      "extension": [
+        {
+          "url": "http://fhir.interoplab.eu/fhir/StructureDefinition/Interoplab-CL-ext-variable-regex-mapper",
+          "valueString": "(?<=Bearer )[A-Za-z0-9_-]+"
+        }
+      ],
+      "name": "dva-token-header",
+      "headerField": "Authorization",
+      "sourceId": "dva-01-request",
+      "description": "The protected header of the JWE, still base64url encoded."
+    }
+  ],
+  "test": [
+    {
+      "extension": [
+        {
+          "url": "http://fhir.interoplab.eu/fhir/StructureDefinition/Interoplab-CL-ext-test-request-mode",
+          "valueCode": "extra-allowed"
+        }
+      ],
+      "action": [
+        {
+          "operation": {
+            "type": {
+              "code": "search",
+              "system": "http://hl7.org/fhir/restful-interaction"
+            },
+            "resource": "DocumentReference",
+            "description": "Test the calling party to search for DocumentReference resources with a conformant token.",
+            "params": "?status=current",
+            "requestId": "dva-01-request",
+            "destination": 1,
+            "origin": 1,
+            "encodeRequestUrl": true
+          }
+        },
+        {
+          "assert": {
+            "extension": [
+              {
+                "url": "http://fhir.interoplab.eu/fhir/StructureDefinition/Interoplab-CL-ext-assert-additional-operators",
+                "valueCode": "exists"
+              }
+            ],
+            "description": "Confirm that the request carries an Authorization header. Its value cannot be compared to a fixed string, because a GUPZ token is encrypted and differs on every run.",
+            "direction": "request",
+            "headerField": "Authorization",
+            "stopTestOnFail": false,
+            "warningOnly": false
+          }
+        },
+        {
+          "assert": {
+            "description": "Confirm that the Authorization header uses the Bearer scheme, as security.md prescribes.",
+            "direction": "request",
+            "headerField": "Authorization",
+            "operator": "contains",
+            "value": "Bearer ",
+            "stopTestOnFail": false,
+            "warningOnly": false
+          }
+        },
+        {
+          "assert": {
+            "extension": [
+              {
+                "url": "http://fhir.interoplab.eu/fhir/StructureDefinition/Interoplab-CL-ext-assert-input-variable",
+                "valueString": "dva-token"
+              }
+            ],
+            "description": "Confirm that the token is a JWE in compact serialization, which has five dot separated parts. A token that was signed but not encrypted has three.",
+            "direction": "request",
+            "stopTestOnFail": true,
+            "warningOnly": false,
+            "_value": {
+              "extension": [
+                {
+                  "url": "http://fhir.interoplab.eu/fhir/StructureDefinition/Interoplab-CL-ext-assert-regex-matches",
+                  "valueString": "^[A-Za-z0-9_-]+\\.[A-Za-z0-9_-]*\\.[A-Za-z0-9_-]+\\.[A-Za-z0-9_-]+\\.[A-Za-z0-9_-]+$"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "assert": {
+            "extension": [
+              {
+                "url": "http://fhir.interoplab.eu/fhir/StructureDefinition/Interoplab-CL-ext-assert-input-variable",
+                "valueString": "dva-token-header"
+              },
+              {
+                "url": "http://fhir.interoplab.eu/fhir/StructureDefinition/Interoplab-CL-ext-assert-mapper-function",
+                "valueCode": "base64Decode"
+              }
+            ],
+            "description": "Confirm that the JWE header declares alg as RSA-OAEP, the key encryption algorithm.",
+            "direction": "request",
+            "stopTestOnFail": false,
+            "warningOnly": false,
+            "_value": {
+              "extension": [
+                {
+                  "url": "http://fhir.interoplab.eu/fhir/StructureDefinition/Interoplab-CL-ext-assert-regex-matches",
+                  "valueString": "\"alg\"\\s*:\\s*\"RSA-OAEP\""
+                }
+              ]
+            }
+          }
+        },
+        {
+          "assert": {
+            "extension": [
+              {
+                "url": "http://fhir.interoplab.eu/fhir/StructureDefinition/Interoplab-CL-ext-assert-input-variable",
+                "valueString": "dva-token-header"
+              },
+              {
+                "url": "http://fhir.interoplab.eu/fhir/StructureDefinition/Interoplab-CL-ext-assert-mapper-function",
+                "valueCode": "base64Decode"
+              }
+            ],
+            "description": "Confirm that the JWE header declares enc as A256CBC-HS512, the content encryption algorithm.",
+            "direction": "request",
+            "stopTestOnFail": false,
+            "warningOnly": false,
+            "_value": {
+              "extension": [
+                {
+                  "url": "http://fhir.interoplab.eu/fhir/StructureDefinition/Interoplab-CL-ext-assert-regex-matches",
+                  "valueString": "\"enc\"\\s*:\\s*\"A256CBC-HS512\""
+                }
+              ]
+            }
+          }
+        },
+        {
+          "assert": {
+            "extension": [
+              {
+                "url": "http://fhir.interoplab.eu/fhir/StructureDefinition/Interoplab-CL-ext-assert-input-variable",
+                "valueString": "dva-token-header"
+              },
+              {
+                "url": "http://fhir.interoplab.eu/fhir/StructureDefinition/Interoplab-CL-ext-assert-mapper-function",
+                "valueCode": "base64Decode"
+              }
+            ],
+            "description": "Confirm that the JWE header declares cty as JWT, which is what marks the payload as a nested JWT.",
+            "direction": "request",
+            "stopTestOnFail": false,
+            "warningOnly": false,
+            "_value": {
+              "extension": [
+                {
+                  "url": "http://fhir.interoplab.eu/fhir/StructureDefinition/Interoplab-CL-ext-assert-regex-matches",
+                  "valueString": "\"cty\"\\s*:\\s*\"JWT\""
+                }
+              ]
+            }
+          }
+        },
+        {
+          "assert": {
+            "extension": [
+              {
+                "url": "http://fhir.interoplab.eu/fhir/StructureDefinition/Interoplab-CL-ext-assert-input-variable",
+                "valueString": "dva-token-header"
+              },
+              {
+                "url": "http://fhir.interoplab.eu/fhir/StructureDefinition/Interoplab-CL-ext-assert-mapper-function",
+                "valueCode": "base64Decode"
+              }
+            ],
+            "description": "Check whether the JWE header names the key it was encrypted with. Warning only: security.md requires a kid on the JWS header, which cannot be read from outside, and its JWE header table does not list one. Reported because key rotation under open-GUPZ issue #27 needs it.",
+            "direction": "request",
+            "stopTestOnFail": false,
+            "warningOnly": true,
+            "_value": {
+              "extension": [
+                {
+                  "url": "http://fhir.interoplab.eu/fhir/StructureDefinition/Interoplab-CL-ext-assert-regex-matches",
+                  "valueString": "\"kid\"\\s*:\\s*\"[^\"]+\""
+                }
+              ]
+            }
+          }
+        },
+        {
+          "assert": {
+            "description": "Confirm that query parameter 'patient=' was not present, so that no BSN travels in the url.",
+            "direction": "request",
+            "operator": "notContains",
+            "requestURL": "patient=",
+            "stopTestOnFail": false,
+            "warningOnly": false
+          }
+        },
+        {
+          "assert": {
+            "description": "Confirm that query parameter 'subject=' was not present, so that no BSN travels in the url.",
+            "direction": "request",
+            "operator": "notContains",
+            "requestURL": "subject=",
+            "stopTestOnFail": false,
+            "warningOnly": false
+          }
+        },
+        {
+          "assert": {
+            "description": "Confirm that the Burgerservicenummer naming system does not appear in the url in any form.",
+            "direction": "request",
+            "operator": "notContains",
+            "requestURL": "fhir.nl/fhir/NamingSystem/bsn",
+            "stopTestOnFail": false,
+            "warningOnly": false
+          }
+        }
+      ],
+      "id": "dva-01",
+      "name": "DVA-01",
+      "description": "Any search on DocumentReference will do. The request is incidental; the token the caller chose to send with it is the subject. Nothing is asserted about the response."
+    }
+  ],
+  "version": "0.1.0",
+  "status": "active",
+  "publisher": "GUPZ",
+  "name": "Dva_01_token_envelope",
+  "title": "DVA-01 - The token is a nested JWT with the prescribed JWE header",
+  "description": "Tests what a receiving platform can establish about the token a caller sends without holding the decryption key: that there is a Bearer token, that it is a JWS encrypted into a JWE rather than a bare JWS, and that the JWE header declares the three fields GUPZ-TOK-002 prescribes. Also confirms that no BSN travels in the url. The claims inside the token cannot be read here; that needs the platform's private key."
+}

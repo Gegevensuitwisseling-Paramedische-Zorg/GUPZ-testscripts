@@ -1,0 +1,659 @@
+{
+  "resourceType": "TestScript",
+  "id": "resources-purgecreateupdate-xml",
+  "url": "http://gupz.nl/fhir/TestScript/resources-purgecreateupdate-xml",
+  "contact": [
+    {
+      "telecom": [
+        {
+          "system": "url",
+          "value": "https://github.com/Gegevensuitwisseling-Paramedische-Zorg/GUPZ-testscripts"
+        }
+      ],
+      "name": "GUPZ"
+    }
+  ],
+  "fixture": [
+    {
+      "resource": {
+        "reference": "../_reference/resources/medmij-pdfa-Binary-kwalificatie1.xml"
+      },
+      "id": "Binary-pdfa-binary1",
+      "autocreate": false,
+      "autodelete": false
+    },
+    {
+      "resource": {
+        "reference": "../_reference/resources/medmij-pdfa-Binary-kwalificatie2.xml"
+      },
+      "id": "Binary-pdfa-binary2",
+      "autocreate": false,
+      "autodelete": false
+    },
+    {
+      "resource": {
+        "reference": "../_reference/resources/medmij-pdfa-Binary-kwalificatie3.xml"
+      },
+      "id": "Binary-pdfa-binary3",
+      "autocreate": false,
+      "autodelete": false
+    },
+    {
+      "resource": {
+        "reference": "../_reference/resources/medmij-pdfa-Binary-kwalificatie4.xml"
+      },
+      "id": "Binary-pdfa-binary4",
+      "autocreate": false,
+      "autodelete": false
+    },
+    {
+      "resource": {
+        "reference": "../_reference/resources/medmij-pdfa-DocumentReference-kwalificatie1.xml"
+      },
+      "id": "DocumentReference-pdfa-documentreference1",
+      "autocreate": false,
+      "autodelete": false
+    },
+    {
+      "resource": {
+        "reference": "../_reference/resources/medmij-pdfa-DocumentReference-kwalificatie2.xml"
+      },
+      "id": "DocumentReference-pdfa-documentreference2",
+      "autocreate": false,
+      "autodelete": false
+    },
+    {
+      "resource": {
+        "reference": "../_reference/resources/medmij-pdfa-DocumentReference-kwalificatie3.xml"
+      },
+      "id": "DocumentReference-pdfa-documentreference3",
+      "autocreate": false,
+      "autodelete": false
+    },
+    {
+      "resource": {
+        "reference": "../_reference/resources/medmij-pdfa-DocumentReference-kwalificatie4.xml"
+      },
+      "id": "DocumentReference-pdfa-documentreference4",
+      "autocreate": false,
+      "autodelete": false
+    },
+    {
+      "resource": {
+        "reference": "../_reference/resources/medmij-pdfa-DocumentReference-kwalificatie5.xml"
+      },
+      "id": "DocumentReference-pdfa-documentreference5",
+      "autocreate": false,
+      "autodelete": false
+    },
+    {
+      "resource": {
+        "reference": "../_reference/resources/medmij-pdfa-DocumentReference-kwalificatie6.xml"
+      },
+      "id": "DocumentReference-pdfa-documentreference6",
+      "autocreate": false,
+      "autodelete": false
+    },
+    {
+      "resource": {
+        "reference": "../_reference/resources/medmij-pdfa-DocumentReference-kwalificatie7.xml"
+      },
+      "id": "DocumentReference-pdfa-documentreference7",
+      "autocreate": false,
+      "autodelete": false
+    },
+    {
+      "resource": {
+        "reference": "../_reference/resources/medmij-pdfa-Patient-kwalificatie1.xml"
+      },
+      "id": "Patient-example-pdfa-kwalificatie1",
+      "autocreate": false,
+      "autodelete": false
+    },
+    {
+      "resource": {
+        "reference": "../_reference/resources/medmij-pdfa-Patient-kwalificatie2.xml"
+      },
+      "id": "Patient-example-pdfa-kwalificatie2",
+      "autocreate": false,
+      "autodelete": false
+    }
+  ],
+  "variable": [
+    {
+      "name": "Binary-pdfa-binary1-id",
+      "expression": "Binary.id",
+      "sourceId": "Binary-pdfa-binary1"
+    },
+    {
+      "name": "Binary-pdfa-binary2-id",
+      "expression": "Binary.id",
+      "sourceId": "Binary-pdfa-binary2"
+    },
+    {
+      "name": "Binary-pdfa-binary3-id",
+      "expression": "Binary.id",
+      "sourceId": "Binary-pdfa-binary3"
+    },
+    {
+      "name": "Binary-pdfa-binary4-id",
+      "expression": "Binary.id",
+      "sourceId": "Binary-pdfa-binary4"
+    },
+    {
+      "name": "DocumentReference-pdfa-documentreference1-id",
+      "expression": "DocumentReference.id",
+      "sourceId": "DocumentReference-pdfa-documentreference1"
+    },
+    {
+      "name": "DocumentReference-pdfa-documentreference2-id",
+      "expression": "DocumentReference.id",
+      "sourceId": "DocumentReference-pdfa-documentreference2"
+    },
+    {
+      "name": "DocumentReference-pdfa-documentreference3-id",
+      "expression": "DocumentReference.id",
+      "sourceId": "DocumentReference-pdfa-documentreference3"
+    },
+    {
+      "name": "DocumentReference-pdfa-documentreference4-id",
+      "expression": "DocumentReference.id",
+      "sourceId": "DocumentReference-pdfa-documentreference4"
+    },
+    {
+      "name": "DocumentReference-pdfa-documentreference5-id",
+      "expression": "DocumentReference.id",
+      "sourceId": "DocumentReference-pdfa-documentreference5"
+    },
+    {
+      "name": "DocumentReference-pdfa-documentreference6-id",
+      "expression": "DocumentReference.id",
+      "sourceId": "DocumentReference-pdfa-documentreference6"
+    },
+    {
+      "name": "DocumentReference-pdfa-documentreference7-id",
+      "expression": "DocumentReference.id",
+      "sourceId": "DocumentReference-pdfa-documentreference7"
+    },
+    {
+      "name": "Patient-example-pdfa-kwalificatie1-id",
+      "expression": "Patient.id",
+      "sourceId": "Patient-example-pdfa-kwalificatie1"
+    },
+    {
+      "name": "Patient-example-pdfa-kwalificatie2-id",
+      "expression": "Patient.id",
+      "sourceId": "Patient-example-pdfa-kwalificatie2"
+    },
+    {
+      "name": "T",
+      "defaultValue": "${CURRENTDATE}",
+      "description": "Date that data and queries are expected to be relative to."
+    }
+  ],
+  "setup": {
+    "action": [
+      {
+        "operation": {
+          "requestHeader": [
+            {
+              "field": "Authorization",
+              "value": "Bearer 121c15f1-f352-485e-979e-04a131bc6238"
+            }
+          ],
+          "type": {
+            "code": "purge",
+            "system": "http://fhir.interoplab.eu/fhir/CodeSystem/Interoplab-CL-operation-type"
+          },
+          "resource": "Patient",
+          "accept": "xml",
+          "contentType": "xml",
+          "encodeRequestUrl": true,
+          "params": "example-pdfa-kwalificatie1/$purge"
+        }
+      },
+      {
+        "assert": {
+          "description": "Confirm that the returned HTTP status is 200(OK) or 204(No Content)",
+          "operator": "in",
+          "responseCode": "200,204",
+          "stopTestOnFail": false,
+          "warningOnly": false
+        }
+      },
+      {
+        "operation": {
+          "requestHeader": [
+            {
+              "field": "Authorization",
+              "value": "Bearer 79339c59-4908-4b0d-8b53-4520f9e4c7d5"
+            }
+          ],
+          "type": {
+            "code": "purge",
+            "system": "http://fhir.interoplab.eu/fhir/CodeSystem/Interoplab-CL-operation-type"
+          },
+          "resource": "Patient",
+          "accept": "xml",
+          "contentType": "xml",
+          "encodeRequestUrl": true,
+          "params": "example-pdfa-kwalificatie2/$purge"
+        }
+      },
+      {
+        "assert": {
+          "description": "Confirm that the returned HTTP status is 200(OK) or 204(No Content)",
+          "operator": "in",
+          "responseCode": "200,204",
+          "stopTestOnFail": false,
+          "warningOnly": false
+        }
+      }
+    ]
+  },
+  "test": [
+    {
+      "action": [
+        {
+          "operation": {
+            "requestHeader": [
+              {
+                "field": "Authorization",
+                "value": "Bearer 121c15f1-f352-485e-979e-04a131bc6238"
+              }
+            ],
+            "type": {
+              "code": "update",
+              "system": "http://hl7.org/fhir/restful-interaction"
+            },
+            "resource": "Patient",
+            "description": "PUT Patient/example-pdfa-kwalificatie1",
+            "accept": "xml",
+            "contentType": "xml",
+            "encodeRequestUrl": true,
+            "params": "/${Patient-example-pdfa-kwalificatie1-id}",
+            "sourceId": "Patient-example-pdfa-kwalificatie1"
+          }
+        },
+        {
+          "assert": {
+            "description": "Confirm that the returned HTTP status is 200(OK) or 201(Created).",
+            "operator": "in",
+            "responseCode": "200,201",
+            "stopTestOnFail": false,
+            "warningOnly": false
+          }
+        },
+        {
+          "operation": {
+            "requestHeader": [
+              {
+                "field": "Authorization",
+                "value": "Bearer 79339c59-4908-4b0d-8b53-4520f9e4c7d5"
+              }
+            ],
+            "type": {
+              "code": "update",
+              "system": "http://hl7.org/fhir/restful-interaction"
+            },
+            "resource": "Patient",
+            "description": "PUT Patient/example-pdfa-kwalificatie2",
+            "accept": "xml",
+            "contentType": "xml",
+            "encodeRequestUrl": true,
+            "params": "/${Patient-example-pdfa-kwalificatie2-id}",
+            "sourceId": "Patient-example-pdfa-kwalificatie2"
+          }
+        },
+        {
+          "assert": {
+            "description": "Confirm that the returned HTTP status is 200(OK) or 201(Created).",
+            "operator": "in",
+            "responseCode": "200,201",
+            "stopTestOnFail": false,
+            "warningOnly": false
+          }
+        },
+        {
+          "operation": {
+            "requestHeader": [
+              {
+                "field": "Authorization",
+                "value": "Bearer 121c15f1-f352-485e-979e-04a131bc6238"
+              }
+            ],
+            "type": {
+              "code": "update",
+              "system": "http://hl7.org/fhir/restful-interaction"
+            },
+            "resource": "Binary",
+            "description": "PUT Binary/pdfa-binary1",
+            "accept": "xml",
+            "contentType": "xml",
+            "encodeRequestUrl": true,
+            "params": "/${Binary-pdfa-binary1-id}",
+            "sourceId": "Binary-pdfa-binary1"
+          }
+        },
+        {
+          "assert": {
+            "description": "Confirm that the returned HTTP status is 200(OK) or 201(Created).",
+            "operator": "in",
+            "responseCode": "200,201",
+            "stopTestOnFail": false,
+            "warningOnly": false
+          }
+        },
+        {
+          "operation": {
+            "requestHeader": [
+              {
+                "field": "Authorization",
+                "value": "Bearer 121c15f1-f352-485e-979e-04a131bc6238"
+              }
+            ],
+            "type": {
+              "code": "update",
+              "system": "http://hl7.org/fhir/restful-interaction"
+            },
+            "resource": "Binary",
+            "description": "PUT Binary/pdfa-binary2",
+            "accept": "xml",
+            "contentType": "xml",
+            "encodeRequestUrl": true,
+            "params": "/${Binary-pdfa-binary2-id}",
+            "sourceId": "Binary-pdfa-binary2"
+          }
+        },
+        {
+          "assert": {
+            "description": "Confirm that the returned HTTP status is 200(OK) or 201(Created).",
+            "operator": "in",
+            "responseCode": "200,201",
+            "stopTestOnFail": false,
+            "warningOnly": false
+          }
+        },
+        {
+          "operation": {
+            "requestHeader": [
+              {
+                "field": "Authorization",
+                "value": "Bearer 121c15f1-f352-485e-979e-04a131bc6238"
+              }
+            ],
+            "type": {
+              "code": "update",
+              "system": "http://hl7.org/fhir/restful-interaction"
+            },
+            "resource": "Binary",
+            "description": "PUT Binary/pdfa-binary3",
+            "accept": "xml",
+            "contentType": "xml",
+            "encodeRequestUrl": true,
+            "params": "/${Binary-pdfa-binary3-id}",
+            "sourceId": "Binary-pdfa-binary3"
+          }
+        },
+        {
+          "assert": {
+            "description": "Confirm that the returned HTTP status is 200(OK) or 201(Created).",
+            "operator": "in",
+            "responseCode": "200,201",
+            "stopTestOnFail": false,
+            "warningOnly": false
+          }
+        },
+        {
+          "operation": {
+            "requestHeader": [
+              {
+                "field": "Authorization",
+                "value": "Bearer 121c15f1-f352-485e-979e-04a131bc6238"
+              }
+            ],
+            "type": {
+              "code": "update",
+              "system": "http://hl7.org/fhir/restful-interaction"
+            },
+            "resource": "Binary",
+            "description": "PUT Binary/pdfa-binary4",
+            "accept": "xml",
+            "contentType": "xml",
+            "encodeRequestUrl": true,
+            "params": "/${Binary-pdfa-binary4-id}",
+            "sourceId": "Binary-pdfa-binary4"
+          }
+        },
+        {
+          "assert": {
+            "description": "Confirm that the returned HTTP status is 200(OK) or 201(Created).",
+            "operator": "in",
+            "responseCode": "200,201",
+            "stopTestOnFail": false,
+            "warningOnly": false
+          }
+        },
+        {
+          "operation": {
+            "requestHeader": [
+              {
+                "field": "Authorization",
+                "value": "Bearer 121c15f1-f352-485e-979e-04a131bc6238"
+              }
+            ],
+            "type": {
+              "code": "update",
+              "system": "http://hl7.org/fhir/restful-interaction"
+            },
+            "resource": "DocumentReference",
+            "description": "PUT DocumentReference/pdfa-documentreference1",
+            "accept": "xml",
+            "contentType": "xml",
+            "encodeRequestUrl": true,
+            "params": "/${DocumentReference-pdfa-documentreference1-id}",
+            "sourceId": "DocumentReference-pdfa-documentreference1"
+          }
+        },
+        {
+          "assert": {
+            "description": "Confirm that the returned HTTP status is 200(OK) or 201(Created).",
+            "operator": "in",
+            "responseCode": "200,201",
+            "stopTestOnFail": false,
+            "warningOnly": false
+          }
+        },
+        {
+          "operation": {
+            "requestHeader": [
+              {
+                "field": "Authorization",
+                "value": "Bearer 121c15f1-f352-485e-979e-04a131bc6238"
+              }
+            ],
+            "type": {
+              "code": "update",
+              "system": "http://hl7.org/fhir/restful-interaction"
+            },
+            "resource": "DocumentReference",
+            "description": "PUT DocumentReference/pdfa-documentreference2",
+            "accept": "xml",
+            "contentType": "xml",
+            "encodeRequestUrl": true,
+            "params": "/${DocumentReference-pdfa-documentreference2-id}",
+            "sourceId": "DocumentReference-pdfa-documentreference2"
+          }
+        },
+        {
+          "assert": {
+            "description": "Confirm that the returned HTTP status is 200(OK) or 201(Created).",
+            "operator": "in",
+            "responseCode": "200,201",
+            "stopTestOnFail": false,
+            "warningOnly": false
+          }
+        },
+        {
+          "operation": {
+            "requestHeader": [
+              {
+                "field": "Authorization",
+                "value": "Bearer 121c15f1-f352-485e-979e-04a131bc6238"
+              }
+            ],
+            "type": {
+              "code": "update",
+              "system": "http://hl7.org/fhir/restful-interaction"
+            },
+            "resource": "DocumentReference",
+            "description": "PUT DocumentReference/pdfa-documentreference3",
+            "accept": "xml",
+            "contentType": "xml",
+            "encodeRequestUrl": true,
+            "params": "/${DocumentReference-pdfa-documentreference3-id}",
+            "sourceId": "DocumentReference-pdfa-documentreference3"
+          }
+        },
+        {
+          "assert": {
+            "description": "Confirm that the returned HTTP status is 200(OK) or 201(Created).",
+            "operator": "in",
+            "responseCode": "200,201",
+            "stopTestOnFail": false,
+            "warningOnly": false
+          }
+        },
+        {
+          "operation": {
+            "requestHeader": [
+              {
+                "field": "Authorization",
+                "value": "Bearer 121c15f1-f352-485e-979e-04a131bc6238"
+              }
+            ],
+            "type": {
+              "code": "update",
+              "system": "http://hl7.org/fhir/restful-interaction"
+            },
+            "resource": "DocumentReference",
+            "description": "PUT DocumentReference/pdfa-documentreference4",
+            "accept": "xml",
+            "contentType": "xml",
+            "encodeRequestUrl": true,
+            "params": "/${DocumentReference-pdfa-documentreference4-id}",
+            "sourceId": "DocumentReference-pdfa-documentreference4"
+          }
+        },
+        {
+          "assert": {
+            "description": "Confirm that the returned HTTP status is 200(OK) or 201(Created).",
+            "operator": "in",
+            "responseCode": "200,201",
+            "stopTestOnFail": false,
+            "warningOnly": false
+          }
+        },
+        {
+          "operation": {
+            "requestHeader": [
+              {
+                "field": "Authorization",
+                "value": "Bearer 121c15f1-f352-485e-979e-04a131bc6238"
+              }
+            ],
+            "type": {
+              "code": "update",
+              "system": "http://hl7.org/fhir/restful-interaction"
+            },
+            "resource": "DocumentReference",
+            "description": "PUT DocumentReference/pdfa-documentreference5",
+            "accept": "xml",
+            "contentType": "xml",
+            "encodeRequestUrl": true,
+            "params": "/${DocumentReference-pdfa-documentreference5-id}",
+            "sourceId": "DocumentReference-pdfa-documentreference5"
+          }
+        },
+        {
+          "assert": {
+            "description": "Confirm that the returned HTTP status is 200(OK) or 201(Created).",
+            "operator": "in",
+            "responseCode": "200,201",
+            "stopTestOnFail": false,
+            "warningOnly": false
+          }
+        },
+        {
+          "operation": {
+            "requestHeader": [
+              {
+                "field": "Authorization",
+                "value": "Bearer 121c15f1-f352-485e-979e-04a131bc6238"
+              }
+            ],
+            "type": {
+              "code": "update",
+              "system": "http://hl7.org/fhir/restful-interaction"
+            },
+            "resource": "DocumentReference",
+            "description": "PUT DocumentReference/pdfa-documentreference6",
+            "accept": "xml",
+            "contentType": "xml",
+            "encodeRequestUrl": true,
+            "params": "/${DocumentReference-pdfa-documentreference6-id}",
+            "sourceId": "DocumentReference-pdfa-documentreference6"
+          }
+        },
+        {
+          "assert": {
+            "description": "Confirm that the returned HTTP status is 200(OK) or 201(Created).",
+            "operator": "in",
+            "responseCode": "200,201",
+            "stopTestOnFail": false,
+            "warningOnly": false
+          }
+        },
+        {
+          "operation": {
+            "requestHeader": [
+              {
+                "field": "Authorization",
+                "value": "Bearer 121c15f1-f352-485e-979e-04a131bc6238"
+              }
+            ],
+            "type": {
+              "code": "update",
+              "system": "http://hl7.org/fhir/restful-interaction"
+            },
+            "resource": "DocumentReference",
+            "description": "PUT DocumentReference/pdfa-documentreference7",
+            "accept": "xml",
+            "contentType": "xml",
+            "encodeRequestUrl": true,
+            "params": "/${DocumentReference-pdfa-documentreference7-id}",
+            "sourceId": "DocumentReference-pdfa-documentreference7"
+          }
+        },
+        {
+          "assert": {
+            "description": "Confirm that the returned HTTP status is 200(OK) or 201(Created).",
+            "operator": "in",
+            "responseCode": "200,201",
+            "stopTestOnFail": false,
+            "warningOnly": false
+          }
+        }
+      ],
+      "id": "Step1-LoadTestResourceCreate",
+      "name": "Step1-LoadTestResourceCreate",
+      "description": "Load test resources using the update (PUT) operation of the target FHIR server for use in testing. All resource ids are pre-defined. The target FHIR server is expected to support resource create via the update (PUT) operation for client assigned ids."
+    }
+  ],
+  "version": "0.1.0",
+  "status": "active",
+  "publisher": "GUPZ",
+  "name": "Load_Test_Resources_Purge_Create_Update_XML",
+  "title": "Load the test resources onto a server",
+  "description": "Load test resources using the update (PUT) operation of the target FHIR server for use in testing. All resource ids are pre-defined. The target FHIR server is expected to support resource create via the update (PUT) operation for client assigned ids. This is provisioning, not a conformance test: a GUPZ data platform reads only, so this set is meant for a reference server used in a dry run. Trimmed to what the scenarios on both sides need: two patients, seven DocumentReference resources and four Binary resources. Left out are the five DocumentManifest fixtures, which no GUPZ scenario reads and which the specification does not support, and everything of XXX_Ellens, who appears in no scenario on either side. The documents of XXX_Schulte that are superseded or entered-in-error are kept on purpose: scenario 2.1 checks that only current documents come back, which needs something to filter out. The access tokens are fixed and resolve through Configuration/QualificationTokens.json."
+}

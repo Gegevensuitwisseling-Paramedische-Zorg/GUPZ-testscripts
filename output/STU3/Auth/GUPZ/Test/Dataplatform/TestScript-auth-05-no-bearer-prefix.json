@@ -1,0 +1,102 @@
+{
+  "resourceType": "TestScript",
+  "id": "auth-05-no-bearer-prefix",
+  "url": "http://gupz.nl/fhir/TestScript/auth-05-no-bearer-prefix",
+  "contact": [
+    {
+      "telecom": [
+        {
+          "system": "url",
+          "value": "https://github.com/Gegevensuitwisseling-Paramedische-Zorg/GUPZ-testscripts"
+        }
+      ],
+      "name": "GUPZ"
+    }
+  ],
+  "origin": [
+    {
+      "index": 1,
+      "profile": {
+        "code": "Conformancelab-Client",
+        "system": "http://fhir.interoplab.eu/fhir/CodeSystem/Interoplab-CL-origin-profile"
+      }
+    }
+  ],
+  "destination": [
+    {
+      "extension": [
+        {
+          "url": "http://fhir.interoplab.eu/fhir/StructureDefinition/Interoplab-CL-ext-destination-title",
+          "valueString": "Data platform"
+        }
+      ],
+      "index": 1,
+      "profile": {
+        "code": "FHIR-Server",
+        "system": "http://terminology.hl7.org/CodeSystem/testscript-profile-destination-types"
+      }
+    }
+  ],
+  "variable": [
+    {
+      "name": "auth-05-token",
+      "description": "T1: valid, signed and encrypted. This case sends it without the Bearer prefix."
+    }
+  ],
+  "test": [
+    {
+      "action": [
+        {
+          "operation": {
+            "requestHeader": [
+              {
+                "field": "Authorization",
+                "value": "${auth-05-token}"
+              }
+            ],
+            "type": {
+              "code": "search",
+              "system": "http://hl7.org/fhir/restful-interaction"
+            },
+            "resource": "DocumentReference",
+            "description": "Search for current DocumentReference resources.",
+            "accept": "json",
+            "destination": 1,
+            "encodeRequestUrl": true,
+            "origin": 1,
+            "params": "?status=current"
+          }
+        },
+        {
+          "assert": {
+            "description": "Confirm that the returned HTTP status is not 200 (OK).",
+            "direction": "response",
+            "operator": "notEquals",
+            "responseCode": "200",
+            "stopTestOnFail": true,
+            "warningOnly": false
+          }
+        },
+        {
+          "assert": {
+            "description": "Check if the returned HTTP status is 401 (Unauthorized) or 403 (Forbidden). Assert is set to warning only because open-GUPZ issue #70 does not specify the response to a refused token, so other failure codes may be expected as well.",
+            "direction": "response",
+            "operator": "in",
+            "responseCode": "401,403",
+            "stopTestOnFail": false,
+            "warningOnly": true
+          }
+        }
+      ],
+      "id": "05",
+      "name": "AUTH-05",
+      "description": "A token sent without the Bearer prefix is refused"
+    }
+  ],
+  "version": "0.1.0",
+  "status": "active",
+  "publisher": "GUPZ",
+  "name": "Auth_05_no_bearer_prefix",
+  "title": "AUTH-05 - A token sent without the Bearer prefix is refused",
+  "description": "security.md prescribes the form Authorization: Bearer <token>. The same token without that prefix must not be accepted."
+}

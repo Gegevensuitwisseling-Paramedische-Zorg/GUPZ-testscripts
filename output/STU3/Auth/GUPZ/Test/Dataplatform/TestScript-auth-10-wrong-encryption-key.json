@@ -1,0 +1,102 @@
+{
+  "resourceType": "TestScript",
+  "id": "auth-10-wrong-encryption-key",
+  "url": "http://gupz.nl/fhir/TestScript/auth-10-wrong-encryption-key",
+  "contact": [
+    {
+      "telecom": [
+        {
+          "system": "url",
+          "value": "https://github.com/Gegevensuitwisseling-Paramedische-Zorg/GUPZ-testscripts"
+        }
+      ],
+      "name": "GUPZ"
+    }
+  ],
+  "origin": [
+    {
+      "index": 1,
+      "profile": {
+        "code": "Conformancelab-Client",
+        "system": "http://fhir.interoplab.eu/fhir/CodeSystem/Interoplab-CL-origin-profile"
+      }
+    }
+  ],
+  "destination": [
+    {
+      "extension": [
+        {
+          "url": "http://fhir.interoplab.eu/fhir/StructureDefinition/Interoplab-CL-ext-destination-title",
+          "valueString": "Data platform"
+        }
+      ],
+      "index": 1,
+      "profile": {
+        "code": "FHIR-Server",
+        "system": "http://terminology.hl7.org/CodeSystem/testscript-profile-destination-types"
+      }
+    }
+  ],
+  "variable": [
+    {
+      "name": "auth-10-token",
+      "description": "T8: encrypted with a public key that is not the platform's."
+    }
+  ],
+  "test": [
+    {
+      "action": [
+        {
+          "operation": {
+            "requestHeader": [
+              {
+                "field": "Authorization",
+                "value": "Bearer ${auth-10-token}"
+              }
+            ],
+            "type": {
+              "code": "search",
+              "system": "http://hl7.org/fhir/restful-interaction"
+            },
+            "resource": "DocumentReference",
+            "description": "Search for current DocumentReference resources.",
+            "accept": "json",
+            "destination": 1,
+            "encodeRequestUrl": true,
+            "origin": 1,
+            "params": "?status=current"
+          }
+        },
+        {
+          "assert": {
+            "description": "Confirm that the returned HTTP status is not 200 (OK).",
+            "direction": "response",
+            "operator": "notEquals",
+            "responseCode": "200",
+            "stopTestOnFail": true,
+            "warningOnly": false
+          }
+        },
+        {
+          "assert": {
+            "description": "Check if the returned HTTP status is 401 (Unauthorized) or 403 (Forbidden). Assert is set to warning only because open-GUPZ issue #70 does not specify the response to a refused token, so other failure codes may be expected as well.",
+            "direction": "response",
+            "operator": "in",
+            "responseCode": "401,403",
+            "stopTestOnFail": false,
+            "warningOnly": true
+          }
+        }
+      ],
+      "id": "10",
+      "name": "AUTH-10",
+      "description": "A token encrypted with the wrong key is refused"
+    }
+  ],
+  "version": "0.1.0",
+  "status": "active",
+  "publisher": "GUPZ",
+  "name": "Auth_10_wrong_encryption_key",
+  "title": "AUTH-10 - A token encrypted with the wrong key is refused",
+  "description": "A token the platform cannot decrypt with its private encryption key must be refused. Since open-GUPZ issue #68 the JWE profile is fixed: alg RSA-OAEP, enc A256CBC-HS512, cty JWT."
+}

@@ -1,0 +1,16 @@
+{
+  "goal": "Test",
+  "fhirVersion": "STU3",
+  "informationStandard": "GUPZ PDF/A",
+  "usecase": "GUPZ",
+  "role": {
+    "name": "Dataplatform",
+    "description": "For parties implementing a GUPZ data platform. Goal: establish that the document interface conforms, covering search, retrieval through Binary, and the prescribed error responses."
+  },
+  "fhirPackage": [
+    {
+      "name": "nictiz.fhir.nl.stu3.zib2017",
+      "version": "2.3.2"
+    }
+  ]
+}

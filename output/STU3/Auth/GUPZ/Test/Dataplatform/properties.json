@@ -1,0 +1,10 @@
+{
+  "goal": "Test",
+  "fhirVersion": "STU3",
+  "informationStandard": "GUPZ Auth",
+  "usecase": "GUPZ",
+  "role": {
+    "name": "Dataplatform",
+    "description": "For parties implementing a GUPZ data platform. Goal: establish that a valid token is accepted and that invalid tokens are refused as the specification requires. The tester supplies the tokens."
+  }
+}

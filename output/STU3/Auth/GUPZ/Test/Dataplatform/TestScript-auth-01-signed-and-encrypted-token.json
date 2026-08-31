@@ -1,0 +1,101 @@
+{
+  "resourceType": "TestScript",
+  "id": "auth-01-signed-and-encrypted-token",
+  "url": "http://gupz.nl/fhir/TestScript/auth-01-signed-and-encrypted-token",
+  "contact": [
+    {
+      "telecom": [
+        {
+          "system": "url",
+          "value": "https://github.com/Gegevensuitwisseling-Paramedische-Zorg/GUPZ-testscripts"
+        }
+      ],
+      "name": "GUPZ"
+    }
+  ],
+  "origin": [
+    {
+      "index": 1,
+      "profile": {
+        "code": "Conformancelab-Client",
+        "system": "http://fhir.interoplab.eu/fhir/CodeSystem/Interoplab-CL-origin-profile"
+      }
+    }
+  ],
+  "destination": [
+    {
+      "extension": [
+        {
+          "url": "http://fhir.interoplab.eu/fhir/StructureDefinition/Interoplab-CL-ext-destination-title",
+          "valueString": "Data platform"
+        }
+      ],
+      "index": 1,
+      "profile": {
+        "code": "FHIR-Server",
+        "system": "http://terminology.hl7.org/CodeSystem/testscript-profile-destination-types"
+      }
+    }
+  ],
+  "variable": [
+    {
+      "name": "auth-01-token",
+      "description": "T1: valid, signed and encrypted for the test patient."
+    }
+  ],
+  "test": [
+    {
+      "action": [
+        {
+          "operation": {
+            "requestHeader": [
+              {
+                "field": "Authorization",
+                "value": "Bearer ${auth-01-token}"
+              }
+            ],
+            "type": {
+              "code": "search",
+              "system": "http://hl7.org/fhir/restful-interaction"
+            },
+            "resource": "DocumentReference",
+            "description": "Search for current DocumentReference resources.",
+            "accept": "json",
+            "destination": 1,
+            "encodeRequestUrl": true,
+            "origin": 1,
+            "params": "?status=current"
+          }
+        },
+        {
+          "assert": {
+            "description": "Confirm that the operation was successful.",
+            "direction": "response",
+            "operator": "in",
+            "responseCode": "200,201",
+            "stopTestOnFail": true,
+            "warningOnly": false
+          }
+        },
+        {
+          "assert": {
+            "description": "Confirm that the returned resource type is Bundle.",
+            "direction": "response",
+            "resource": "Bundle",
+            "stopTestOnFail": false,
+            "warningOnly": false
+          }
+        }
+      ],
+      "id": "01",
+      "name": "AUTH-01",
+      "description": "A signed and encrypted token is accepted"
+    }
+  ],
+  "version": "0.1.0",
+  "status": "active",
+  "publisher": "GUPZ",
+  "name": "Auth_01_signed_and_encrypted_token",
+  "title": "AUTH-01 - A signed and encrypted token is accepted",
+  "description": "The happy flow. A correctly formed token, signed and then encrypted as security.md prescribes, must be accepted."
+}

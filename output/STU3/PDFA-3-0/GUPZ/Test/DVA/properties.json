@@ -1,0 +1,17 @@
+{
+  "goal": "Test",
+  "fhirVersion": "STU3",
+  "informationStandard": "GUPZ PDF/A",
+  "usecase": "GUPZ",
+  "role": {
+    "name": "DVA",
+    "description": "For parties calling a GUPZ data platform, such as a DVA. Goal: establish that the calling system issues the expected requests and handles the responses correctly. Each scenario states which token to use."
+  },
+  "fhirPackage": [
+    {
+      "name": "nictiz.fhir.nl.stu3.zib2017",
+      "version": "2.3.2"
+    }
+  ],
+  "serverAlias": "gupz"
+}

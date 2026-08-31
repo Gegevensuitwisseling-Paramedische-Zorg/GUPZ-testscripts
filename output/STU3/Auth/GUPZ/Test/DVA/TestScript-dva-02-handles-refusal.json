@@ -1,0 +1,135 @@
+{
+  "resourceType": "TestScript",
+  "id": "dva-02-handles-refusal",
+  "url": "http://gupz.nl/fhir/TestScript/dva-02-handles-refusal",
+  "contact": [
+    {
+      "telecom": [
+        {
+          "system": "url",
+          "value": "https://github.com/Gegevensuitwisseling-Paramedische-Zorg/GUPZ-testscripts"
+        }
+      ],
+      "name": "GUPZ"
+    }
+  ],
+  "origin": [
+    {
+      "index": 1,
+      "profile": {
+        "code": "FHIR-Client",
+        "system": "http://terminology.hl7.org/CodeSystem/testscript-profile-origin-types"
+      }
+    }
+  ],
+  "destination": [
+    {
+      "extension": [
+        {
+          "url": "http://fhir.interoplab.eu/fhir/StructureDefinition/Interoplab-CL-ext-destination-title",
+          "valueString": "Stub endpoint"
+        }
+      ],
+      "index": 1,
+      "profile": {
+        "code": "Conformancelab-Server",
+        "system": "http://fhir.interoplab.eu/fhir/CodeSystem/Interoplab-CL-destination-profile"
+      },
+      "url": "${STUB-ENDPOINT}"
+    }
+  ],
+  "fixture": [
+    {
+      "resource": {
+        "reference": "../_stub/refused-invalid-token.stub"
+      },
+      "id": "refused-invalid-token",
+      "autocreate": false,
+      "autodelete": false
+    },
+    {
+      "resource": {
+        "reference": "../_stub/refused-insufficient-scope.stub"
+      },
+      "id": "refused-insufficient-scope",
+      "autocreate": false,
+      "autodelete": false
+    }
+  ],
+  "test": [
+    {
+      "extension": [
+        {
+          "url": "http://fhir.interoplab.eu/fhir/StructureDefinition/Interoplab-CL-ext-test-request-mode",
+          "valueCode": "extra-allowed"
+        }
+      ],
+      "action": [
+        {
+          "operation": {
+            "type": {
+              "code": "stub",
+              "system": "http://fhir.interoplab.eu/fhir/CodeSystem/Interoplab-CL-operation-type"
+            },
+            "sourceId": "refused-invalid-token",
+            "destination": 1,
+            "origin": 1,
+            "encodeRequestUrl": true,
+            "description": "Refuse the request with the 401 that security.md prescribes for an invalid token."
+          }
+        },
+        {
+          "assert": {
+            "operator": "manualEval",
+            "stopTestOnFail": false,
+            "warningOnly": false,
+            "description": "Confirm that the caller reported the failure and stopped. It must not repeat the same request with the same token, and it must not fall back to a request without one."
+          }
+        }
+      ],
+      "id": "dva-02a",
+      "name": "DVA-02a - refused with 401",
+      "description": "The platform refuses the token. The caller receives a 401 with a WWW-Authenticate header carrying error=invalid_token, and an OperationOutcome with code login."
+    },
+    {
+      "extension": [
+        {
+          "url": "http://fhir.interoplab.eu/fhir/StructureDefinition/Interoplab-CL-ext-test-request-mode",
+          "valueCode": "extra-allowed"
+        }
+      ],
+      "action": [
+        {
+          "operation": {
+            "type": {
+              "code": "stub",
+              "system": "http://fhir.interoplab.eu/fhir/CodeSystem/Interoplab-CL-operation-type"
+            },
+            "sourceId": "refused-insufficient-scope",
+            "destination": 1,
+            "origin": 1,
+            "encodeRequestUrl": true,
+            "description": "Refuse the request with the 403 that security.md prescribes for a request outside scope."
+          }
+        },
+        {
+          "assert": {
+            "operator": "manualEval",
+            "stopTestOnFail": false,
+            "warningOnly": false,
+            "description": "Confirm that the caller reported the failure and made use of the scope parameter, which names the scope it would have to request. Repeating the same request unchanged is wrong."
+          }
+        }
+      ],
+      "id": "dva-02b",
+      "name": "DVA-02b - refused with 403",
+      "description": "The request falls outside the scope in the token. The caller receives a 403 with error=insufficient_scope, a scope parameter naming what is needed, and an OperationOutcome with code forbidden."
+    }
+  ],
+  "version": "0.1.0",
+  "status": "active",
+  "publisher": "GUPZ",
+  "name": "Dva_02_handles_refusal",
+  "title": "DVA-02 - The caller handles a refused request",
+  "description": "Shows the caller the two refusals security.md defines, a 401 for an invalid token and a 403 for a request outside the granted scope, and asks whether it dealt with them properly. The responses come from WireMock stubs, so they are exactly what the specification prescribes rather than whatever a server happens to return. What the caller must do next is not specified anywhere, so the judgement is manual."
+}

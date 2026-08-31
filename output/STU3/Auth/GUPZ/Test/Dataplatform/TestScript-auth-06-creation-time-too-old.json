@@ -1,0 +1,102 @@
+{
+  "resourceType": "TestScript",
+  "id": "auth-06-creation-time-too-old",
+  "url": "http://gupz.nl/fhir/TestScript/auth-06-creation-time-too-old",
+  "contact": [
+    {
+      "telecom": [
+        {
+          "system": "url",
+          "value": "https://github.com/Gegevensuitwisseling-Paramedische-Zorg/GUPZ-testscripts"
+        }
+      ],
+      "name": "GUPZ"
+    }
+  ],
+  "origin": [
+    {
+      "index": 1,
+      "profile": {
+        "code": "Conformancelab-Client",
+        "system": "http://fhir.interoplab.eu/fhir/CodeSystem/Interoplab-CL-origin-profile"
+      }
+    }
+  ],
+  "destination": [
+    {
+      "extension": [
+        {
+          "url": "http://fhir.interoplab.eu/fhir/StructureDefinition/Interoplab-CL-ext-destination-title",
+          "valueString": "Data platform"
+        }
+      ],
+      "index": 1,
+      "profile": {
+        "code": "FHIR-Server",
+        "system": "http://terminology.hl7.org/CodeSystem/testscript-profile-destination-types"
+      }
+    }
+  ],
+  "variable": [
+    {
+      "name": "auth-06-token",
+      "description": "T4: iat more than fifteen minutes in the past, otherwise valid."
+    }
+  ],
+  "test": [
+    {
+      "action": [
+        {
+          "operation": {
+            "requestHeader": [
+              {
+                "field": "Authorization",
+                "value": "Bearer ${auth-06-token}"
+              }
+            ],
+            "type": {
+              "code": "search",
+              "system": "http://hl7.org/fhir/restful-interaction"
+            },
+            "resource": "DocumentReference",
+            "description": "Search for current DocumentReference resources.",
+            "accept": "json",
+            "destination": 1,
+            "encodeRequestUrl": true,
+            "origin": 1,
+            "params": "?status=current"
+          }
+        },
+        {
+          "assert": {
+            "description": "Confirm that the returned HTTP status is not 200 (OK).",
+            "direction": "response",
+            "operator": "notEquals",
+            "responseCode": "200",
+            "stopTestOnFail": true,
+            "warningOnly": false
+          }
+        },
+        {
+          "assert": {
+            "description": "Check if the returned HTTP status is 401 (Unauthorized) or 403 (Forbidden). Assert is set to warning only because open-GUPZ issue #70 does not specify the response to a refused token, so other failure codes may be expected as well.",
+            "direction": "response",
+            "operator": "in",
+            "responseCode": "401,403",
+            "stopTestOnFail": false,
+            "warningOnly": true
+          }
+        }
+      ],
+      "id": "06",
+      "name": "AUTH-06",
+      "description": "A token created more than fifteen minutes ago is refused"
+    }
+  ],
+  "version": "0.1.0",
+  "status": "active",
+  "publisher": "GUPZ",
+  "name": "Auth_06_creation_time_too_old",
+  "title": "AUTH-06 - A token created more than fifteen minutes ago is refused",
+  "description": "security.md has the platform refuse a request when the creation time is more than fifteen minutes in the past. Since open-GUPZ issue #69 the rule is exact: a valid token satisfies now - iat < 900."
+}
