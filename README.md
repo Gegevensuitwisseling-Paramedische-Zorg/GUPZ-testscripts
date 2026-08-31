@@ -4,10 +4,7 @@ FHIR TestScript resources and fixtures that test the GUPZ data platform against
 the [open-GUPZ][opengupz] specification. Both sides of the interface are
 covered: the platform that answers, and the party that calls it.
 
-The engine is [Conformancelab][cl], built by Interoplab. That is tooling rather
-than purpose; where the engine offers something the standard does not, it is
-marked where it occurs. The first target is the connectathon of 22 September
-2026.
+The first target is the connectathon of 22 September 2026.
 
 Everything here is written in English, including commit messages. Documentation
 is written with the help of AI and read by a human before it is merged;
@@ -111,4 +108,3 @@ the imported Nictiz files. See [UPSTREAM.md](UPSTREAM.md).
 [d29]: docs/decisions.md#d-29-semantic-versioning
 [releasing]: docs/authoring.md#releasing
 [opengupz]: https://github.com/Gegevensuitwisseling-Paramedische-Zorg/open-GUPZ
-[cl]: https://fhir.interoplab.eu/ig/
