@@ -1,7 +1,7 @@
 {
   "resourceType": "TestScript",
-  "id": "self-04-wrong-outcome-code",
-  "url": "http://gupz.nl/fhir/TestScript/self-04-wrong-outcome-code",
+  "id": "self-auth-02-wrong-status",
+  "url": "http://gupz.nl/fhir/TestScript/self-auth-02-wrong-status",
   "contact": [
     {
       "telecom": [
@@ -41,9 +41,9 @@
   "fixture": [
     {
       "resource": {
-        "reference": "../_stub/selftest-wrong-outcome-code.stub"
+        "reference": "../_stub/selftest-wrong-status.stub"
       },
-      "id": "selftest-wrong-outcome-code",
+      "id": "selftest-wrong-status",
       "autocreate": false,
       "autodelete": false
     }
@@ -63,18 +63,19 @@
               "code": "stub",
               "system": "http://fhir.interoplab.eu/fhir/CodeSystem/Interoplab-CL-operation-type"
             },
-            "sourceId": "selftest-wrong-outcome-code",
+            "sourceId": "selftest-wrong-status",
             "destination": 1,
             "origin": 1,
             "encodeRequestUrl": true,
-            "description": "Answer with a 401 whose OperationOutcome code is forbidden."
+            "description": "Answer with a 403 where the case expects a 401."
           }
         },
         {
           "assert": {
-            "description": "Confirm that the OperationOutcome from the stub carries code forbidden, so that the case is built on the deviation it claims.",
+            "description": "Confirm that the stub answered with 403, so that the case is built on the deviation it claims.",
             "direction": "response",
-            "expression": "OperationOutcome.issue.where(code = 'forbidden').exists()",
+            "operator": "equals",
+            "responseCode": "403",
             "stopTestOnFail": true,
             "warningOnly": false
           }
@@ -114,19 +115,19 @@
             "operator": "manualEval",
             "stopTestOnFail": false,
             "warningOnly": false,
-            "description": "Confirm that the assert on the OperationOutcome warned and that the other two did not. The status and the challenge were correct; only the code was forbidden instead of login."
+            "description": "Confirm that the assert on the status code warned. The answer was a 403 where D-30 requires a 401, so it had to react. If it stayed green, that assert is not testing what it claims."
           }
         }
       ],
-      "id": "self-04",
-      "name": "SELF-04",
-      "description": "The assert on the OperationOutcome has to warn here."
+      "id": "self-auth-02",
+      "name": "SELF-AUTH-02",
+      "description": "The assert on the status code has to warn here."
     }
   ],
   "version": "0.1.0",
   "status": "active",
   "publisher": "GUPZ",
-  "name": "Self_04_wrong_outcome_code",
-  "title": "SELF-04 - The OperationOutcome assert catches the wrong code",
-  "description": "Serves a conforming 401 whose OperationOutcome carries code forbidden instead of login. Only the assert on the OperationOutcome must react."
+  "name": "Self_auth_02_wrong_status",
+  "title": "SELF-AUTH-02 - The status assert catches a 403",
+  "description": "Serves the 403 that belongs to a request outside scope. The assert on the status expects a 401 and must react."
 }

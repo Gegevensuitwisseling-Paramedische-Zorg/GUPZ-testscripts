@@ -349,7 +349,7 @@ One number is authoritative: `version` in the RuleSet `metadata`, because SUSHI
 does not apply the version from `sushi-config.yaml` to an Instance. `build.sh`
 refuses to build when the two disagree.
 
-### D-31 The refusal asserts are exercised by a hidden self test
+### D-31 Asserts that cannot be exercised elsewhere get a hidden self test
 
 An assert that has never run is an assumption. The three asserts of D-30 were
 written against [`security.md`][security] and cannot be exercised against the
@@ -377,7 +377,14 @@ another assert reacted to it.
 The cost is one judgement per mutation, and the set already needed a person,
 because a stub operation waits for a caller.
 
-`adminOnly` in the properties keeps it out of a supplier's view, which is what
+The same reasoning runs the other way for the DocumentManifest asserts of D-04.
+Those have only ever been seen to fail, because the server behind the tests
+supports DocumentManifest. An assert that has never been satisfied may be
+impossible to satisfy, so a second self test answers the prescribed refusal from
+a stub and expects every assert to pass. That one needs no person: the expected
+outcome is positive, so the engine can judge it.
+
+`adminOnly` in the properties keeps both out of a supplier's view, which is what
 that property is for.
 
 What this set deliberately does not do is relax an assert so that the server

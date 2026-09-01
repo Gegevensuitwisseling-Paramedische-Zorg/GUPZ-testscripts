@@ -13,7 +13,7 @@ issue.
 
 ## Test sets
 
-Forty-three TestScripts in six Test Sets.
+Forty-four TestScripts in seven Test Sets.
 
 | Test Set | Aim | System under test | Scripts |
 |---|---|---|---|
@@ -22,7 +22,8 @@ Forty-three TestScripts in six Test Sets.
 | PDF/A _LoadResources | Provisioning, run it first | none | 1 |
 | Auth Dataplatform | Token and authentication | Data platform | 11 |
 | Auth DVA | Token and authentication | Calling party | 2 |
-| Auth Self test | The asserts of this repository, `adminOnly` | none | 4 |
+| Auth Self test | The refusal asserts of this repository, `adminOnly` | none | 4 |
+| PDF/A Self test | The DocumentManifest asserts of this repository, `adminOnly` | none | 1 |
 
 Scope, scenarios and cases: [docs/test-sets.md](docs/test-sets.md).
 

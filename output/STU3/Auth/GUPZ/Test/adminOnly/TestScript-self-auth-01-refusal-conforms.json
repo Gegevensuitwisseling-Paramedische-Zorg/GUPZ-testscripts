@@ -1,7 +1,7 @@
 {
   "resourceType": "TestScript",
-  "id": "self-01-refusal-conforms",
-  "url": "http://gupz.nl/fhir/TestScript/self-01-refusal-conforms",
+  "id": "self-auth-01-refusal-conforms",
+  "url": "http://gupz.nl/fhir/TestScript/self-auth-01-refusal-conforms",
   "contact": [
     {
       "telecom": [
@@ -101,15 +101,15 @@
           }
         }
       ],
-      "id": "self-01",
-      "name": "SELF-01",
+      "id": "self-auth-01",
+      "name": "SELF-AUTH-01",
       "description": "The answer conforms, so every assert should be green."
     }
   ],
   "version": "0.1.0",
   "status": "active",
   "publisher": "GUPZ",
-  "name": "Self_01_refusal_conforms",
-  "title": "SELF-01 - The refusal asserts pass on a conforming answer",
+  "name": "Self_auth_01_refusal_conforms",
+  "title": "SELF-AUTH-01 - The refusal asserts pass on a conforming answer",
   "description": "Serves the refusal security.md prescribes: 401, WWW-Authenticate with error=invalid_token, and an OperationOutcome with severity error and code login. All three asserts of D-30 must pass."
 }

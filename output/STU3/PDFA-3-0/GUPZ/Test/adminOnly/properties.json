@@ -1,0 +1,12 @@
+{
+  "goal": "Test",
+  "fhirVersion": "STU3",
+  "informationStandard": "GUPZ PDF/A",
+  "usecase": "GUPZ",
+  "adminOnly": true,
+  "role": {
+    "name": "Self test",
+    "description": "Not a conformance test. Checks that the asserts this repository ships can be satisfied, by answering from a stub instead of a platform. Every scenario here has to pass."
+  },
+  "serverAlias": "gupz"
+}

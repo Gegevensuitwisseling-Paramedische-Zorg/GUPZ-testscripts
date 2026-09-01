@@ -26,43 +26,7 @@ RuleSet: xis-2-4-serve-1-documentreference-NoManifest-body
 * test[=].action[=].operation.origin = 1
 * test[=].action[=].operation.encodeRequestUrl = true
 * insert requestHeadersSchulte
-* test[=].action[+].assert
-  * description = "Confirm that the returned HTTP status is 404 (Not Found)."
-  * direction = #response
-  * operator = #equals
-  * responseCode = "404"
-  * stopTestOnFail = true
-  * warningOnly = false
-* test[=].action[+].assert
-  * description = "Confirm that the returned resource type is OperationOutcome."
-  * direction = #response
-  * resource = "OperationOutcome"
-  * stopTestOnFail = true
-  * warningOnly = false
-* test[=].action[+].assert
-  * description = "Confirm that the returned OperationOutcome conforms to the base FHIR specification."
-  * direction = #response
-  * stopTestOnFail = false
-  * validateProfileId = "OperationOutcome-profile"
-  * warningOnly = false
-* test[=].action[+].assert
-  * description = "Confirm that the OperationOutcome has .code set to not-supported."
-  * direction = #response
-  * expression = "OperationOutcome.issue.code = 'not-supported'"
-  * stopTestOnFail = false
-  * warningOnly = false
-* test[=].action[+].assert
-  * description = "Confirm that the OperationOutcome has .severity set to fatal or error."
-  * direction = #response
-  * expression = "OperationOutcome.issue.severity = 'fatal' or OperationOutcome.issue.severity = 'error'"
-  * stopTestOnFail = false
-  * warningOnly = false
-* test[=].action[+].assert
-  * description = "Although not required, a human-readable description of the problem is strongly encouraged."
-  * direction = #response
-  * expression = "OperationOutcome.issue.diagnostics.exists() or OperationOutcome.issue.details.text.exists()"
-  * stopTestOnFail = false
-  * warningOnly = true
+* insert assertsManifestNotSupported
 
 Instance: xis-2-4-serve-1-documentreference-NoManifest-json
 InstanceOf: TestScript

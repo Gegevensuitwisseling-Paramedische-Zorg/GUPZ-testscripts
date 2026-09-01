@@ -1,0 +1,148 @@
+{
+  "resourceType": "TestScript",
+  "id": "self-pdfa-01-manifest-refusal",
+  "url": "http://gupz.nl/fhir/TestScript/self-pdfa-01-manifest-refusal",
+  "contact": [
+    {
+      "telecom": [
+        {
+          "system": "url",
+          "value": "https://github.com/Gegevensuitwisseling-Paramedische-Zorg/GUPZ-testscripts"
+        }
+      ],
+      "name": "GUPZ"
+    }
+  ],
+  "origin": [
+    {
+      "index": 1,
+      "profile": {
+        "code": "FHIR-Client",
+        "system": "http://terminology.hl7.org/CodeSystem/testscript-profile-origin-types"
+      }
+    }
+  ],
+  "destination": [
+    {
+      "extension": [
+        {
+          "url": "http://fhir.interoplab.eu/fhir/StructureDefinition/Interoplab-CL-ext-destination-title",
+          "valueString": "Stub endpoint"
+        }
+      ],
+      "index": 1,
+      "profile": {
+        "code": "Conformancelab-Server",
+        "system": "http://fhir.interoplab.eu/fhir/CodeSystem/Interoplab-CL-destination-profile"
+      },
+      "url": "${STUB-ENDPOINT}"
+    }
+  ],
+  "profile": [
+    "http://hl7.org/fhir/StructureDefinition/OperationOutcome"
+  ],
+  "_profile": [
+    {
+      "id": "OperationOutcome-profile"
+    }
+  ],
+  "fixture": [
+    {
+      "resource": {
+        "reference": "../_stub/manifest-not-supported.stub"
+      },
+      "id": "manifest-not-supported",
+      "autocreate": false,
+      "autodelete": false
+    }
+  ],
+  "test": [
+    {
+      "extension": [
+        {
+          "url": "http://fhir.interoplab.eu/fhir/StructureDefinition/Interoplab-CL-ext-test-request-mode",
+          "valueCode": "extra-allowed"
+        }
+      ],
+      "action": [
+        {
+          "operation": {
+            "type": {
+              "code": "stub",
+              "system": "http://fhir.interoplab.eu/fhir/CodeSystem/Interoplab-CL-operation-type"
+            },
+            "sourceId": "manifest-not-supported",
+            "destination": 1,
+            "origin": 1,
+            "encodeRequestUrl": true,
+            "description": "Answer with the refusal pdfa.md prescribes for DocumentManifest."
+          }
+        },
+        {
+          "assert": {
+            "description": "Confirm that the returned HTTP status is 404 (Not Found).",
+            "direction": "response",
+            "operator": "equals",
+            "responseCode": "404",
+            "stopTestOnFail": true,
+            "warningOnly": false
+          }
+        },
+        {
+          "assert": {
+            "description": "Confirm that the returned resource type is OperationOutcome.",
+            "direction": "response",
+            "resource": "OperationOutcome",
+            "stopTestOnFail": true,
+            "warningOnly": false
+          }
+        },
+        {
+          "assert": {
+            "description": "Confirm that the returned OperationOutcome conforms to the base FHIR specification.",
+            "direction": "response",
+            "stopTestOnFail": false,
+            "validateProfileId": "OperationOutcome-profile",
+            "warningOnly": false
+          }
+        },
+        {
+          "assert": {
+            "description": "Confirm that the OperationOutcome has .code set to not-supported.",
+            "direction": "response",
+            "expression": "OperationOutcome.issue.code = 'not-supported'",
+            "stopTestOnFail": false,
+            "warningOnly": false
+          }
+        },
+        {
+          "assert": {
+            "description": "Confirm that the OperationOutcome has .severity set to fatal or error.",
+            "direction": "response",
+            "expression": "OperationOutcome.issue.severity = 'fatal' or OperationOutcome.issue.severity = 'error'",
+            "stopTestOnFail": false,
+            "warningOnly": false
+          }
+        },
+        {
+          "assert": {
+            "description": "Although not required, a human-readable description of the problem is strongly encouraged.",
+            "direction": "response",
+            "expression": "OperationOutcome.issue.diagnostics.exists() or OperationOutcome.issue.details.text.exists()",
+            "stopTestOnFail": false,
+            "warningOnly": true
+          }
+        }
+      ],
+      "id": "self-pdfa-01",
+      "name": "SELF-PDFA-01",
+      "description": "Every assert has to pass. One that does not is asking for something a conformant platform cannot deliver."
+    }
+  ],
+  "version": "0.1.0",
+  "status": "active",
+  "publisher": "GUPZ",
+  "name": "Self_pdfa_01_manifest_refusal",
+  "title": "SELF-PDFA-01 - The DocumentManifest asserts pass on the prescribed refusal",
+  "description": "Serves the 404 with an OperationOutcome carrying code not-supported that pdfa.md prescribes for a request on DocumentManifest, and runs the asserts of scenarios 2.2, 2.3 and 2.4 against it."
+}

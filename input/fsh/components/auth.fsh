@@ -112,16 +112,6 @@ RuleSet: assertStubStatus(code)
   * stopTestOnFail = true
   * warningOnly = false
 
-RuleSet: assertStubHasNoChallenge
-* test[=].action[+].assert
-  * extension[+].url = $CL-ext-assert-additional-operators
-  * extension[=].valueCode = #notExists
-  * description = "Confirm that the stub answered without a WWW-Authenticate header, so that the case is built on the deviation it claims."
-  * direction = #response
-  * headerField = "WWW-Authenticate"
-  * stopTestOnFail = true
-  * warningOnly = false
-
 RuleSet: assertStubOutcomeCode(code)
 * test[=].action[+].assert
   * description = "Confirm that the OperationOutcome from the stub carries code {code}, so that the case is built on the deviation it claims."

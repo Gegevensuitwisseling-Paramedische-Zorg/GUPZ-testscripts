@@ -27,3 +27,51 @@ RuleSet: assertResponseConformsToProfile(resource, profileId)
   * stopTestOnFail = false
   * validateProfileId = "{profileId}"
   * warningOnly = false
+
+
+// The graceful refusal on DocumentManifest, identical in scenarios 2.2, 2.3 and
+// 2.4 and verified so before it was extracted here. [`pdfa.md`] prescribes the
+// 404 and the OperationOutcome; see decision D-04.
+//
+// The self test inserts the same RuleSet against a stub, because these asserts
+// have only ever been seen to fail: the server behind the tests supports
+// DocumentManifest and answers 200. An assert that has never been satisfied may
+// be impossible to satisfy.
+RuleSet: assertsManifestNotSupported
+* test[=].action[+].assert
+  * description = "Confirm that the returned HTTP status is 404 (Not Found)."
+  * direction = #response
+  * operator = #equals
+  * responseCode = "404"
+  * stopTestOnFail = true
+  * warningOnly = false
+* test[=].action[+].assert
+  * description = "Confirm that the returned resource type is OperationOutcome."
+  * direction = #response
+  * resource = "OperationOutcome"
+  * stopTestOnFail = true
+  * warningOnly = false
+* test[=].action[+].assert
+  * description = "Confirm that the returned OperationOutcome conforms to the base FHIR specification."
+  * direction = #response
+  * stopTestOnFail = false
+  * validateProfileId = "OperationOutcome-profile"
+  * warningOnly = false
+* test[=].action[+].assert
+  * description = "Confirm that the OperationOutcome has .code set to not-supported."
+  * direction = #response
+  * expression = "OperationOutcome.issue.code = 'not-supported'"
+  * stopTestOnFail = false
+  * warningOnly = false
+* test[=].action[+].assert
+  * description = "Confirm that the OperationOutcome has .severity set to fatal or error."
+  * direction = #response
+  * expression = "OperationOutcome.issue.severity = 'fatal' or OperationOutcome.issue.severity = 'error'"
+  * stopTestOnFail = false
+  * warningOnly = false
+* test[=].action[+].assert
+  * description = "Although not required, a human-readable description of the problem is strongly encouraged."
+  * direction = #response
+  * expression = "OperationOutcome.issue.diagnostics.exists() or OperationOutcome.issue.details.text.exists()"
+  * stopTestOnFail = false
+  * warningOnly = true

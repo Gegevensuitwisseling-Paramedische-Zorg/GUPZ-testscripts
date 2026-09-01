@@ -1,7 +1,7 @@
 {
   "resourceType": "TestScript",
-  "id": "self-02-wrong-status",
-  "url": "http://gupz.nl/fhir/TestScript/self-02-wrong-status",
+  "id": "self-auth-03-no-challenge",
+  "url": "http://gupz.nl/fhir/TestScript/self-auth-03-no-challenge",
   "contact": [
     {
       "telecom": [
@@ -41,9 +41,9 @@
   "fixture": [
     {
       "resource": {
-        "reference": "../_stub/selftest-wrong-status.stub"
+        "reference": "../_stub/selftest-no-challenge.stub"
       },
-      "id": "selftest-wrong-status",
+      "id": "selftest-no-challenge",
       "autocreate": false,
       "autodelete": false
     }
@@ -63,21 +63,11 @@
               "code": "stub",
               "system": "http://fhir.interoplab.eu/fhir/CodeSystem/Interoplab-CL-operation-type"
             },
-            "sourceId": "selftest-wrong-status",
+            "sourceId": "selftest-no-challenge",
             "destination": 1,
             "origin": 1,
             "encodeRequestUrl": true,
-            "description": "Answer with a 403 where the case expects a 401."
-          }
-        },
-        {
-          "assert": {
-            "description": "Confirm that the stub answered with 403, so that the case is built on the deviation it claims.",
-            "direction": "response",
-            "operator": "equals",
-            "responseCode": "403",
-            "stopTestOnFail": true,
-            "warningOnly": false
+            "description": "Answer with a 401 that carries no challenge."
           }
         },
         {
@@ -115,19 +105,19 @@
             "operator": "manualEval",
             "stopTestOnFail": false,
             "warningOnly": false,
-            "description": "Confirm that the assert on the status code warned. The answer was a 403 where D-30 requires a 401, so it had to react. If it stayed green, that assert is not testing what it claims."
+            "description": "Confirm that the assert on the WWW-Authenticate header warned and that the other two did not. The answer carried no challenge at all."
           }
         }
       ],
-      "id": "self-02",
-      "name": "SELF-02",
-      "description": "The assert on the status code has to warn here."
+      "id": "self-auth-03",
+      "name": "SELF-AUTH-03",
+      "description": "The assert on the WWW-Authenticate header has to warn here."
     }
   ],
   "version": "0.1.0",
   "status": "active",
   "publisher": "GUPZ",
-  "name": "Self_02_wrong_status",
-  "title": "SELF-02 - The status assert catches a 403",
-  "description": "Serves the 403 that belongs to a request outside scope. The assert on the status expects a 401 and must react."
+  "name": "Self_auth_03_no_challenge",
+  "title": "SELF-AUTH-03 - The challenge assert catches a missing header",
+  "description": "Serves a 401 without a WWW-Authenticate header. The assert on the challenge must react; the other two should not."
 }

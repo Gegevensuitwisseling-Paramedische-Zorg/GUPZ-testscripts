@@ -1,7 +1,7 @@
 {
   "resourceType": "TestScript",
-  "id": "self-03-no-challenge",
-  "url": "http://gupz.nl/fhir/TestScript/self-03-no-challenge",
+  "id": "self-auth-04-wrong-outcome-code",
+  "url": "http://gupz.nl/fhir/TestScript/self-auth-04-wrong-outcome-code",
   "contact": [
     {
       "telecom": [
@@ -41,9 +41,9 @@
   "fixture": [
     {
       "resource": {
-        "reference": "../_stub/selftest-no-challenge.stub"
+        "reference": "../_stub/selftest-wrong-outcome-code.stub"
       },
-      "id": "selftest-no-challenge",
+      "id": "selftest-wrong-outcome-code",
       "autocreate": false,
       "autodelete": false
     }
@@ -63,24 +63,18 @@
               "code": "stub",
               "system": "http://fhir.interoplab.eu/fhir/CodeSystem/Interoplab-CL-operation-type"
             },
-            "sourceId": "selftest-no-challenge",
+            "sourceId": "selftest-wrong-outcome-code",
             "destination": 1,
             "origin": 1,
             "encodeRequestUrl": true,
-            "description": "Answer with a 401 that carries no challenge."
+            "description": "Answer with a 401 whose OperationOutcome code is forbidden."
           }
         },
         {
           "assert": {
-            "extension": [
-              {
-                "url": "http://fhir.interoplab.eu/fhir/StructureDefinition/Interoplab-CL-ext-assert-additional-operators",
-                "valueCode": "notExists"
-              }
-            ],
-            "description": "Confirm that the stub answered without a WWW-Authenticate header, so that the case is built on the deviation it claims.",
+            "description": "Confirm that the OperationOutcome from the stub carries code forbidden, so that the case is built on the deviation it claims.",
             "direction": "response",
-            "headerField": "WWW-Authenticate",
+            "expression": "OperationOutcome.issue.where(code = 'forbidden').exists()",
             "stopTestOnFail": true,
             "warningOnly": false
           }
@@ -120,19 +114,19 @@
             "operator": "manualEval",
             "stopTestOnFail": false,
             "warningOnly": false,
-            "description": "Confirm that the assert on the WWW-Authenticate header warned and that the other two did not. The answer carried no challenge at all."
+            "description": "Confirm that the assert on the OperationOutcome warned and that the other two did not. The status and the challenge were correct; only the code was forbidden instead of login."
           }
         }
       ],
-      "id": "self-03",
-      "name": "SELF-03",
-      "description": "The assert on the WWW-Authenticate header has to warn here."
+      "id": "self-auth-04",
+      "name": "SELF-AUTH-04",
+      "description": "The assert on the OperationOutcome has to warn here."
     }
   ],
   "version": "0.1.0",
   "status": "active",
   "publisher": "GUPZ",
-  "name": "Self_03_no_challenge",
-  "title": "SELF-03 - The challenge assert catches a missing header",
-  "description": "Serves a 401 without a WWW-Authenticate header. The assert on the challenge must react; the other two should not."
+  "name": "Self_auth_04_wrong_outcome_code",
+  "title": "SELF-AUTH-04 - The OperationOutcome assert catches the wrong code",
+  "description": "Serves a conforming 401 whose OperationOutcome carries code forbidden instead of login. Only the assert on the OperationOutcome must react."
 }

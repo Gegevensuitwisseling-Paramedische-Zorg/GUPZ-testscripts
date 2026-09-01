@@ -12,7 +12,8 @@ What each set tests, which scenarios are in it and why. The grounds are in
 | PDF/A _LoadResources | Provisioning | none | 1 | Built |
 | Auth Dataplatform | Token and authentication | Data platform | 11 | Built, waiting on keys ([OP-05](open-points.md#op-05-key-material)) |
 | Auth DVA | Token and authentication | Calling party | 2 | Built |
-| Auth Self test | The asserts of this repository | none | 4 | Built, `adminOnly` |
+| Auth Self test | The refusal asserts of this repository | none | 4 | Built, `adminOnly` |
+| PDF/A Self test | The DocumentManifest asserts of this repository | none | 1 | Built, `adminOnly` |
 
 Written against open-GUPZ commit `0a273ae`, 21 August 2026. A commit rather than
 a release number, because the changelog there does not reliably track what
@@ -280,15 +281,19 @@ so what is exercised is what a supplier gets.
 
 | Scenario | The stub answers | Checked automatically | Asked of a person |
 |---|---|---|---|
-| SELF-01 | the refusal `security.md` prescribes | all three asserts pass | nothing |
-| SELF-02 | 403 with `insufficient_scope` | the answer is a 403 | did the assert on the status warn |
-| SELF-03 | 401 without a `WWW-Authenticate` header | no challenge came back | did the assert on the challenge warn |
-| SELF-04 | 401 whose OperationOutcome carries `forbidden` | the code is `forbidden` | did the assert on the OperationOutcome warn |
+| SELF-AUTH-01 | the refusal `security.md` prescribes | all three asserts pass | nothing |
+| SELF-AUTH-02 | 403 with `insufficient_scope` | the answer is a 403 | did the assert on the status warn |
+| SELF-AUTH-03 | 401 without a `WWW-Authenticate` header | nothing, see below | did the assert on the challenge warn |
+| SELF-AUTH-04 | 401 whose OperationOutcome carries `forbidden` | the code is `forbidden` | did the assert on the OperationOutcome warn |
 
 All four end green when the material is right. The automatic column states that
 the stub really answered the deviation the scenario is built on, so a stub file
 that has drifted is caught without anyone reading a warning column. The asserts
 of D-30 run alongside it as warnings, which do not fail a scenario.
+
+SELF-AUTH-03 has no automatic column. An assert on a header falls back to a
+plain existence check unless it carries a value, so there is no way to state
+that a header is absent. Reported to Interoplab.
 
 The question to the person is the one no assert can answer, because an assert
 cannot read another assert's outcome. An assert that stays silent where it
@@ -308,3 +313,21 @@ the engine would send itself, and a stub operation is not one of them. The same
 holds for DVA-02.
 
 [d30]: decisions.md#d-30-a-refusal-is-asserted-on-status-challenge-and-operationoutcome
+
+## PDF/A Self test
+
+The mirror of the set above, and hidden the same way. There the question is
+whether an assert can fail; here it is whether one can be satisfied at all.
+
+Scenarios 2.2, 2.3 and 2.4 require the 404 with an OperationOutcome that
+[`pdfa.md`][pdfa] prescribes (D-04). They have only ever been seen to fail,
+because the FHIR server behind the tests supports DocumentManifest and answers
+200. An assert that has never been satisfied may be impossible to satisfy, and
+the first to find out would be a supplier who built it correctly.
+
+| Scenario | The stub answers | Expected |
+|---|---|---|
+| SELF-PDFA-01 | the refusal `pdfa.md` prescribes | every assert passes |
+
+It inserts the same RuleSet as the three scenarios do. Nothing is asked of a
+person: here the expected outcome is positive, so the engine can judge it.
