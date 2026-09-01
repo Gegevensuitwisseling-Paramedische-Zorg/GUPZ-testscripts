@@ -53,8 +53,8 @@ the one that carries the discrepancy, since it is meant for a supplier's
 platform anyway and reading from ours is a convenience. Do not resolve it by
 removing the document again. Resolved properly by OP-04.
 
-Observed in the run of 31 August 2026: server aimed 1.1 reports three where it
-expects two.
+Confirmed in a run against the server behind the tests: the server aimed
+scenario reports three.
 
 ## OP-03 Scenario 2.5
 
@@ -65,7 +65,7 @@ August 2026 confirmed it from the other side: the scenario failed on its control
 test, a request without an `Authorization` header, which is worth having and
 does not depend on how the document is served.
 
-The run of 31 August 2026 added a second obstacle. The url the scenario follows
+There is a second obstacle. The url the scenario follows
 comes from the fixture and points at a host outside the test environment, so the
 operation fails before an assert is reached. The scenario cannot be exercised
 here at all.
@@ -89,8 +89,7 @@ GUPZ rule; `XXX_Schulte` deliberately breaks it, because her only current
 document, DocumentReference `kwalificatie4`, carries a plain HTTPS URL to a PDF
 on the Nictiz website rather than a Binary reference. Nictiz built that patient
 for the 2.5 flow. So scenario 2.1 has one red assert (D-12) that says something
-about the fixture and nothing about the platform, as the run of 31 August 2026
-confirmed.
+about the fixture and nothing about the platform, as a run confirms.
 
 Against a supplier the fixtures do not apply at all: the data comes out of their
 own PARIS, and `_LoadResources` is not expected to work there
