@@ -71,14 +71,19 @@ RuleSet: assertsRequestAccepted
 // Every case in this set that presents a token the platform must reject is a
 // token validation failure, which security.md answers with a 401. A 403 belongs
 // to a valid token that asks beyond its scope, which this set does not cover.
-RuleSet: assertsTokenRefused
+// Two arguments, because the self test inserts the same three asserts. There they
+// have to be able to warn instead of fail, so that a scenario built on a wrong
+// answer can still end green on the judgement that the right assert reacted. A
+// copy with inverted logic would have been simpler and would have stopped
+// following this RuleSet the day the requirement changes. See D-31.
+RuleSet: assertsTokenRefused(stop, soft)
 * test[=].action[+].assert
   * description = "Confirm that the returned HTTP status is 401 (Unauthorized)."
   * direction = #response
   * operator = #equals
   * responseCode = "401"
-  * stopTestOnFail = true
-  * warningOnly = false
+  * stopTestOnFail = {stop}
+  * warningOnly = {soft}
 * test[=].action[+].assert
   * description = "Confirm that the WWW-Authenticate header names the error as invalid_token, as security.md prescribes."
   * direction = #response
@@ -86,13 +91,45 @@ RuleSet: assertsTokenRefused
   * operator = #contains
   * value = "error=\"invalid_token\""
   * stopTestOnFail = false
-  * warningOnly = false
+  * warningOnly = {soft}
 * test[=].action[+].assert
   * description = "Confirm that the body is an OperationOutcome reporting an error with code login, as security.md prescribes."
   * direction = #response
   * expression = "OperationOutcome.issue.where(severity = 'error' and code = 'login').exists()"
   * stopTestOnFail = false
+  * warningOnly = {soft}
+
+// What the stub actually answered. Hard and automatic, and a different question
+// from the one the asserts above ask: this states that the mutation really is a
+// deviation, so a stub file that has drifted is caught without anyone reading a
+// warning column. Only the self test uses these. See D-31.
+RuleSet: assertStubStatus(code)
+* test[=].action[+].assert
+  * description = "Confirm that the stub answered with {code}, so that the case is built on the deviation it claims."
+  * direction = #response
+  * operator = #equals
+  * responseCode = "{code}"
+  * stopTestOnFail = true
   * warningOnly = false
+
+RuleSet: assertStubHasNoChallenge
+* test[=].action[+].assert
+  * extension[+].url = $CL-ext-assert-additional-operators
+  * extension[=].valueCode = #notExists
+  * description = "Confirm that the stub answered without a WWW-Authenticate header, so that the case is built on the deviation it claims."
+  * direction = #response
+  * headerField = "WWW-Authenticate"
+  * stopTestOnFail = true
+  * warningOnly = false
+
+RuleSet: assertStubOutcomeCode(code)
+* test[=].action[+].assert
+  * description = "Confirm that the OperationOutcome from the stub carries code {code}, so that the case is built on the deviation it claims."
+  * direction = #response
+  * expression = "OperationOutcome.issue.where(code = '{code}').exists()"
+  * stopTestOnFail = true
+  * warningOnly = false
+
 
 // No bearer credentials were presented at all. The status and the challenge are
 // asserted the same way, but not the error code: RFC 6750 section 3.1 has the

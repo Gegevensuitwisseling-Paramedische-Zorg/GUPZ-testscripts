@@ -278,16 +278,21 @@ and the FHIR server behind the tests accepts everything.
 Each scenario answers from a stub and inserts the shipped RuleSet, not a copy,
 so what is exercised is what a supplier gets.
 
-| Scenario | The stub answers | Expected |
-|---|---|---|
-| SELF-01 | the refusal `security.md` prescribes | passes |
-| SELF-02 | 403 with `insufficient_scope` | fails on the status |
-| SELF-03 | 401 without a `WWW-Authenticate` header | fails on the challenge |
-| SELF-04 | 401 whose OperationOutcome carries `forbidden` | fails on the OperationOutcome |
+| Scenario | The stub answers | Checked automatically | Asked of a person |
+|---|---|---|---|
+| SELF-01 | the refusal `security.md` prescribes | all three asserts pass | nothing |
+| SELF-02 | 403 with `insufficient_scope` | the answer is a 403 | did the assert on the status warn |
+| SELF-03 | 401 without a `WWW-Authenticate` header | no challenge came back | did the assert on the challenge warn |
+| SELF-04 | 401 whose OperationOutcome carries `forbidden` | the code is `forbidden` | did the assert on the OperationOutcome warn |
 
-Three scenarios are meant to be red. A mutation that stays green means the
-assert it targets is not testing what it claims, which is the point of running
-it.
+All four end green when the material is right. The automatic column states that
+the stub really answered the deviation the scenario is built on, so a stub file
+that has drifted is caught without anyone reading a warning column. The asserts
+of D-30 run alongside it as warnings, which do not fail a scenario.
+
+The question to the person is the one no assert can answer, because an assert
+cannot read another assert's outcome. An assert that stays silent where it
+should have warned is the finding the set exists for.
 
 A stub operation sends nothing: the engine waits for a request and then
 validates against it and the stubbed answer. So this set needs a caller pointed

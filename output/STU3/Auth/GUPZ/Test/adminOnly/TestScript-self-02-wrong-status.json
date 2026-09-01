@@ -72,12 +72,22 @@
         },
         {
           "assert": {
+            "description": "Confirm that the stub answered with 403, so that the case is built on the deviation it claims.",
+            "direction": "response",
+            "operator": "equals",
+            "responseCode": "403",
+            "stopTestOnFail": true,
+            "warningOnly": false
+          }
+        },
+        {
+          "assert": {
             "description": "Confirm that the returned HTTP status is 401 (Unauthorized).",
             "direction": "response",
             "operator": "equals",
             "responseCode": "401",
-            "stopTestOnFail": true,
-            "warningOnly": false
+            "stopTestOnFail": false,
+            "warningOnly": true
           }
         },
         {
@@ -88,7 +98,7 @@
             "operator": "contains",
             "value": "error=\"invalid_token\"",
             "stopTestOnFail": false,
-            "warningOnly": false
+            "warningOnly": true
           }
         },
         {
@@ -97,19 +107,27 @@
             "direction": "response",
             "expression": "OperationOutcome.issue.where(severity = 'error' and code = 'login').exists()",
             "stopTestOnFail": false,
-            "warningOnly": false
+            "warningOnly": true
+          }
+        },
+        {
+          "assert": {
+            "operator": "manualEval",
+            "stopTestOnFail": false,
+            "warningOnly": false,
+            "description": "Confirm that the assert on the status code warned. The answer was a 403 where D-30 requires a 401, so it had to react. If it stayed green, that assert is not testing what it claims."
           }
         }
       ],
       "id": "self-02",
       "name": "SELF-02",
-      "description": "Expected outcome: the assert on the status code fails."
+      "description": "The assert on the status code has to warn here."
     }
   ],
   "version": "0.1.0",
   "status": "active",
   "publisher": "GUPZ",
   "name": "Self_02_wrong_status",
-  "title": "SELF-02 - The status assert catches a 403 (must fail)",
-  "description": "Serves the 403 that belongs to a request outside scope. The first assert of D-30 expects 401 and must fail, which stops the test."
+  "title": "SELF-02 - The status assert catches a 403",
+  "description": "Serves the 403 that belongs to a request outside scope. The assert on the status expects a 401 and must react."
 }

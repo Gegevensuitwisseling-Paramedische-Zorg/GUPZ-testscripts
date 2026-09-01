@@ -72,12 +72,21 @@
         },
         {
           "assert": {
+            "description": "Confirm that the OperationOutcome from the stub carries code forbidden, so that the case is built on the deviation it claims.",
+            "direction": "response",
+            "expression": "OperationOutcome.issue.where(code = 'forbidden').exists()",
+            "stopTestOnFail": true,
+            "warningOnly": false
+          }
+        },
+        {
+          "assert": {
             "description": "Confirm that the returned HTTP status is 401 (Unauthorized).",
             "direction": "response",
             "operator": "equals",
             "responseCode": "401",
-            "stopTestOnFail": true,
-            "warningOnly": false
+            "stopTestOnFail": false,
+            "warningOnly": true
           }
         },
         {
@@ -88,7 +97,7 @@
             "operator": "contains",
             "value": "error=\"invalid_token\"",
             "stopTestOnFail": false,
-            "warningOnly": false
+            "warningOnly": true
           }
         },
         {
@@ -97,19 +106,27 @@
             "direction": "response",
             "expression": "OperationOutcome.issue.where(severity = 'error' and code = 'login').exists()",
             "stopTestOnFail": false,
-            "warningOnly": false
+            "warningOnly": true
+          }
+        },
+        {
+          "assert": {
+            "operator": "manualEval",
+            "stopTestOnFail": false,
+            "warningOnly": false,
+            "description": "Confirm that the assert on the OperationOutcome warned and that the other two did not. The status and the challenge were correct; only the code was forbidden instead of login."
           }
         }
       ],
       "id": "self-04",
       "name": "SELF-04",
-      "description": "Expected outcome: the assert on the OperationOutcome code fails."
+      "description": "The assert on the OperationOutcome has to warn here."
     }
   ],
   "version": "0.1.0",
   "status": "active",
   "publisher": "GUPZ",
   "name": "Self_04_wrong_outcome_code",
-  "title": "SELF-04 - The OperationOutcome assert catches the wrong code (must fail)",
-  "description": "Serves a conforming 401 whose OperationOutcome carries code forbidden instead of login. Only the third assert of D-30 must fail."
+  "title": "SELF-04 - The OperationOutcome assert catches the wrong code",
+  "description": "Serves a conforming 401 whose OperationOutcome carries code forbidden instead of login. Only the assert on the OperationOutcome must react."
 }

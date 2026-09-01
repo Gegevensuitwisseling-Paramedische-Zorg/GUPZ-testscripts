@@ -24,7 +24,7 @@ Every release names the open-GUPZ version it was written against. See
 - Documentation in `docs/`: test sets, requirement coverage, decisions, open
   points and authoring.
 - A hidden `Auth Self test` set that checks whether the refusal asserts fire, by
-  answering from stubs. Three of its four scenarios are meant to fail.
+  answering from stubs and asking whether the expected one reacted.
 
 Tested against: open-GUPZ `0a273ae`.
 

@@ -15,4 +15,4 @@ Usage: #definition
 * test[=].description = "A token from an unknown issuer is refused"
 * insert operationSearchDocumentReference
 * insert headersWithBearerToken(auth-08-token)
-* insert assertsTokenRefused
+* insert assertsTokenRefused(true, false)

@@ -15,4 +15,4 @@ Usage: #definition
 * test[=].description = "An expired token is refused"
 * insert operationSearchDocumentReference
 * insert headersWithBearerToken(auth-07-token)
-* insert assertsTokenRefused
+* insert assertsTokenRefused(true, false)

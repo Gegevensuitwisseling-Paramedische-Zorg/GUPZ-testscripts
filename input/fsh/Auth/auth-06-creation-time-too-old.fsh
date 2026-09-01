@@ -15,4 +15,4 @@ Usage: #definition
 * test[=].description = "A token created more than fifteen minutes ago is refused"
 * insert operationSearchDocumentReference
 * insert headersWithBearerToken(auth-06-token)
-* insert assertsTokenRefused
+* insert assertsTokenRefused(true, false)

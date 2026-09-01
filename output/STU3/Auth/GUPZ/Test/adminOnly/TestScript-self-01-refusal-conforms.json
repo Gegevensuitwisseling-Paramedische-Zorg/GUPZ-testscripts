@@ -110,6 +110,6 @@
   "status": "active",
   "publisher": "GUPZ",
   "name": "Self_01_refusal_conforms",
-  "title": "SELF-01 - The refusal asserts pass on a conforming answer (must pass)",
+  "title": "SELF-01 - The refusal asserts pass on a conforming answer",
   "description": "Serves the refusal security.md prescribes: 401, WWW-Authenticate with error=invalid_token, and an OperationOutcome with severity error and code login. All three asserts of D-30 must pass."
 }

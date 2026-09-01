@@ -356,9 +356,26 @@ written against [`security.md`][security] and cannot be exercised against the
 FHIR server behind the tests, which accepts every token.
 
 The set answers from stubs and inserts the shipped RuleSet rather than a copy,
-so a change to D-30 is picked up without touching it. Three of its four
-scenarios are meant to fail; a mutation that stays green means the assert it
-targets does not test what it claims.
+so a change to D-30 is picked up without touching it. That rules out the obvious
+alternative, a scenario asserting the opposite of D-30. It would be green on a
+wrong answer, and it would stop following the requirement the day it changes.
+
+A TestScript cannot say that an assert has to fail, and the engine has no flag
+for it either. So the three scenarios built on a wrong answer insert the asserts
+as warnings, which do not fail a scenario, and then add a manual assert asking
+whether the expected warning appeared. All four then end green when the
+material is right, instead of three of them being permanently red, which invites
+someone to fix what is not broken.
+
+Next to that sits a hard, automatic assert on what the stub answered: a 403, a
+missing challenge, the wrong OperationOutcome code. That is a different claim,
+namely that the case is built on a real deviation, and it catches a stub file
+that has drifted without anyone reading a warning column. It does not replace
+the question to the person: an assert on the answer says nothing about whether
+another assert reacted to it.
+
+The cost is one judgement per mutation, and the set already needed a person,
+because a stub operation waits for a caller.
 
 `adminOnly` in the properties keeps it out of a supplier's view, which is what
 that property is for.
