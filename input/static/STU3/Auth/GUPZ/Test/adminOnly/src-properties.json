@@ -1,0 +1,12 @@
+{
+  "goal": "Test",
+  "fhirVersion": "STU3",
+  "informationStandard": "GUPZ Auth",
+  "usecase": "GUPZ",
+  "adminOnly": true,
+  "role": {
+    "name": "Self test",
+    "description": "Not a conformance test. Checks that the asserts this repository ships actually fire, by running them against stubbed responses instead of a platform. One scenario must pass and three must fail; any other outcome is a defect in the asserts."
+  },
+  "serverAlias": "gupz"
+}

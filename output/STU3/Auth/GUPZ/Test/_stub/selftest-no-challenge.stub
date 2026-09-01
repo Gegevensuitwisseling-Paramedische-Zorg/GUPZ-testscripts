@@ -1,0 +1,22 @@
+{
+    "request": {
+        "method": "GET",
+        "urlPathPattern": ".*"
+    },
+    "response": {
+        "status": 401,
+        "headers": {
+            "Content-Type": "application/fhir+json"
+        },
+        "jsonBody": {
+            "resourceType": "OperationOutcome",
+            "issue": [
+                {
+                    "severity": "error",
+                    "code": "login",
+                    "diagnostics": "The access token expired"
+                }
+            ]
+        }
+    }
+}

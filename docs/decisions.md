@@ -245,9 +245,11 @@ Here the caller's own token is the subject, so prescribing one would replace the
 thing being judged.
 
 Two consequences. Conformancelab shows the expected request without an
-`Authorization` header. And an Automated dry run cannot validate this set: with
-no header described the engine sends no token and every assert fails. Only a
-real caller can exercise it.
+`Authorization` header. And an Automated dry run cannot validate DVA-01: with no
+header described the engine sends no token and every assert fails. DVA-02 cannot
+be automated either, for a different reason: automation sends only the requests
+the engine would send itself, and a stub operation is not one of them. Both need
+a real caller.
 
 ### D-21 The DVA-02 stubs use the terse error form
 
@@ -347,12 +349,32 @@ One number is authoritative: `version` in the RuleSet `metadata`, because SUSHI
 does not apply the version from `sushi-config.yaml` to an Instance. `build.sh`
 refuses to build when the two disagree.
 
+### D-31 The refusal asserts are exercised by a hidden self test
+
+An assert that has never run is an assumption. The three asserts of D-30 were
+written against [`security.md`][security] and cannot be exercised against the
+FHIR server behind the tests, which accepts every token.
+
+The set answers from stubs and inserts the shipped RuleSet rather than a copy,
+so a change to D-30 is picked up without touching it. Three of its four
+scenarios are meant to fail; a mutation that stays green means the assert it
+targets does not test what it claims.
+
+`adminOnly` in the properties keeps it out of a supplier's view, which is what
+that property is for.
+
+What this set deliberately does not do is relax an assert so that the server
+behind the tests passes. A green would then say something about that server
+rather than about the specification, and the two red asserts in the PDF/A
+Dataplatform set would stop pointing at [OP-04][op04].
+
 ### D-25 Everything is in English
 
 Documentation, comments, commit messages and the TestScripts themselves. The
 imported material and the Conformancelab IG are English; open-GUPZ keeps its
 specifications in Dutch.
 
+[op04]: open-points.md#op-04-test-data-specification
 [semver]: https://semver.org/spec/v2.0.0.html
 [pdfa]: https://github.com/Gegevensuitwisseling-Paramedische-Zorg/open-GUPZ/blob/main/docs/api/pdfa.md
 [security]: https://github.com/Gegevensuitwisseling-Paramedische-Zorg/open-GUPZ/blob/main/docs/api/security.md

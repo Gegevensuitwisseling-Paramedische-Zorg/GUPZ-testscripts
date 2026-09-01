@@ -14,8 +14,7 @@ Every release names the open-GUPZ version it was written against. See
 
 - A refused token is now asserted on the status, the `WWW-Authenticate`
   challenge and the `OperationOutcome`, instead of only on the request having
-  failed. open-GUPZ [#70](https://github.com/Gegevensuitwisseling-Paramedische-Zorg/open-GUPZ/issues/70)
-  closed and `security.md` settles all three.
+  failed. open-GUPZ [#70][i70] closed and `security.md` settles all three.
 
 ### Added
 
@@ -24,7 +23,10 @@ Every release names the open-GUPZ version it was written against. See
   script that provisions the fixtures.
 - Documentation in `docs/`: test sets, requirement coverage, decisions, open
   points and authoring.
+- A hidden `Auth Self test` set that checks whether the refusal asserts fire, by
+  answering from stubs. Three of its four scenarios are meant to fail.
 
 Tested against: open-GUPZ `0a273ae`.
 
 [d29]: docs/decisions.md#d-29-semantic-versioning
+[i70]: https://github.com/Gegevensuitwisseling-Paramedische-Zorg/open-GUPZ/issues/70
