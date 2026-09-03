@@ -37,7 +37,14 @@ RuleSet: assertResponseConformsToProfile(resource, profileId)
 // have only ever been seen to fail: the server behind the tests supports
 // DocumentManifest and answers 200. An assert that has never been satisfied may
 // be impossible to satisfy.
-RuleSet: assertsManifestNotSupported
+//
+// The argument softens the profile assert, and only the self test uses that.
+// Profile validation reads the payload from the proxy transaction log, addressed
+// by the exchange id of the request. A stub is answered by the engine, so there
+// is no exchange and the validator is handed nothing. It fails with "could not
+// initiate validation", which says something about where the payload comes from
+// and nothing about the OperationOutcome. Warning there, hard everywhere else.
+RuleSet: assertsManifestNotSupported(softProfile)
 * test[=].action[+].assert
   * description = "Confirm that the returned HTTP status is 404 (Not Found)."
   * direction = #response
@@ -56,7 +63,7 @@ RuleSet: assertsManifestNotSupported
   * direction = #response
   * stopTestOnFail = false
   * validateProfileId = "OperationOutcome-profile"
-  * warningOnly = false
+  * warningOnly = {softProfile}
 * test[=].action[+].assert
   * description = "Confirm that the OperationOutcome has .code set to not-supported."
   * direction = #response

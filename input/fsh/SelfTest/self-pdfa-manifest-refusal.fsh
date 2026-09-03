@@ -24,8 +24,8 @@ Usage: #definition
 
 * test[+].id = "self-pdfa-01"
 * test[=].name = "SELF-PDFA-01"
-* test[=].description = "Every assert has to pass. One that does not is asking for something a conformant platform cannot deliver."
+* test[=].description = "Every assert has to pass, except the one on the profile. That one cannot run here: profile validation reads the payload from the proxy log and a stub never reaches the proxy. It is a warning for that reason."
 * insert allowExtraRequests
 * insert operationServeStub(manifest-not-supported)
 * test[=].action[=].operation.description = "Answer with the refusal pdfa.md prescribes for DocumentManifest."
-* insert assertsManifestNotSupported
+* insert assertsManifestNotSupported(true)

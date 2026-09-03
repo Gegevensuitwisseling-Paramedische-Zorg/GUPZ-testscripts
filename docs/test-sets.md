@@ -327,7 +327,15 @@ the first to find out would be a supplier who built it correctly.
 
 | Scenario | The stub answers | Expected |
 |---|---|---|
-| SELF-PDFA-01 | the refusal `pdfa.md` prescribes | every assert passes |
+| SELF-PDFA-01 | the refusal `pdfa.md` prescribes | every assert passes, except the one on the profile |
 
 It inserts the same RuleSet as the three scenarios do. Nothing is asked of a
 person: here the expected outcome is positive, so the engine can judge it.
+
+One assert cannot run here. Profile validation reads the payload from the proxy
+transaction log, addressed by the exchange id of the request, and a stub is
+answered by the engine without reaching the proxy. The validator is then handed
+nothing and reports that it could not start. The assert is a warning in this
+scenario for that reason, and hard in the three that run against a platform.
+So this set proves five of the six asserts can be satisfied; the sixth needs a
+real exchange.

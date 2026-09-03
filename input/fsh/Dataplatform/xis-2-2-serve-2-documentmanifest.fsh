@@ -23,7 +23,7 @@ RuleSet: xis-2-2-serve-2-documentmanifest-NoManifest-body
 * test[=].action[=].operation.origin = 1
 * test[=].action[=].operation.encodeRequestUrl = true
 * insert requestHeadersSchulte
-* insert assertsManifestNotSupported
+* insert assertsManifestNotSupported(false)
 
 Instance: xis-2-2-serve-2-documentmanifest-NoManifest-json
 InstanceOf: TestScript
