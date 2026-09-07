@@ -38,19 +38,25 @@ RuleSet: variableIncomingTokenHeader(requestId)
 // A compact JWE has five dot separated parts. A bare JWS has three. This is the
 // cheapest way to tell the two apart, and it is the one assert that catches a
 // caller who signs but does not encrypt.
-RuleSet: assertTokenIsNestedJwt
+//
+// Two arguments, for the same reason the refusal asserts of D-30 carry them:
+// the self test inserts this RuleSet rather than a copy, and there it has to
+// warn instead of fail, so that a scenario built on a bare JWS can still end
+// green on the judgement that the right assert reacted. See D-32.
+RuleSet: assertTokenIsNestedJwt(stop, soft)
 * test[=].action[+].assert
   * extension[+].url = $CL-ext-assert-input-variable
   * extension[=].valueString = "dva-token"
   * description = "Confirm that the token is a JWE in compact serialization, which has five dot separated parts. A token that was signed but not encrypted has three."
   * direction = #request
-  * stopTestOnFail = true
-  * warningOnly = false
+  * stopTestOnFail = {stop}
+  * warningOnly = {soft}
   * value.extension[+].url = $CL-ext-assert-regex-matches
   * value.extension[=].valueString = "^[A-Za-z0-9_-]+\\.[A-Za-z0-9_-]*\\.[A-Za-z0-9_-]+\\.[A-Za-z0-9_-]+\\.[A-Za-z0-9_-]+$"
 
 // One field of the JWE protected header, read by decoding the first segment.
-RuleSet: assertTokenHeaderField(field, value, meaning)
+// The last argument is the warning switch the self test needs; see D-32.
+RuleSet: assertTokenHeaderField(field, value, meaning, soft)
 * test[=].action[+].assert
   * extension[+].url = $CL-ext-assert-input-variable
   * extension[=].valueString = "dva-token-header"
@@ -59,7 +65,7 @@ RuleSet: assertTokenHeaderField(field, value, meaning)
   * description = "Confirm that the JWE header declares {field} as {value}, {meaning}."
   * direction = #request
   * stopTestOnFail = false
-  * warningOnly = false
+  * warningOnly = {soft}
   * value.extension[+].url = $CL-ext-assert-regex-matches
   * value.extension[=].valueString = "\"{field}\"\\s*:\\s*\"{value}\""
 

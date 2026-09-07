@@ -64,6 +64,7 @@ for f in "$SRC"/TestScript-*.json; do
     TestScript-auth-*) dest="$OUT/STU3/Auth/GUPZ/Test/Dataplatform" ;;
     TestScript-dva-*)  dest="$OUT/STU3/Auth/GUPZ/Test/DVA" ;;
     TestScript-self-auth-*) dest="$OUT/STU3/Auth/GUPZ/Test/adminOnly" ;;
+    TestScript-self-dva-*) dest="$OUT/STU3/Auth/GUPZ/Test/adminOnly-DVA" ;;
     TestScript-self-pdfa-*) dest="$OUT/STU3/PDFA-3-0/GUPZ/Test/adminOnly" ;;
     TestScript-resources-*) dest="$OUT/STU3/PDFA-3-0/GUPZ/Test/_LoadResources" ;;
     *)

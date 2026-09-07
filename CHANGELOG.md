@@ -23,9 +23,12 @@ Every release names the open-GUPZ version it was written against. See
   script that provisions the fixtures.
 - Documentation in `docs/`: test sets, requirement coverage, decisions, open
   points and authoring.
-- Two hidden self test sets that check this repository's own asserts against
-  stubs: whether the refusal asserts fire and react, and whether the
-  DocumentManifest asserts can be satisfied at all.
+- Three hidden self test sets that check this repository's own asserts: whether
+  the refusal asserts fire and react, whether the DocumentManifest asserts can
+  be satisfied at all, and whether the token asserts of the Auth DVA set do
+  both.
+  The first two answer from stubs and need a caller; the third prescribes a
+  token and runs as an Automated run on its own.
 
 Tested against: open-GUPZ `0a273ae`.
 

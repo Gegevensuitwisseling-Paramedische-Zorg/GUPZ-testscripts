@@ -392,6 +392,39 @@ behind the tests passes. A green would then say something about that server
 rather than about the specification, and the two red asserts in the PDF/A
 Dataplatform set would stop pointing at [OP-04][op04].
 
+### D-32 The token asserts are self tested through an Automated run
+
+D-31 answers whether the refusal asserts fire. The same question stands for the
+token asserts of DVA-01, which have been seen to pass once and have never been
+seen to react.
+
+They need no stub and no caller. An Automated run builds the request from the
+operation and sends it, for any operation the engine would otherwise wait for; a
+stub is not one, an ordinary search is. What DVA-01 lacks is a token, because
+prescribing one there would replace the thing under test. A hidden set that does
+prescribe one therefore runs on its own, which is what makes this self test
+cheaper than the two before it.
+
+The tokens are literals in the material rather than a value pasted at setup, so
+the run is identical for everyone and a mutation cannot be undone by hand. They
+are synthetic: a real JWE or JWS header and filler for the remaining segments,
+nothing signed or encrypted and no key anywhere. That is enough because these
+asserts read the dot structure and the JWE protected header and nothing else. It
+also draws the line of what this self test proves: the asserts, never the
+cryptography.
+
+The mutation inserts the shipped RuleSets as warnings and adds a manual
+judgement, for the reasons D-31 gives. Both RuleSets gained the arguments that
+switch, so there is still one copy of each requirement.
+
+Three asserts stay outside it, and that is a named gap rather than an oversight.
+The two on the presence of the `Authorization` header cannot be made to fail: a
+scenario that prescribes no header is handed the one from the setup screen,
+which is the AUTH-04 trap. The three that keep the BSN out of the url need a url
+that carries one; whether the assert on the naming system can react depends on
+whether the url is recorded percent-encoded, and no run has shown that yet.
+Answering it takes one run, not a decision.
+
 ### D-25 Everything is in English
 
 Documentation, comments, commit messages and the TestScripts themselves. The

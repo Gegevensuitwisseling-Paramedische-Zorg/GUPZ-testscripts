@@ -31,12 +31,15 @@ Usage: #definition
 // patient. Here the caller's own token is the subject, so prescribing one would
 // replace the thing being judged. Two consequences. Conformancelab shows the
 // request without a header, and the caller sends the token it would send to a
-// real platform. And an Automated dry run cannot validate this set, because the
-// engine then sends no token at all; only a real caller can.
+// real platform. And an Automated dry run says nothing about this scenario: the
+// engine builds and sends the request, but with no token on it, so every assert
+// below has nothing to read. Only a real caller exercises this scenario. What
+// the asserts themselves do is covered by the Self test - DVA token set, which
+// prescribes a token and can therefore run Automated. See D-32.
 * insert assertsIncomingBearerToken
-* insert assertTokenIsNestedJwt
-* insert assertTokenHeaderField(alg, RSA-OAEP, the key encryption algorithm)
-* insert assertTokenHeaderField(enc, A256CBC-HS512, the content encryption algorithm)
-* insert assertTokenHeaderField(cty, JWT, which is what marks the payload as a nested JWT)
+* insert assertTokenIsNestedJwt(true, false)
+* insert assertTokenHeaderField(alg, RSA-OAEP, the key encryption algorithm, false)
+* insert assertTokenHeaderField(enc, A256CBC-HS512, the content encryption algorithm, false)
+* insert assertTokenHeaderField(cty, JWT, which is what marks the payload as a nested JWT, false)
 * insert assertTokenHeaderHasKid
 * insert assertsNoBsnInUrl

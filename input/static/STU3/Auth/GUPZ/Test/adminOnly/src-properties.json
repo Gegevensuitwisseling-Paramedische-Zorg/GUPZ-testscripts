@@ -6,7 +6,7 @@
   "adminOnly": true,
   "role": {
     "name": "Self test",
-    "description": "Not a conformance test. Checks that the asserts this repository ships actually fire, by running them against stubbed responses instead of a platform. One scenario must pass and three must fail; any other outcome is a defect in the asserts."
+    "description": "Not a conformance test. Checks that the asserts this repository ships actually fire, by running them against stubbed responses instead of a platform. One scenario answers conformingly and three answer with a deviation; all four have to end green, the three on the judgement that the expected warning appeared. Needs a caller pointed at the stub endpoint, because a stub operation waits for a request."
   },
   "serverAlias": "gupz"
 }

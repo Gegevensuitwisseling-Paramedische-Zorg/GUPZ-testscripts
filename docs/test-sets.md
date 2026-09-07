@@ -13,6 +13,7 @@ What each set tests, which scenarios are in it and why. The grounds are in
 | Auth Dataplatform | Token and authentication | Data platform | 11 | Built, waiting on keys ([OP-05](open-points.md#op-05-key-material)) |
 | Auth DVA | Token and authentication | Calling party | 2 | Built |
 | Auth Self test | The refusal asserts of this repository | none | 4 | Built, `adminOnly` |
+| Auth DVA Self test | The token asserts of the Auth DVA set | none | 2 | Built, `adminOnly` |
 | PDF/A Self test | The DocumentManifest asserts of this repository | none | 1 | Built, `adminOnly` |
 
 Written against open-GUPZ commit `0a273ae`, 21 August 2026. A commit rather than
@@ -313,6 +314,48 @@ the engine would send itself, and a stub operation is not one of them. The same
 holds for DVA-02.
 
 [d30]: decisions.md#d-30-a-refusal-is-asserted-on-status-challenge-and-operationoutcome
+
+## Auth DVA Self test
+
+Hidden the same way, and it asks both questions at once about the token asserts
+of DVA-01: can they be satisfied, and do they react. DVA-01 has been seen green
+once, against a real token from a caller. Green on its own settles only the
+first question.
+
+This set is the only self test that needs no caller. Automation builds the
+request from the operation and sends it, but only for an operation the engine
+would otherwise be waiting for, which a stub is not. DVA-01 is an ordinary
+search, so it qualifies; what it lacks is a token, because prescribing one there
+would replace the thing under test. These two scenarios prescribe one, so
+Automated carries them the whole way. See [D-32][d32].
+
+| Scenario | The token presented | Checked automatically | Asked of a person |
+|---|---|---|---|
+| SELF-DVA-01 | five segments, JWE header with `alg` `RSA-OAEP`, `enc` `A256CBC-HS512`, `cty` `JWT` and a `kid` | every assert of DVA-01 passes | nothing |
+| SELF-DVA-02 | three segments, header with `alg` `RS256`, so signed and not encrypted | the header is present and uses the Bearer scheme | did the assert on the segment count warn, and the three on the JWE header with it |
+
+Both end green when the material is right. The tokens are literals in the
+material rather than something to paste at setup, so the run is the same for
+everyone. They are synthetic: a real header and filler for the remaining
+segments, nothing signed or encrypted and no key anywhere. That is enough,
+because these asserts read the dot structure and the JWE protected header and
+nothing else. Pasting a real token over the default at setup changes nothing
+about what is judged.
+
+Because the operation carries an `Authorization` header, the authorization field
+on the setup screen cannot reach it: the engine only fills a header an operation
+does not have. That is what makes this set safe to run while AUTH-04 is not,
+see [AUTH-04 and the setup screen](#auth-04-and-the-setup-screen).
+
+Three asserts of DVA-01 are not self tested here, and the gap is deliberate.
+The two on the presence of the header cannot be made to fail, because a scenario
+that prescribes no header gets the one from the setup screen instead, which is
+the AUTH-04 trap. The three that keep the BSN out of the url would need a url
+that carries one, and whether the third of them can react at all depends on
+whether the recorded url is percent-encoded, which no run has shown yet. Named
+in [D-32][d32] rather than guessed at.
+
+[d32]: decisions.md#d-32-the-token-asserts-are-self-tested-through-an-automated-run
 
 ## PDF/A Self test
 
