@@ -20,9 +20,9 @@
 // credentials. Pasting a real token over the default at setup is allowed and
 // changes nothing about what is judged.
 //
-// Two things cannot be self tested this way, and both are named in D-32: the
-// case with no Authorization header at all, and the three asserts that keep the
-// BSN out of the url.
+// Two things cannot be self tested this way; D-32 names both. The case with no
+// Authorization header at all, and the three asserts that keep the BSN out of
+// the url.
 
 
 // The token a scenario presents. A static variable, so the engine reads the
@@ -57,7 +57,7 @@ Usage: #definition
 * insert metadata(self-dva-01-envelope-conforms)
 * name = "Self_dva_01_envelope_conforms"
 * title = "SELF-DVA-01 - The token asserts pass on a conforming envelope"
-* description = "Presents a token with the envelope GUPZ-TOK-002 prescribes: five dot separated segments, and a JWE protected header declaring alg RSA-OAEP, enc A256CBC-HS512 and cty JWT, with a kid. Every assert of DVA-01 has to pass, which states that the regex chain reads the header and that the set can be satisfied at all."
+* description = "Presents a token with the envelope GUPZ-TOK-002 prescribes: five dot separated segments, and a JWE protected header declaring alg RSA-OAEP, enc A256CBC-HS512 and cty JWT, with a kid. Every assert of DVA-01 has to pass."
 
 * insert clientAimed
 * insert selfTestToken(self-dva-01-token, eyJhbGciOiJSU0EtT0FFUCIsImVuYyI6IkEyNTZDQkMtSFM1MTIiLCJjdHkiOiJKV1QiLCJraWQiOiJndXB6LXNlbGYtdGVzdC1rZXkifQ.c2VsZi10ZXN0LWVuY3J5cHRlZC1rZXk.c2VsZi10ZXN0LWl2.c2VsZi10ZXN0LWNpcGhlcnRleHQ.c2VsZi10ZXN0LXRhZw)
@@ -85,7 +85,7 @@ Usage: #definition
 * insert metadata(self-dva-02-bare-jws)
 * name = "Self_dva_02_bare_jws"
 * title = "SELF-DVA-02 - The envelope asserts catch a token that is only signed"
-* description = "Presents a bare JWS: three segments, and a header declaring alg RS256. This is the mistake DVA-01 exists to catch, a caller that signs but does not encrypt. The assert on the number of segments and the three on the JWE header must all react."
+* description = "Presents a bare JWS: three segments, and a header declaring alg RS256. This is the mistake DVA-01 catches: a caller that signs but does not encrypt. The assert on the number of segments and the three on the JWE header must all react."
 
 * insert clientAimed
 * insert selfTestToken(self-dva-02-token, eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6Imd1cHotc2VsZi10ZXN0LWtleSJ9.eyJpc3MiOiJzZWxmLXRlc3QiLCJub3RlIjoibm90IGEgY3JlZGVudGlhbCJ9.c2VsZi10ZXN0LXNpZ25hdHVyZQ)

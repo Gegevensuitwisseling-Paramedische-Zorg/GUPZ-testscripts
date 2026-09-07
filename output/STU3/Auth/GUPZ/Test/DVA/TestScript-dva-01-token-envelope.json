@@ -280,5 +280,5 @@
   "publisher": "GUPZ",
   "name": "Dva_01_token_envelope",
   "title": "DVA-01 - The token is a nested JWT with the prescribed JWE header",
-  "description": "Tests what a receiving platform can establish about the token a caller sends without holding the decryption key: that there is a Bearer token, that it is a JWS encrypted into a JWE rather than a bare JWS, and that the JWE header declares the three fields GUPZ-TOK-002 prescribes. Also confirms that no BSN travels in the url. The claims inside the token cannot be read here; that needs the platform's private key."
+  "description": "What a receiving platform can establish about a token without holding the decryption key: that there is a Bearer token, that it is a JWS encrypted into a JWE rather than a bare JWS, and that the JWE header declares the three fields GUPZ-TOK-002 prescribes. Also confirms that no BSN travels in the url. The claims inside the token cannot be read here; that needs the platform's private key."
 }

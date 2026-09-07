@@ -6,17 +6,17 @@
 
 // pdfa.md requires the data platform to offer every document reference as a
 // reference to a Binary resource, so that the Retrieve Document transaction
-// reads the Binary. The specification is in Dutch; this is what that sentence
-// says.
+// reads the Binary. The specification is in Dutch; this is the English of that
+// sentence.
 //
 // Nothing in the imported set tests this. A platform that returns the PDF
 // inline, base64 encoded in DocumentReference.content.attachment.data, passes
 // every other assert in the Dataplatform set. Scenario 1.4 does read a Binary,
 // but it reads whatever url the response gave it, so serving a plain http url
-// gets through there as well. That is scenario 2.5, which exists precisely for
-// servers that work that way; for GUPZ it is not conformant.
+// gets through there as well. That is scenario 2.5, which exists for servers
+// that work that way; for GUPZ it is not conformant.
 //
-// Two asserts, deliberately of different weight.
+// Two asserts, of different weight.
 //
 // The first is hard. The requirement is a MUST in the specification, in the
 // indicative that open-GUPZ uses throughout, and it says what has to be there.
@@ -24,15 +24,14 @@
 // because the reference may be relative or absolute; scenario 1.4 resolves both
 // forms in its pdfa1-url variable.
 //
-// The second is warning only, and that is a judgement call worth recording. An
-// attachment carrying both a url and inline data still offers the document as a
-// reference, so the sentence above does not strictly forbid it. What forbids it
-// is IHE.MHD.Minimal.DocumentReference, which puts attachment.data at 0..0, and
-// that is a Nictiz profile which GUPZ has not adopted in its own text. Asserting
-// it hard would make a Nictiz artefact normative for GUPZ by the back door. So
-// it is raised as a warning and the difference is named here. If GUPZ confirms
-// that inline data is not allowed, this becomes a hard assert and the
-// distinction disappears.
+// The second is warning only, and the reason is a judgement call. An attachment
+// carrying both a url and inline data still offers the document as a reference,
+// so the sentence above does not strictly forbid it. What forbids it is
+// IHE.MHD.Minimal.DocumentReference, which puts attachment.data at 0..0, and
+// that is a Nictiz profile GUPZ has not adopted in its own text. Asserting it
+// hard would make a Nictiz artefact normative for GUPZ. It is a warning
+// instead. If GUPZ confirms that inline data is not allowed, this becomes a
+// hard assert.
 //
 // Be aware of what the hard assert does to scenario 2.1 with the imported
 // fixtures. The only current document of XXX_Schulte, DocumentReference

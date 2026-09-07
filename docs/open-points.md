@@ -62,8 +62,8 @@ Scenario 2.5 serves a document over an ordinary HTTP URL instead of a `Binary`.
 A platform implementing [`pdfa.md`][pdfa] cannot pass it (D-01.3), and one that
 does pass it is serving documents in a way GUPZ has ruled out. The run of 21
 August 2026 confirmed it from the other side: the scenario failed on its control
-test, a request without an `Authorization` header, which is worth having and
-does not depend on how the document is served.
+test, a request without an `Authorization` header. That check is worth having
+and does not depend on how the document is served.
 
 There is a second obstacle. The url the scenario follows
 comes from the fixture and points at a host outside the test environment, so the

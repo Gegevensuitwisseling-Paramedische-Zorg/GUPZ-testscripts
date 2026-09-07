@@ -46,8 +46,8 @@ The first commit containing these files is an unmodified copy, tagged
 git diff nictiz-baseline-2026.30 HEAD -- output/STU3/PDFA-3-0/
 ```
 
-That yields precisely the GUPZ changes, which is also the patch that could be
-offered to Nictiz. The textual comparison loses its value for every script
+That yields the GUPZ changes, and that diff is the patch that could be offered
+to Nictiz. The textual comparison loses its value for every script
 converted to FSH, because the generated JSON no longer resembles the original
 XML line by line. For those use `scripts/compare-testscript.py`, which compares
 content rather than text.
@@ -85,11 +85,11 @@ Nothing under `input/static/` is a TestScript any more. What is left there is
 data and configuration: the fixtures, the Groovy rule, the stub mappings and the
 Test Set property files.
 
-The fixtures and the Groovy rule are exactly as they came. Data rather than
+The fixtures and the Groovy rule are exactly as they came. They are data, not
 structure, and not expressible in FSH (D-18). They can be replaced wholesale
 when Nictiz publishes a new patch release: drop in the new file, run the build.
 
-Two conversions are worth recording. The provisioning script was converted on 21
+Two conversions are recorded here. The provisioning script was converted on 21
 August 2026 by hand, because the generator assumes an `origin`, a `destination`
 and no `copyright`, none of which holds there, and it silently drops `setup`.
 Every fixture, variable and action matches the original path for path. Scenario

@@ -77,7 +77,7 @@ expressions are generated rather than typed, because their backslash escaping
 survives three layers of quoting. When it meets an element it does not handle it
 stops with an error rather than dropping it.
 
-Three things to know before trusting the output:
+Check three things before trusting the output:
 
 - **`setup` and `teardown` disappear without a word.** They are listed among the
   elements the generator knows, so it does not stop, but nothing writes them

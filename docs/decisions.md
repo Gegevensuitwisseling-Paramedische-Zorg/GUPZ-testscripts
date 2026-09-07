@@ -13,8 +13,8 @@ kept, never renumbered.
 ### D-01 Only Find and Retrieve are in scope
 
 The data platform is an MHD Document Responder for ITI-67 Find Document
-Reference and ITI-68 Retrieve Document ([`pdfa.md`][pdfa]). Three properties
-follow and they decide the whole selection:
+Reference and ITI-68 Retrieve Document ([`pdfa.md`][pdfa]). Three consequences,
+and they decide the selection:
 
 1. The platform never receives documents, so ITI-65 Provide Document Bundle is
    out of scope.
@@ -41,10 +41,10 @@ OP-03](open-points.md#op-03-scenario-25).
 
 ### D-04 DocumentManifest scenarios 2.2, 2.3 and 2.4 are kept
 
-Not to test manifests but to test the graceful failure D-01.2 implies.
-[`pdfa.md`][pdfa] prescribes 404 with an OperationOutcome carrying `severity`
-`error` and `code` `not-supported`, added on request in [#72][i72], and that is
-what these three scenarios assert.
+These three scenarios test the graceful failure D-01.2 implies, not manifest
+support. [`pdfa.md`][pdfa] prescribes 404 with an OperationOutcome carrying
+`severity` `error` and `code` `not-supported`, added on request in [#72][i72],
+and that is what they assert.
 
 ### D-05 The roles are Dataplatform and DVA
 
@@ -58,8 +58,8 @@ value names that system and nothing more.
 
 [#74][i74] settles that the generic token profile applies to every caller, a NIS
 or a referral platform included, so the role will eventually be the calling
-party rather than the DVA. Not renamed now: vagueness costs more today than
-precision will cost later.
+party rather than the DVA. Not renamed now: a generic name would be less clear
+today than `DVA` is.
 
 ## Deviations from the imported scripts
 
@@ -115,8 +115,8 @@ All uses sit in `input/fsh/components/origin-destination.fsh`.
 All scripts declare version `0.1.0`, publisher GUPZ, and derive their `url` from
 the canonical `http://gupz.nl/fhir`. The imported scripts named Nictiz as
 publisher, pointed their `url` at `nictiz.nl` and declared `stu3-2.0-patchlevel
-2026.30` as their version; publishing somebody else's version number invites the
-reading that these are the Nictiz qualification scripts.
+2026.30` as their version. Publishing their version number would suggest that
+these are the Nictiz qualification scripts.
 
 The canonical is provisional, chosen on 20 August 2026 until GUPZ names
 something better. See [open-points.md
@@ -130,9 +130,9 @@ that the Nictiz simulator recognises. A GUPZ data platform expects a JWS nested
 in a JWE ([`security.md`][security]), so the imported default cannot work
 anywhere.
 
-It is removed rather than replaced: a wrong default runs and fails for a reason
-that has nothing to do with the platform under test. What is left is a variable
-the operator fills. The `Bearer` prefix moved from the value into the header
+The default is removed, not replaced. A wrong default runs and fails for a
+reason unrelated to the platform under test. What is left is a variable the
+operator fills. The `Bearer` prefix moved from the value into the header
 template, so what is pasted is the bare token. Mechanics in
 [authoring.md](authoring.md#tokens).
 
@@ -151,7 +151,7 @@ whatever URL the response hands it. The asserts sit in
 | Assert | Weight | Ground |
 |---|---|---|
 | Every attachment has a `url` containing `Binary/` | hard | [`pdfa.md`][pdfa]. Matched on containing, because the reference may be relative or absolute |
-| No attachment carries inline `data` | warning | An attachment with both a URL and inline data still offers the document as a reference, so `pdfa.md` does not forbid it in so many words. What forbids it is `IHE.MHD.Minimal.DocumentReference`, a Nictiz profile GUPZ has not adopted. A hard assert would make a Nictiz artefact normative for GUPZ by the back door |
+| No attachment carries inline `data` | warning | An attachment with both a URL and inline data still offers the document as a reference, so `pdfa.md` does not forbid it in so many words. What forbids it is `IHE.MHD.Minimal.DocumentReference`, a Nictiz profile GUPZ has not adopted. A hard assert would make a Nictiz artefact normative for GUPZ |
 
 The warning becomes hard if GUPZ confirms that inline data is not allowed.
 
@@ -183,17 +183,17 @@ the token out of the script and that link breaks. They were briefly turned into
 an operator variable, on the reasoning behind D-11, and that was wrong:
 Conformancelab does not ask for a token in this set.
 
-The distinction is not an inconsistency. `_LoadResources` writes test data, so a
-fixed opaque token there is a label saying which patient a row belongs to, not a
-credential under test. Every set that reads from the platform follows D-11.
+`_LoadResources` writes test data, so the token there labels which patient a row
+belongs to. It is not a credential under test. Every set that reads from the
+platform follows D-11.
 
 ### D-15 The client side asserts presence and scheme, not a value
 
 The imported scripts assert that `Authorization` equals a MedMij qualification
 token. A GUPZ token is minted per run and valid for fifteen minutes, so its
-value differs every time. What is stable is that the header exists and uses the
-Bearer scheme, and that is what `components/client-asserts.fsh` says. Settles
-point 3 of [#80][i80].
+value differs every time. Stable are the presence of the header and the Bearer
+scheme, and `components/client-asserts.fsh` asserts those two. Settles point 3
+of [#80][i80].
 
 ### D-16 Client tests allow extra requests
 
@@ -207,8 +207,8 @@ resolves a reference when it needs to. All five PDF/A DVA scripts set
 ### D-17 TestScripts are FSH, everything else is copied
 
 What we author lives in `input/fsh/`; what we import stays verbatim in
-`input/static/`. The line is not "TestScripts are FSH", which is why the
-provisioning script sits in `input/fsh/` while the fixtures do not.
+`input/static/`. The split is authored against imported, not TestScript against
+fixture: the provisioning script sits in `input/fsh/`, the fixtures do not.
 
 TestScript resources are R5 even though the material under test is STU3.
 Conformancelab only officially supports TestScript R5; the FHIR version of the
@@ -216,7 +216,7 @@ material under test is declared in `properties.json`.
 
 ### D-18 Fixtures are not written in FSH
 
-Two reasons, both hard:
+Two reasons:
 
 - SUSHI does not do STU3. `fhirVersion: 3.0.2` yields `The sushi-config.yaml
   must specify a supported version of FHIR. Found 3.0.2.`
@@ -225,8 +225,8 @@ Two reasons, both hard:
   -355}T00:00:00+01:00"/>`. Any tool that type checks rejects that; SUSHI writes
   the resource without the field.
 
-No loss: a fixture is data, not structure. The value of FSH sits in the
-TestScripts, where the same seventeen asserts appear in every search scenario.
+A fixture is data, not structure. FSH pays off in the TestScripts, where the
+same seventeen asserts appear in every search scenario.
 
 ### D-19 Variable names are unique per case in Auth and shared per patient in PDF/A
 
@@ -234,8 +234,7 @@ Conformancelab spots a variable name occurring in more than one scenario and
 offers to fill it once for all of them. In the Auth set that is a trap, because
 every case needs a different token, so each case names its variable after
 itself. In the PDF/A set the offer is wanted: ten scenarios share one patient's
-token and filling it ten times is only a way to make mistakes. Same engine
-behaviour, opposite choice.
+token and filling it ten times is only a way to make mistakes.
 
 ### D-20 The Auth DVA set prescribes no token
 
@@ -245,11 +244,12 @@ Here the caller's own token is the subject, so prescribing one would replace the
 thing being judged.
 
 Two consequences. Conformancelab shows the expected request without an
-`Authorization` header. And an Automated dry run cannot validate DVA-01: with no
-header described the engine sends no token and every assert fails. DVA-02 cannot
-be automated either, for a different reason: automation sends only the requests
-the engine would send itself, and a stub operation is not one of them. Both need
-a real caller.
+`Authorization` header. And an Automated dry run says nothing about DVA-01: the
+engine builds and sends the request, but with no token on it, so every assert
+has nothing to read. DVA-02 cannot be automated either, for a different reason:
+automation sends only the requests the engine would send itself, and a stub
+operation is not one of them. Both need a real caller. What the asserts
+themselves do is covered by D-32.
 
 ### D-21 The DVA-02 stubs use the terse error form
 
@@ -267,26 +267,25 @@ handle both.
 
 [`security.md`][security] says what a platform must return. It says nothing
 about what a caller must then do, so asserting anything would invent a
-requirement rather than test one. The assert pauses the run and puts the
-question to whoever is watching; the answer lands in the report like any other
-result.
+requirement. The assert pauses the run and puts the question to whoever is
+watching; the answer lands in the report like any other result.
 
 The assert carries `operator` `manualEval`. An unattended run of this set
 therefore never finishes: it waits, which is correct. It needs a real caller and
 somebody watching.
 
-The questions are deliberately concrete. After a 401: did the caller report the
-failure and stop, rather than repeat the same request with the same token or
-fall back to a request without one. After a 403: did it use the `scope`
-parameter, which exists precisely so a caller can ask for what it lacks.
+The questions are concrete. After a 401: did the caller report the failure and
+stop, rather than repeat the same request with the same token or fall back to a
+request without one. After a 403: did it use the `scope` parameter, which names
+the scope it would have to request.
 
 ### D-23 A `kid` on the JWE header is a warning, not a requirement
 
 `GUPZ-JWS-001` requires a `kid`, but on the JWS header, which is inside the
 encryption and unreadable from outside. The JWE header table in
-[`security.md`][security] lists only `alg`, `enc` and `cty`. So a `kid` on the
-JWE is required by nothing, and failing a caller over it would make a tool's
-habit into a rule. It is still reported, because key rotation under [#27][i27]
+[`security.md`][security] lists only `alg`, `enc` and `cty`. A `kid` on the JWE
+is therefore required by nothing and cannot fail a caller. It is still
+reported, because key rotation under [#27][i27]
 has the platform resolve its encryption key from a JWKS and a `kid` is how that
 lookup finds the right one. Raised in [#75][i75].
 
@@ -322,8 +321,8 @@ resolves to it, so the address comes out of the setup screen instead. Applies to
 DVA-02, through the `clientAimedStub` RuleSet.
 
 Not adopted: naming the endpoint with a literal URL carrying
-`${ORGANIZATION-ID}`, which is what the neighbouring Nictiz material does. That
-puts an environment into the test material; `${STUB-ENDPOINT}` does not.
+`${ORGANIZATION-ID}`, as the neighbouring Nictiz material does. That puts an
+environment into the test material.
 
 ### D-27 Every destination carries a title
 
@@ -351,46 +350,46 @@ refuses to build when the two disagree.
 
 ### D-31 Asserts that cannot be exercised elsewhere get a hidden self test
 
-An assert that has never run is an assumption. The three asserts of D-30 were
+An assert that has never run has not been shown to work. The three asserts of
+D-30 were
 written against [`security.md`][security] and cannot be exercised against the
 FHIR server behind the tests, which accepts every token.
 
 The set answers from stubs and inserts the shipped RuleSet rather than a copy,
-so a change to D-30 is picked up without touching it. That rules out the obvious
-alternative, a scenario asserting the opposite of D-30. It would be green on a
-wrong answer, and it would stop following the requirement the day it changes.
+so a change to D-30 is picked up without touching it. Not adopted: a scenario
+asserting the opposite of D-30. It would be green on a wrong answer and would
+stop following the requirement the day it changes.
 
 A TestScript cannot say that an assert has to fail, and the engine has no flag
 for it either. So the three scenarios built on a wrong answer insert the asserts
 as warnings, which do not fail a scenario, and then add a manual assert asking
-whether the expected warning appeared. All four then end green when the
-material is right, instead of three of them being permanently red, which invites
-someone to fix what is not broken.
+whether the expected warning appeared. All four then end green when the material
+is right. Three permanently red scenarios would invite someone to fix what is
+not broken.
 
-Next to that sits a hard, automatic assert on what the stub answered: a 403, a
-missing challenge, the wrong OperationOutcome code. That is a different claim,
-namely that the case is built on a real deviation, and it catches a stub file
-that has drifted without anyone reading a warning column. It does not replace
-the question to the person: an assert on the answer says nothing about whether
-another assert reacted to it.
+Alongside it runs a hard, automatic assert on what the stub answered: a 403, a
+missing challenge, the wrong OperationOutcome code. That is a different claim:
+the case is built on a real deviation. It catches a stub file that has drifted
+without anyone reading a warning column, and it does not replace the question to
+the person, because an assert on the answer says nothing about whether another
+assert reacted to it.
 
-The cost is one judgement per mutation, and the set already needed a person,
-because a stub operation waits for a caller.
+The cost is one judgement per mutation. The set already needed a person, because
+a stub operation waits for a caller.
 
-The same reasoning runs the other way for the DocumentManifest asserts of D-04.
+The same reasoning applies in reverse to the DocumentManifest asserts of D-04.
 Those have only ever been seen to fail, because the server behind the tests
 supports DocumentManifest. An assert that has never been satisfied may be
 impossible to satisfy, so a second self test answers the prescribed refusal from
 a stub and expects every assert to pass. That one needs no person: the expected
 outcome is positive, so the engine can judge it.
 
-`adminOnly` in the properties keeps both out of a supplier's view, which is what
-that property is for.
+`adminOnly` in the properties hides both from a supplier.
 
-What this set deliberately does not do is relax an assert so that the server
-behind the tests passes. A green would then say something about that server
-rather than about the specification, and the two red asserts in the PDF/A
-Dataplatform set would stop pointing at [OP-04][op04].
+These sets never relax an assert so that the server behind the tests passes. A
+green would then say something about that server and not about the
+specification, and the two red asserts in the PDF/A Dataplatform set would stop
+pointing at [OP-04][op04].
 
 ### D-32 The token asserts are self tested through an Automated run
 
@@ -401,29 +400,29 @@ react.
 They need no stub and no caller. An Automated run builds the request from the
 operation and sends it, for any operation the engine would otherwise wait for; a
 stub is not one, an ordinary search is. What DVA-01 lacks is a token, because
-prescribing one there would replace the thing under test. A hidden set that does
-prescribe one therefore runs on its own, which is what makes this self test
-cheaper than the two before it.
+prescribing one there would replace the thing under test. A hidden set that
+prescribes one therefore runs on its own, so this self test is cheaper than the
+two before it.
 
 The tokens are literals in the material rather than a value pasted at setup, so
 the run is identical for everyone and a mutation cannot be undone by hand. They
 are synthetic: a real JWE or JWS header and filler for the remaining segments,
-nothing signed or encrypted and no key anywhere. That is enough because these
-asserts read the dot structure and the JWE protected header and nothing else. It
-also draws the line of what this self test proves: the asserts, never the
-cryptography.
+nothing signed or encrypted and no key anywhere. That is enough, because these
+asserts read the dot structure and the JWE protected header and nothing else.
+What the set proves is therefore limited to the asserts, not the cryptography.
 
 The mutation inserts the shipped RuleSets as warnings and adds a manual
 judgement, for the reasons D-31 gives. Both RuleSets gained the arguments that
 switch, so there is still one copy of each requirement.
 
-Three asserts stay outside it, and that is a named gap rather than an oversight.
-The two on the presence of the `Authorization` header cannot be made to fail: a
+Three asserts stay outside it, each for its own reason, and the gap is named
+here rather than left open. The two on the presence of the `Authorization`
+header cannot be made to fail: a
 scenario that prescribes no header is handed the one from the setup screen,
 which is the AUTH-04 trap. The three that keep the BSN out of the url need a url
 that carries one; whether the assert on the naming system can react depends on
-whether the url is recorded percent-encoded, and no run has shown that yet.
-Answering it takes one run, not a decision.
+whether the url is recorded percent-encoded, and no run has shown that yet. One
+run answers that.
 
 ### D-25 Everything is in English
 

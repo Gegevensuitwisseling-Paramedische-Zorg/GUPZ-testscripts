@@ -90,8 +90,8 @@ RuleSet: assertTokenHeaderHasKid
 
 
 // The BSN travels in the token and nowhere else. These three say the caller did
-// not put it in the url, which is what open-GUPZ issue #73 settled and what
-// GUPZ-URL-001 records.
+// not put it in the url, which open-GUPZ issue #73 settled and GUPZ-URL-001
+// records.
 RuleSet: assertsNoBsnInUrl
 * test[=].action[+].assert
   * description = "Confirm that query parameter 'patient=' was not present, so that no BSN travels in the url."

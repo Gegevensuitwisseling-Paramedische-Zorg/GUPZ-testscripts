@@ -16,9 +16,8 @@ What each set tests, which scenarios are in it and why. The grounds are in
 | Auth DVA Self test | The token asserts of the Auth DVA set | none | 2 | Built, both green, `adminOnly` |
 | PDF/A Self test | The DocumentManifest asserts of this repository | none | 1 | Built, `adminOnly` |
 
-Written against open-GUPZ commit `0a273ae`, 21 August 2026. A commit rather than
-a release number, because the changelog there does not reliably track what
-changed.
+Written against open-GUPZ commit `0a273ae` of 20 August 2026. A commit and not a
+release number: the changelog there does not reliably track what changed.
 
 ## Authentication situations
 
@@ -125,8 +124,8 @@ from the same server.
 This is provisioning, not a conformance test. [`pdfa.md`][pdfa] describes the
 data platform as an MHD Document Responder, which reads; nothing in the
 specification says a platform accepts writes over FHIR. So this set works
-against a reference server that happens to allow them, which is how a dry run is
-done, and it is not expected to work against a supplier's platform. There the
+against a reference server that allows them, which is how a dry run is done. It
+is not expected to work against a supplier's platform. There the
 test data comes out of their own PARIS; see
 [OP-04](open-points.md#op-04-test-data-specification).
 
@@ -188,9 +187,9 @@ warning only.
 Produced with the `JwtCliTool` in open-GUPZ, generated shortly before a run
 rather than handed over as files: [#69][i69] made explicit that testing should
 not use static tokens, so that expired tokens can be tested too. Generating on
-the spot also settles the fifteen minute lifetime, which would otherwise make a
-pasted token stale within the hour. What the testers need is key material and
-claim values; see [OP-05](open-points.md#op-05-key-material).
+the spot also handles the fifteen minute lifetime: a pasted token goes stale
+within the hour. The testers need key material and claim values; see
+[OP-05](open-points.md#op-05-key-material).
 
 | Token | Description |
 |---|---|
@@ -242,9 +241,9 @@ The part count stops the test when it fails: decoding a header out of something
 that is not a JWE says nothing. How the header is read is in
 [authoring.md](authoring.md#reading-a-token).
 
-DVA-02 hands the caller each refusal from a WireMock stub rather than from a
-server, which is the point: a real server refuses when it feels like it, a stub
-refuses exactly as the specification prescribes, every time, in both shapes. The
+DVA-02 hands the caller each refusal from a WireMock stub and not from a
+server. A server refuses when its own logic decides to; a stub refuses exactly
+as the specification prescribes, every time, in both shapes. The
 mapping sits in a `.stub` file under `_stub/`, is declared as a fixture, and an
 operation of type `stub` points at it. Stubs answer on a different address than
 FHIR traffic, see
@@ -353,7 +352,7 @@ that prescribes no header gets the one from the setup screen instead, which is
 the AUTH-04 trap. The three that keep the BSN out of the url would need a url
 that carries one, and whether the third of them can react at all depends on
 whether the recorded url is percent-encoded, which no run has shown yet. Named
-in [D-32][d32] rather than guessed at.
+in [D-32][d32].
 
 [d32]: decisions.md#d-32-the-token-asserts-are-self-tested-through-an-automated-run
 

@@ -273,5 +273,5 @@
   "publisher": "GUPZ",
   "name": "Self_dva_02_bare_jws",
   "title": "SELF-DVA-02 - The envelope asserts catch a token that is only signed",
-  "description": "Presents a bare JWS: three segments, and a header declaring alg RS256. This is the mistake DVA-01 exists to catch, a caller that signs but does not encrypt. The assert on the number of segments and the three on the JWE header must all react."
+  "description": "Presents a bare JWS: three segments, and a header declaring alg RS256. This is the mistake DVA-01 catches: a caller that signs but does not encrypt. The assert on the number of segments and the three on the JWE header must all react."
 }

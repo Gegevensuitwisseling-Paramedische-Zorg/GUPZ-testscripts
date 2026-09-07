@@ -291,5 +291,5 @@
   "publisher": "GUPZ",
   "name": "Self_dva_01_envelope_conforms",
   "title": "SELF-DVA-01 - The token asserts pass on a conforming envelope",
-  "description": "Presents a token with the envelope GUPZ-TOK-002 prescribes: five dot separated segments, and a JWE protected header declaring alg RSA-OAEP, enc A256CBC-HS512 and cty JWT, with a kid. Every assert of DVA-01 has to pass, which states that the regex chain reads the header and that the set can be satisfied at all."
+  "description": "Presents a token with the envelope GUPZ-TOK-002 prescribes: five dot separated segments, and a JWE protected header declaring alg RSA-OAEP, enc A256CBC-HS512 and cty JWT, with a kid. Every assert of DVA-01 has to pass."
 }

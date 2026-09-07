@@ -3,13 +3,13 @@
 // data platform as a read only Document Responder, so this runs against a
 // reference server that accepts writes, not against a supplier's platform.
 //
-// Two things here differ from every other set, both on purpose.
+// Two things differ from every other set, both on purpose.
 //
 // The access token is fixed in the script rather than operator input. It
 // resolves through Configuration/QualificationTokens.json, which the engine
 // reads when the repository is loaded and which maps a token to a patient. Take
-// the token out and that link breaks. A fixed opaque token is right here: it
-// labels which patient a row belongs to, it is not a credential under test.
+// the token out and that link breaks. The token labels which patient a row
+// belongs to; it is not a credential under test.
 //
 // There is no origin, no destination and no system under test. Nothing is being
 // judged, so there is nothing to mark.

@@ -5,7 +5,7 @@
 // forwards the request to a FHIR server and returns that answer, and the engine
 // matches the request against the operation that is active. So there are no
 // stubs to write; what matters is that the right fixtures are on the server the
-// proxy forwards to, which is what the provisioning set puts there.
+// proxy forwards to, which the provisioning set puts there.
 
 
 // The Authorization header the client is expected to send.
@@ -27,7 +27,7 @@ RuleSet: requestHeaderToken(token)
 // qualification token. That cannot hold here: a GUPZ token is a JWS inside a
 // JWE, minted per run and valid for fifteen minutes, so its value differs every
 // time. What is stable is that the header is there and that it uses the Bearer
-// scheme, and that is what these two asserts say.
+// scheme, and these two asserts say exactly that.
 //
 // `exists` is not in the operator list of base FHIR, so it is carried by the
 // Conformancelab extension for additional operators. `contains` is standard.

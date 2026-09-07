@@ -66,7 +66,7 @@ RuleSet: assertsRequestAccepted
 // header carrying error="invalid_token", and an OperationOutcome with severity
 // error and code login. All three hold whether or not the platform runs in the
 // test mode that allows extra detail; that mode only widens error_description
-// and diagnostics, which is why neither is asserted. See D-30.
+// and diagnostics, so neither is asserted. See D-30.
 //
 // Every case in this set that presents a token the platform must reject is a
 // token validation failure, which security.md answers with a 401. A 403 belongs
