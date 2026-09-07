@@ -20,7 +20,7 @@
 // credentials. Pasting a real token over the default at setup is allowed and
 // changes nothing about what is judged.
 //
-// Two things cannot be self tested this way; D-32 names both. The case with no
+// What this set does not cover yet, and D-32 says why: a scenario with no
 // Authorization header at all, and the three asserts that keep the BSN out of
 // the url.
 
@@ -35,10 +35,9 @@ RuleSet: selfTestToken(name, token)
 * variable[=].description = "The token this self test presents. A synthetic string, not a credential."
 
 // The same operation DVA-01 describes, with the Authorization header added.
-// Because the operation carries a header, the value from the setup screen
-// cannot land on it: the engine only fills a header the operation does not
-// have. So the authorization field on that screen makes no difference to this
-// set, which is the trap AUTH-04 walks into and this set has to avoid.
+// Nothing at setup can replace it: the engine only fills a header an operation
+// does not have, and the field that could supply one appears only for a Test
+// Set carrying allowCustomAuthorizationHeader, which none of ours does.
 RuleSet: selfTestTokenOperation(requestId, tokenVariable)
 * test[=].action[+].operation.type = $restful-interaction#search
 * test[=].action[=].operation.resource = "DocumentReference"

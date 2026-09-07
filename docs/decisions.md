@@ -417,12 +417,13 @@ switch, so there is still one copy of each requirement.
 
 Three asserts stay outside it, each for its own reason, and the gap is named
 here rather than left open. The two on the presence of the `Authorization`
-header cannot be made to fail: a
-scenario that prescribes no header is handed the one from the setup screen,
-which is the AUTH-04 trap. The three that keep the BSN out of the url need a url
-that carries one; whether the assert on the naming system can react depends on
-whether the url is recorded percent-encoded, and no run has shown that yet. One
-run answers that.
+header can be exercised by leaving the header off a scenario, because nothing at
+setup puts one back: the field for a custom header appears only when a Test Set
+carries `allowCustomAuthorizationHeader`, and none of these do. That scenario is
+worth building and is not built yet. The three that keep the BSN out of the url
+need a url that carries one; whether the assert on the naming system can react
+depends on whether the url is recorded percent-encoded, and no run has shown
+that yet. One run answers that.
 
 ### D-25 Everything is in English
 

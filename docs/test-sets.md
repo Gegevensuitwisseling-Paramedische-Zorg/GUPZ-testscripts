@@ -144,7 +144,7 @@ the caller. Eleven cases in `output/STU3/Auth/GUPZ/Test/Dataplatform`.
 | AUTH-01 | Search with token T1 | Success | GUPZ-TOK-001, GUPZ-VAL-001 | |
 | AUTH-02 | Search with token T2, signed only | Success in connectathon mode | GUPZ-TOK-001 | The configuration requirement is unwritten, [OP-06](open-points.md#op-06-the-unsigned-token) |
 | AUTH-03 | Search with token T3, plain | Success in connectathon mode | GUPZ-TOK-001 | [OP-06](open-points.md#op-06-the-unsigned-token) |
-| AUTH-04 | Search without an `Authorization` header | Refused | GUPZ-TOK-001 | Leave the setup screen's authorization header empty, see below. [OP-01](open-points.md#op-01-the-challenge-when-no-credentials-are-presented) |
+| AUTH-04 | Search without an `Authorization` header | Refused | GUPZ-TOK-001 | Nothing at setup may supply a header, see below. [OP-01](open-points.md#op-01-the-challenge-when-no-credentials-are-presented) |
 | AUTH-05 | Search with a header that is not a Bearer token | Refused | GUPZ-TOK-001 | [OP-01](open-points.md#op-01-the-challenge-when-no-credentials-are-presented) |
 | AUTH-06 | Search with token T4, `iat` too old | Refused | GUPZ-VAL-002 | |
 | AUTH-07 | Search with token T5, expired | Refused | GUPZ-VAL-002 | |
@@ -155,13 +155,17 @@ the caller. Eleven cases in `output/STU3/Auth/GUPZ/Test/Dataplatform`.
 
 ### AUTH-04 and the setup screen
 
-The test setup screen has an optional authorization header. Fill it in and the
-engine adds that header to every operation that declares none, which is exactly
-what AUTH-04 relies on not happening. Leave it empty, or the case passes a token
-it was written to withhold.
+The setup screen can offer a field for a custom authorization header. What the
+engine does with it is add that header to every operation that declares none,
+which is what AUTH-04 relies on not happening: the case would then present a
+token it was written to withhold. The same holds for the control test in PDF/A
+scenario 2.5, which fetches a document deliberately without credentials.
 
-The same holds for the control test in PDF/A scenario 2.5, which fetches a
-document deliberately without credentials.
+The field only appears when the Test Set asks for it, through
+`allowCustomAuthorizationHeader` in its `properties.json`. No set here sets it,
+so the field is absent and neither case can be defeated this way. Keep it that
+way: the property is not what these sets need, because every case that presents
+a token names it on the operation.
 
 ### AUTH-11
 
@@ -343,18 +347,17 @@ because these asserts read the dot structure and the JWE protected header and
 nothing else. Pasting a real token over the default at setup changes nothing
 about what is judged.
 
-Because the operation carries an `Authorization` header, the authorization field
-on the setup screen cannot reach it: the engine only fills a header an operation
-does not have. That is what makes this set safe to run while AUTH-04 is not,
-see [AUTH-04 and the setup screen](#auth-04-and-the-setup-screen).
+Nothing at setup can reach the header of these scenarios twice over: the
+operation carries one, and the engine only fills a header an operation does not
+have, and the field that could supply one is not offered here at all. See
+[AUTH-04 and the setup screen](#auth-04-and-the-setup-screen).
 
-Three asserts of DVA-01 are not self tested here, and the gap is deliberate.
-The two on the presence of the header cannot be made to fail, because a scenario
-that prescribes no header gets the one from the setup screen instead, which is
-the AUTH-04 trap. The three that keep the BSN out of the url would need a url
-that carries one, and whether the third of them can react at all depends on
-whether the recorded url is percent-encoded, which no run has shown yet. Named
-in [D-32][d32].
+Three asserts of DVA-01 are not self tested here. The two on the presence of the
+header could be, by leaving the header off a scenario, now that nothing at setup
+puts one back; that is worth building and is not built yet. The three that keep
+the BSN out of the url would need a url that carries one, and whether the third
+of them can react at all depends on whether the recorded url is percent-encoded,
+which no run has shown yet. Named in [D-32][d32].
 
 [d32]: decisions.md#d-32-the-token-asserts-are-self-tested-through-an-automated-run
 
