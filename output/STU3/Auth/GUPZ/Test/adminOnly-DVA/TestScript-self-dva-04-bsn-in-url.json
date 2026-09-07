@@ -1,0 +1,179 @@
+{
+  "resourceType": "TestScript",
+  "id": "self-dva-04-bsn-in-url",
+  "url": "http://gupz.nl/fhir/TestScript/self-dva-04-bsn-in-url",
+  "contact": [
+    {
+      "telecom": [
+        {
+          "system": "url",
+          "value": "https://github.com/Gegevensuitwisseling-Paramedische-Zorg/GUPZ-testscripts"
+        }
+      ],
+      "name": "GUPZ"
+    }
+  ],
+  "origin": [
+    {
+      "index": 1,
+      "profile": {
+        "code": "FHIR-Client",
+        "system": "http://terminology.hl7.org/CodeSystem/testscript-profile-origin-types"
+      }
+    }
+  ],
+  "destination": [
+    {
+      "extension": [
+        {
+          "url": "http://fhir.interoplab.eu/fhir/StructureDefinition/Interoplab-CL-ext-destination-title",
+          "valueString": "FHIR endpoint"
+        }
+      ],
+      "index": 1,
+      "profile": {
+        "code": "Conformancelab-Server",
+        "system": "http://fhir.interoplab.eu/fhir/CodeSystem/Interoplab-CL-destination-profile"
+      }
+    }
+  ],
+  "variable": [
+    {
+      "name": "self-dva-04-token",
+      "defaultValue": "eyJhbGciOiJSU0EtT0FFUCIsImVuYyI6IkEyNTZDQkMtSFM1MTIiLCJjdHkiOiJKV1QiLCJraWQiOiJndXB6LXNlbGYtdGVzdC1rZXkifQ.c2VsZi10ZXN0LWVuY3J5cHRlZC1rZXk.c2VsZi10ZXN0LWl2.c2VsZi10ZXN0LWNpcGhlcnRleHQ.c2VsZi10ZXN0LXRhZw",
+      "description": "The token this self test presents. A synthetic string, not a credential."
+    }
+  ],
+  "test": [
+    {
+      "extension": [
+        {
+          "url": "http://fhir.interoplab.eu/fhir/StructureDefinition/Interoplab-CL-ext-test-request-mode",
+          "valueCode": "extra-allowed"
+        }
+      ],
+      "action": [
+        {
+          "operation": {
+            "requestHeader": [
+              {
+                "field": "Authorization",
+                "value": "Bearer ${self-dva-04-token}"
+              }
+            ],
+            "type": {
+              "code": "search",
+              "system": "http://hl7.org/fhir/restful-interaction"
+            },
+            "resource": "DocumentReference",
+            "params": "?status=current&patient=Patient/self-test&subject:identifier=http://fhir.nl/fhir/NamingSystem/bsn|self-test",
+            "requestId": "self-dva-04-request",
+            "destination": 1,
+            "origin": 1,
+            "encodeRequestUrl": true,
+            "description": "Send the search with the patient in the query, which the specification forbids."
+          }
+        },
+        {
+          "assert": {
+            "extension": [
+              {
+                "url": "http://fhir.interoplab.eu/fhir/StructureDefinition/Interoplab-CL-ext-assert-additional-operators",
+                "valueCode": "notExists"
+              },
+              {
+                "url": "http://fhir.interoplab.eu/fhir/StructureDefinition/Interoplab-CL-ext-assert-query-parameter",
+                "valueString": "patient"
+              }
+            ],
+            "description": "Confirm that query parameter 'patient' was not present, so that no BSN travels in the url.",
+            "direction": "request",
+            "stopTestOnFail": false,
+            "warningOnly": true
+          }
+        },
+        {
+          "assert": {
+            "extension": [
+              {
+                "url": "http://fhir.interoplab.eu/fhir/StructureDefinition/Interoplab-CL-ext-assert-additional-operators",
+                "valueCode": "notExists"
+              },
+              {
+                "url": "http://fhir.interoplab.eu/fhir/StructureDefinition/Interoplab-CL-ext-assert-query-parameter",
+                "valueString": "subject"
+              }
+            ],
+            "description": "Confirm that query parameter 'subject' was not present, so that no BSN travels in the url.",
+            "direction": "request",
+            "stopTestOnFail": false,
+            "warningOnly": true
+          }
+        },
+        {
+          "assert": {
+            "extension": [
+              {
+                "url": "http://fhir.interoplab.eu/fhir/StructureDefinition/Interoplab-CL-ext-assert-additional-operators",
+                "valueCode": "notExists"
+              },
+              {
+                "url": "http://fhir.interoplab.eu/fhir/StructureDefinition/Interoplab-CL-ext-assert-query-parameter",
+                "valueString": "patient:identifier"
+              }
+            ],
+            "description": "Confirm that query parameter 'patient:identifier' was not present, so that no BSN travels in the url.",
+            "direction": "request",
+            "stopTestOnFail": false,
+            "warningOnly": true
+          }
+        },
+        {
+          "assert": {
+            "extension": [
+              {
+                "url": "http://fhir.interoplab.eu/fhir/StructureDefinition/Interoplab-CL-ext-assert-additional-operators",
+                "valueCode": "notExists"
+              },
+              {
+                "url": "http://fhir.interoplab.eu/fhir/StructureDefinition/Interoplab-CL-ext-assert-query-parameter",
+                "valueString": "subject:identifier"
+              }
+            ],
+            "description": "Confirm that query parameter 'subject:identifier' was not present, so that no BSN travels in the url.",
+            "direction": "request",
+            "stopTestOnFail": false,
+            "warningOnly": true
+          }
+        },
+        {
+          "assert": {
+            "description": "Confirm that the Burgerservicenummer naming system does not appear in the url in any form.",
+            "direction": "request",
+            "operator": "notContains",
+            "requestURL": "fhir.nl/fhir/NamingSystem/bsn",
+            "stopTestOnFail": false,
+            "warningOnly": true
+          }
+        },
+        {
+          "assert": {
+            "operator": "manualEval",
+            "stopTestOnFail": false,
+            "warningOnly": false,
+            "description": "Confirm that exactly three asserts warned: patient, subject:identifier and the naming system. A silent one on patient or subject:identifier means the parameter is not being read by name. A silent one on the naming system means the url reaches the assert percent-encoded, which would make that assert useless against a real caller and is worth reporting."
+          }
+        }
+      ],
+      "id": "self-dva-04",
+      "name": "SELF-DVA-04",
+      "description": "Three asserts have to warn: the one on patient, the one on subject:identifier, and the one on the naming system. The two on subject and patient:identifier have to stay green, because those parameters are not in this url."
+    }
+  ],
+  "version": "0.1.0",
+  "status": "active",
+  "publisher": "GUPZ",
+  "name": "Self_dva_04_bsn_in_url",
+  "title": "SELF-DVA-04 - The url asserts catch a patient in the query",
+  "description": "Sends the same search with a conforming token but a url that carries what GUPZ-URL-001 forbids: a patient parameter, and the Burgerservicenummer naming system as the value of subject:identifier. Three of the five url asserts must react, and which three is the point: patient and subject:identifier by name, and the naming system as a value."
+}

@@ -13,7 +13,7 @@ What each set tests, which scenarios are in it and why. The grounds are in
 | Auth Dataplatform | Token and authentication | Data platform | 11 | Built, waiting on keys ([OP-05](open-points.md#op-05-key-material)) |
 | Auth DVA | Token and authentication | Calling party | 2 | Built |
 | Auth Self test | The refusal asserts of this repository | none | 4 | Built, `adminOnly` |
-| Auth DVA Self test | The token asserts of the Auth DVA set | none | 3 | Built, `adminOnly` |
+| Auth DVA Self test | The token asserts of the Auth DVA set | none | 4 | Built, `adminOnly` |
 | PDF/A Self test | The DocumentManifest asserts of this repository | none | 1 | Built, `adminOnly` |
 
 Written against open-GUPZ commit `0a273ae` of 20 August 2026. A commit and not a
@@ -235,8 +235,7 @@ token.
 | | The JWE header declares `enc` `A256CBC-HS512` | GUPZ-TOK-002 | hard |
 | | The JWE header declares `cty` `JWT` | GUPZ-TOK-002 | hard |
 | | The JWE header names a key | none | warning, D-23 |
-| | No `patient=` in the URL | GUPZ-URL-001 | hard |
-| | No `subject=` in the URL | GUPZ-URL-001 | hard |
+| | No `patient`, `subject`, `patient:identifier` or `subject:identifier` query parameter, four asserts (D-33) | GUPZ-URL-001 | hard |
 | | The BSN naming system does not appear in the URL | GUPZ-URL-001 | hard |
 | DVA-02a | The caller handles a 401 with `invalid_token` | none | manual, D-22 |
 | DVA-02b | The caller handles a 403 with `insufficient_scope` | none | manual, D-22 |
@@ -339,8 +338,9 @@ Automated carries them the whole way. See [D-32][d32].
 | SELF-DVA-01 | five segments, JWE header with `alg` `RSA-OAEP`, `enc` `A256CBC-HS512`, `cty` `JWT` and a `kid` | every assert of DVA-01 passes | nothing |
 | SELF-DVA-02 | three segments, header with `alg` `RS256`, so signed and not encrypted | the header is present and uses the Bearer scheme | did the assert on the segment count warn, and the three on the JWE header with it |
 | SELF-DVA-03 | none, the operation carries no `Authorization` header | nothing | did both asserts on the presence of the header warn |
+| SELF-DVA-04 | conforming, but the url carries `patient` and the BSN naming system | nothing | did exactly three of the five url asserts warn |
 
-All three end green when the material is right. The tokens are literals in the
+All four end green when the material is right. The tokens are literals in the
 material rather than something to paste at setup, so the run is the same for
 everyone. They are synthetic: a real header and filler for the remaining
 segments, nothing signed or encrypted and no key anywhere. That is enough,
@@ -357,12 +357,15 @@ SELF-DVA-03 rests on the absence of that field. If a run ever shows one of its
 two asserts staying green, something supplied a header the scenario left out,
 and that is worth knowing before a supplier relies on the same pair.
 
-What is still not self tested are the three asserts that keep the BSN out of the
-url. They would need a url that carries one, and whether the assert on the
-naming system can react at all depends on whether the recorded url is
-percent-encoded, which no run has shown yet. Named in [D-32][d32].
+SELF-DVA-04 does the same for the url. It sends a `patient` parameter and the
+BSN naming system as the value of `subject:identifier`, so three of the five
+asserts must react and two must not. The one that could still disappoint is the
+naming system, because it matches a substring of the url and the recorded url
+may be percent-encoded. That is what the scenario is there to find out. Grounds
+in [D-33][d33].
 
 [d32]: decisions.md#d-32-the-token-asserts-are-self-tested-through-an-automated-run
+[d33]: decisions.md#d-33-a-forbidden-query-parameter-is-named-not-matched-as-a-substring
 
 ## PDF/A Self test
 

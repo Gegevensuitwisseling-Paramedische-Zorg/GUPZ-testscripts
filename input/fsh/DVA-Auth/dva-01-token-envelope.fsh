@@ -42,4 +42,4 @@ Usage: #definition
 * insert assertTokenHeaderField(enc, A256CBC-HS512, the content encryption algorithm, false)
 * insert assertTokenHeaderField(cty, JWT, which is what marks the payload as a nested JWT, false)
 * insert assertTokenHeaderHasKid
-* insert assertsNoBsnInUrl
+* insert assertsNoBsnInUrl(false)

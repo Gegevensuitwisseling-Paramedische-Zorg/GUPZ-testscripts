@@ -89,31 +89,43 @@ RuleSet: assertTokenHeaderHasKid
   * value.extension[=].valueString = "\"kid\"\\s*:\\s*\"[^\"]+\""
 
 
-// The BSN travels in the token and nowhere else. These three say the caller did
-// not put it in the url, which open-GUPZ issue #73 settled and GUPZ-URL-001
+// The BSN travels in the token and nowhere else. These asserts say the caller
+// did not put it in the url, which open-GUPZ issue #73 settled and GUPZ-URL-001
 // records.
-RuleSet: assertsNoBsnInUrl
+//
+// A parameter is named through the query parameter extension, not matched as a
+// substring of the url. The engine then parses the url and looks the name
+// up, so `patient` cannot be answered by a `patient_reference` somewhere in the
+// path, and percent-encoding of the value is nobody's problem. Four names,
+// because a BSN can be passed either as the parameter itself or through its
+// `:identifier` modifier, and those are different parameters. See D-33.
+//
+// The last one stays a substring on the url. It looks for a value and not for a
+// parameter, so no name can be given, and it is the only one that catches a BSN
+// passed under a name nobody thought of.
+RuleSet: assertNoQueryParam(param, soft)
 * test[=].action[+].assert
-  * description = "Confirm that query parameter 'patient=' was not present, so that no BSN travels in the url."
+  * extension[+].url = $CL-ext-assert-additional-operators
+  * extension[=].valueCode = #notExists
+  * extension[+].url = $CL-ext-assert-query-parameter
+  * extension[=].valueString = "{param}"
+  * description = "Confirm that query parameter '{param}' was not present, so that no BSN travels in the url."
   * direction = #request
-  * operator = #notContains
-  * requestURL = "patient="
   * stopTestOnFail = false
-  * warningOnly = false
-* test[=].action[+].assert
-  * description = "Confirm that query parameter 'subject=' was not present, so that no BSN travels in the url."
-  * direction = #request
-  * operator = #notContains
-  * requestURL = "subject="
-  * stopTestOnFail = false
-  * warningOnly = false
+  * warningOnly = {soft}
+
+RuleSet: assertsNoBsnInUrl(soft)
+* insert assertNoQueryParam(patient, {soft})
+* insert assertNoQueryParam(subject, {soft})
+* insert assertNoQueryParam(patient:identifier, {soft})
+* insert assertNoQueryParam(subject:identifier, {soft})
 * test[=].action[+].assert
   * description = "Confirm that the Burgerservicenummer naming system does not appear in the url in any form."
   * direction = #request
   * operator = #notContains
   * requestURL = "fhir.nl/fhir/NamingSystem/bsn"
   * stopTestOnFail = false
-  * warningOnly = false
+  * warningOnly = {soft}
 
 
 // Handing the caller a refusal, and judging what it does with it.

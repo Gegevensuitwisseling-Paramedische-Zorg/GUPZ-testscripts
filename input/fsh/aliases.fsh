@@ -9,6 +9,7 @@ Alias: $CL-operation-type = http://fhir.interoplab.eu/fhir/CodeSystem/Interoplab
 Alias: $CL-ext-assert-additional-operators = http://fhir.interoplab.eu/fhir/StructureDefinition/Interoplab-CL-ext-assert-additional-operators
 Alias: $CL-ext-test-request-mode = http://fhir.interoplab.eu/fhir/StructureDefinition/Interoplab-CL-ext-test-request-mode
 Alias: $CL-ext-variable-regex-mapper = http://fhir.interoplab.eu/fhir/StructureDefinition/Interoplab-CL-ext-variable-regex-mapper
+Alias: $CL-ext-assert-query-parameter = http://fhir.interoplab.eu/fhir/StructureDefinition/Interoplab-CL-ext-assert-query-parameter
 Alias: $CL-ext-assert-input-variable = http://fhir.interoplab.eu/fhir/StructureDefinition/Interoplab-CL-ext-assert-input-variable
 Alias: $CL-ext-assert-mapper-function = http://fhir.interoplab.eu/fhir/StructureDefinition/Interoplab-CL-ext-assert-mapper-function
 Alias: $CL-ext-assert-regex-matches = http://fhir.interoplab.eu/fhir/StructureDefinition/Interoplab-CL-ext-assert-regex-matches

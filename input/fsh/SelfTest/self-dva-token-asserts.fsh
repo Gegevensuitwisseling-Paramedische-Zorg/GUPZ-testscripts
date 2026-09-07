@@ -49,6 +49,22 @@ RuleSet: selfTestOperationNoToken(requestId)
 * test[=].action[=].operation.origin = 1
 * test[=].action[=].operation.encodeRequestUrl = true
 
+// The same operation with a url that carries what GUPZ-URL-001 forbids: the
+// patient as a parameter, and the BSN naming system as the value of an
+// identifier parameter. No number, because a nine digit string in the material
+// would look like a person's and is not needed: these asserts read names, and
+// the last one reads the naming system.
+RuleSet: selfTestOperationBsnInUrl(requestId, tokenVariable)
+* test[=].action[+].operation.type = $restful-interaction#search
+* test[=].action[=].operation.resource = "DocumentReference"
+* test[=].action[=].operation.params = "?status=current&patient=Patient/self-test&subject:identifier=http://fhir.nl/fhir/NamingSystem/bsn|self-test"
+* test[=].action[=].operation.requestId = "{requestId}"
+* test[=].action[=].operation.destination = 1
+* test[=].action[=].operation.origin = 1
+* test[=].action[=].operation.encodeRequestUrl = true
+* test[=].action[=].operation.requestHeader[+].field = "Authorization"
+* test[=].action[=].operation.requestHeader[=].value = "Bearer ${{tokenVariable}}"
+
 RuleSet: selfTestTokenOperation(requestId, tokenVariable)
 * test[=].action[+].operation.type = $restful-interaction#search
 * test[=].action[=].operation.resource = "DocumentReference"
@@ -86,7 +102,7 @@ Usage: #definition
 * insert assertTokenHeaderField(enc, A256CBC-HS512, the content encryption algorithm, false)
 * insert assertTokenHeaderField(cty, JWT, which is what marks the payload as a nested JWT, false)
 * insert assertTokenHeaderHasKid
-* insert assertsNoBsnInUrl
+* insert assertsNoBsnInUrl(false)
 
 
 Instance: self-dva-02-bare-jws
@@ -113,7 +129,7 @@ Usage: #definition
 * insert assertTokenHeaderField(alg, RSA-OAEP, the key encryption algorithm, true)
 * insert assertTokenHeaderField(enc, A256CBC-HS512, the content encryption algorithm, true)
 * insert assertTokenHeaderField(cty, JWT, which is what marks the payload as a nested JWT, true)
-* insert assertsNoBsnInUrl
+* insert assertsNoBsnInUrl(false)
 * insert assertManualJudgement
 * test[=].action[=].assert.description = "Confirm that the assert on the five segments warned and that the three on the JWE header warned with it. The token was a bare JWS, so all four had to react. One that stayed green is not testing what it claims. The kid assert is left out of this scenario on purpose: it is a warning in the shipped set as well, so its warning would say nothing."
 
@@ -137,3 +153,25 @@ Usage: #definition
 * insert assertsIncomingBearerToken(true)
 * insert assertManualJudgement
 * test[=].action[=].assert.description = "Confirm that both asserts on the Authorization header warned. The request carried none, so both had to react. If either stayed green, it is not testing what it claims, and the likely cause is that something supplied a header the scenario left out."
+
+
+Instance: self-dva-04-bsn-in-url
+InstanceOf: TestScript
+Usage: #definition
+* insert metadata(self-dva-04-bsn-in-url)
+* name = "Self_dva_04_bsn_in_url"
+* title = "SELF-DVA-04 - The url asserts catch a patient in the query"
+* description = "Sends the same search with a conforming token but a url that carries what GUPZ-URL-001 forbids: a patient parameter, and the Burgerservicenummer naming system as the value of subject:identifier. Three of the five url asserts must react, and which three is the point: patient and subject:identifier by name, and the naming system as a value."
+
+* insert clientAimed
+* insert selfTestToken(self-dva-04-token, eyJhbGciOiJSU0EtT0FFUCIsImVuYyI6IkEyNTZDQkMtSFM1MTIiLCJjdHkiOiJKV1QiLCJraWQiOiJndXB6LXNlbGYtdGVzdC1rZXkifQ.c2VsZi10ZXN0LWVuY3J5cHRlZC1rZXk.c2VsZi10ZXN0LWl2.c2VsZi10ZXN0LWNpcGhlcnRleHQ.c2VsZi10ZXN0LXRhZw)
+
+* test[+].id = "self-dva-04"
+* test[=].name = "SELF-DVA-04"
+* test[=].description = "Three asserts have to warn: the one on patient, the one on subject:identifier, and the one on the naming system. The two on subject and patient:identifier have to stay green, because those parameters are not in this url."
+* insert allowExtraRequests
+* insert selfTestOperationBsnInUrl(self-dva-04-request, self-dva-04-token)
+* test[=].action[=].operation.description = "Send the search with the patient in the query, which the specification forbids."
+* insert assertsNoBsnInUrl(true)
+* insert assertManualJudgement
+* test[=].action[=].assert.description = "Confirm that exactly three asserts warned: patient, subject:identifier and the naming system. A silent one on patient or subject:identifier means the parameter is not being read by name. A silent one on the naming system means the url reaches the assert percent-encoded, which would make that assert useless against a real caller and is worth reporting."

@@ -427,6 +427,27 @@ need a url that carries one; whether the assert on the naming system can react
 depends on whether the url is recorded percent-encoded, and no run has shown
 that yet. One run answers that.
 
+### D-33 A forbidden query parameter is named, not matched as a substring
+
+`GUPZ-URL-001` keeps the BSN out of the url. The first form of these asserts
+matched `patient=` and `subject=` as substrings of the request url. A substring
+says both too much and too little: `patient=` also fires on a parameter that
+merely ends in `patient`, and it says nothing about a value that arrives
+percent-encoded.
+
+The query parameter extension names the parameter and the engine looks it up in
+the parsed url. Four names, because a BSN can travel as the parameter itself or
+through its `:identifier` modifier, and those are different parameters:
+`patient`, `subject`, `patient:identifier`, `subject:identifier`. This is the
+instrument the neighbouring Nictiz material already uses for the same question.
+
+One assert stays a substring on the url: the Burgerservicenummer naming system.
+That is a value and not a parameter, so no name can be given, and it is the only
+one that catches a BSN passed under a name nobody thought of.
+
+SELF-DVA-04 exercises all five. Whether the naming system can be caught at all
+depends on how the recorded url is encoded, which is what that scenario answers.
+
 ### D-25 Everything is in English
 
 Documentation, comments, commit messages and the TestScripts themselves. The

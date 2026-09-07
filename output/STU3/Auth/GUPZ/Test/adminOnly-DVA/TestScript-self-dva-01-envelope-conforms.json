@@ -252,20 +252,72 @@
         },
         {
           "assert": {
-            "description": "Confirm that query parameter 'patient=' was not present, so that no BSN travels in the url.",
+            "extension": [
+              {
+                "url": "http://fhir.interoplab.eu/fhir/StructureDefinition/Interoplab-CL-ext-assert-additional-operators",
+                "valueCode": "notExists"
+              },
+              {
+                "url": "http://fhir.interoplab.eu/fhir/StructureDefinition/Interoplab-CL-ext-assert-query-parameter",
+                "valueString": "patient"
+              }
+            ],
+            "description": "Confirm that query parameter 'patient' was not present, so that no BSN travels in the url.",
             "direction": "request",
-            "operator": "notContains",
-            "requestURL": "patient=",
             "stopTestOnFail": false,
             "warningOnly": false
           }
         },
         {
           "assert": {
-            "description": "Confirm that query parameter 'subject=' was not present, so that no BSN travels in the url.",
+            "extension": [
+              {
+                "url": "http://fhir.interoplab.eu/fhir/StructureDefinition/Interoplab-CL-ext-assert-additional-operators",
+                "valueCode": "notExists"
+              },
+              {
+                "url": "http://fhir.interoplab.eu/fhir/StructureDefinition/Interoplab-CL-ext-assert-query-parameter",
+                "valueString": "subject"
+              }
+            ],
+            "description": "Confirm that query parameter 'subject' was not present, so that no BSN travels in the url.",
             "direction": "request",
-            "operator": "notContains",
-            "requestURL": "subject=",
+            "stopTestOnFail": false,
+            "warningOnly": false
+          }
+        },
+        {
+          "assert": {
+            "extension": [
+              {
+                "url": "http://fhir.interoplab.eu/fhir/StructureDefinition/Interoplab-CL-ext-assert-additional-operators",
+                "valueCode": "notExists"
+              },
+              {
+                "url": "http://fhir.interoplab.eu/fhir/StructureDefinition/Interoplab-CL-ext-assert-query-parameter",
+                "valueString": "patient:identifier"
+              }
+            ],
+            "description": "Confirm that query parameter 'patient:identifier' was not present, so that no BSN travels in the url.",
+            "direction": "request",
+            "stopTestOnFail": false,
+            "warningOnly": false
+          }
+        },
+        {
+          "assert": {
+            "extension": [
+              {
+                "url": "http://fhir.interoplab.eu/fhir/StructureDefinition/Interoplab-CL-ext-assert-additional-operators",
+                "valueCode": "notExists"
+              },
+              {
+                "url": "http://fhir.interoplab.eu/fhir/StructureDefinition/Interoplab-CL-ext-assert-query-parameter",
+                "valueString": "subject:identifier"
+              }
+            ],
+            "description": "Confirm that query parameter 'subject:identifier' was not present, so that no BSN travels in the url.",
+            "direction": "request",
             "stopTestOnFail": false,
             "warningOnly": false
           }
