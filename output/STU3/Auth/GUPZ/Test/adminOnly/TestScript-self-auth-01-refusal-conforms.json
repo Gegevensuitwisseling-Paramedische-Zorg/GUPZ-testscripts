@@ -99,6 +99,21 @@
             "stopTestOnFail": false,
             "warningOnly": false
           }
+        },
+        {
+          "assert": {
+            "extension": [
+              {
+                "url": "http://fhir.interoplab.eu/fhir/StructureDefinition/Interoplab-CL-ext-assert-additional-operators",
+                "valueCode": "notExists"
+              }
+            ],
+            "description": "PROBE, not a conformance check: confirm that no WWW-Authenticate header was returned. Expected to pass only when the header is absent.",
+            "direction": "response",
+            "headerField": "WWW-Authenticate",
+            "stopTestOnFail": false,
+            "warningOnly": false
+          }
         }
       ],
       "id": "self-auth-01",

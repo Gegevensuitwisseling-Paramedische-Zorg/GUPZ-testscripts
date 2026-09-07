@@ -18,6 +18,23 @@
 // the engine; only the last needs a person, because no assert can read another
 // assert's outcome. See D-31.
 
+// TEMPORARY, for the Interoplab ticket about notExists on a header. Not for
+// main. Two asserts of the same shape, one in a scenario where the challenge is
+// absent and one where it is present. The engine ignores the operator when an
+// assert on a header carries neither a value nor a regex, so the pair should
+// come out the wrong way round: red where the header is absent, green where it
+// is there.
+RuleSet: probeChallengeAbsent
+* test[=].action[+].assert
+  * extension[+].url = $CL-ext-assert-additional-operators
+  * extension[=].valueCode = #notExists
+  * description = "PROBE, not a conformance check: confirm that no WWW-Authenticate header was returned. Expected to pass only when the header is absent."
+  * direction = #response
+  * headerField = "WWW-Authenticate"
+  * stopTestOnFail = false
+  * warningOnly = false
+
+
 Instance: self-auth-01-refusal-conforms
 InstanceOf: TestScript
 Usage: #definition
@@ -36,6 +53,7 @@ Usage: #definition
 * insert operationServeStub(refused-invalid-token)
 * test[=].action[=].operation.description = "Answer with the refusal security.md prescribes."
 * insert assertsTokenRefused(true, false)
+* insert probeChallengeAbsent
 
 Instance: self-auth-02-wrong-status
 InstanceOf: TestScript
@@ -80,6 +98,7 @@ Usage: #definition
 // back to a plain existence check unless it carries a value, so the absence of a
 // header cannot be stated. The other two mutations do have one.
 * insert assertsTokenRefused(false, true)
+* insert probeChallengeAbsent
 * insert assertManualJudgement
 * test[=].action[=].assert.description = "Confirm that the assert on the WWW-Authenticate header warned and that the other two did not. The answer carried no challenge at all."
 
