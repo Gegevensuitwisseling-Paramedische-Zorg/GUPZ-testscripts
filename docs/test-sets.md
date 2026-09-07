@@ -13,7 +13,7 @@ What each set tests, which scenarios are in it and why. The grounds are in
 | Auth Dataplatform | Token and authentication | Data platform | 11 | Built, waiting on keys ([OP-05](open-points.md#op-05-key-material)) |
 | Auth DVA | Token and authentication | Calling party | 2 | Built |
 | Auth Self test | The refusal asserts of this repository | none | 4 | Built, `adminOnly` |
-| Auth DVA Self test | The token asserts of the Auth DVA set | none | 2 | Built, both green, `adminOnly` |
+| Auth DVA Self test | The token asserts of the Auth DVA set | none | 3 | Built, `adminOnly` |
 | PDF/A Self test | The DocumentManifest asserts of this repository | none | 1 | Built, `adminOnly` |
 
 Written against open-GUPZ commit `0a273ae` of 20 August 2026. A commit and not a
@@ -338,8 +338,9 @@ Automated carries them the whole way. See [D-32][d32].
 |---|---|---|---|
 | SELF-DVA-01 | five segments, JWE header with `alg` `RSA-OAEP`, `enc` `A256CBC-HS512`, `cty` `JWT` and a `kid` | every assert of DVA-01 passes | nothing |
 | SELF-DVA-02 | three segments, header with `alg` `RS256`, so signed and not encrypted | the header is present and uses the Bearer scheme | did the assert on the segment count warn, and the three on the JWE header with it |
+| SELF-DVA-03 | none, the operation carries no `Authorization` header | nothing | did both asserts on the presence of the header warn |
 
-Both end green when the material is right. The tokens are literals in the
+All three end green when the material is right. The tokens are literals in the
 material rather than something to paste at setup, so the run is the same for
 everyone. They are synthetic: a real header and filler for the remaining
 segments, nothing signed or encrypted and no key anywhere. That is enough,
@@ -352,12 +353,14 @@ operation carries one, and the engine only fills a header an operation does not
 have, and the field that could supply one is not offered here at all. See
 [AUTH-04 and the setup screen](#auth-04-and-the-setup-screen).
 
-Three asserts of DVA-01 are not self tested here. The two on the presence of the
-header could be, by leaving the header off a scenario, now that nothing at setup
-puts one back; that is worth building and is not built yet. The three that keep
-the BSN out of the url would need a url that carries one, and whether the third
-of them can react at all depends on whether the recorded url is percent-encoded,
-which no run has shown yet. Named in [D-32][d32].
+SELF-DVA-03 rests on the absence of that field. If a run ever shows one of its
+two asserts staying green, something supplied a header the scenario left out,
+and that is worth knowing before a supplier relies on the same pair.
+
+What is still not self tested are the three asserts that keep the BSN out of the
+url. They would need a url that carries one, and whether the assert on the
+naming system can react at all depends on whether the recorded url is
+percent-encoded, which no run has shown yet. Named in [D-32][d32].
 
 [d32]: decisions.md#d-32-the-token-asserts-are-self-tested-through-an-automated-run
 

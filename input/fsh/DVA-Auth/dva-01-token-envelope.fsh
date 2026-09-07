@@ -36,7 +36,7 @@ Usage: #definition
 // below has nothing to read. Only a real caller exercises this scenario. What
 // the asserts themselves do is covered by the Self test - DVA token set, which
 // prescribes a token and can therefore run Automated. See D-32.
-* insert assertsIncomingBearerToken
+* insert assertsIncomingBearerToken(false)
 * insert assertTokenIsNestedJwt(true, false)
 * insert assertTokenHeaderField(alg, RSA-OAEP, the key encryption algorithm, false)
 * insert assertTokenHeaderField(enc, A256CBC-HS512, the content encryption algorithm, false)

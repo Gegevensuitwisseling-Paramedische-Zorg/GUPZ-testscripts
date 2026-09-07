@@ -13,7 +13,7 @@ issue.
 
 ## Test sets
 
-Forty-six TestScripts in eight Test Sets.
+Forty-seven TestScripts in eight Test Sets.
 
 | Test Set | Aim | System under test | Scripts |
 |---|---|---|---|
@@ -23,7 +23,7 @@ Forty-six TestScripts in eight Test Sets.
 | Auth Dataplatform | Token and authentication | Data platform | 11 |
 | Auth DVA | Token and authentication | Calling party | 2 |
 | Auth Self test | The refusal asserts of this repository, `adminOnly` | none | 4 |
-| Auth DVA Self test | The token asserts of the Auth DVA set, `adminOnly` | none | 2 |
+| Auth DVA Self test | The token asserts of the Auth DVA set, `adminOnly` | none | 3 |
 | PDF/A Self test | The DocumentManifest asserts of this repository, `adminOnly` | none | 1 |
 
 Scope, scenarios and cases: [docs/test-sets.md](docs/test-sets.md).

@@ -415,12 +415,14 @@ The mutation inserts the shipped RuleSets as warnings and adds a manual
 judgement, for the reasons D-31 gives. Both RuleSets gained the arguments that
 switch, so there is still one copy of each requirement.
 
-Three asserts stay outside it, each for its own reason, and the gap is named
-here rather than left open. The two on the presence of the `Authorization`
-header can be exercised by leaving the header off a scenario, because nothing at
-setup puts one back: the field for a custom header appears only when a Test Set
-carries `allowCustomAuthorizationHeader`, and none of these do. That scenario is
-worth building and is not built yet. The three that keep the BSN out of the url
+The two asserts on the presence of the `Authorization` header are exercised by
+leaving the header off a scenario. That works because nothing at setup puts one
+back: the field for a custom header appears only when a Test Set carries
+`allowCustomAuthorizationHeader`, and none of these do. The scenario therefore
+also states that, and a green assert there means something supplied a header it
+left out.
+
+Three asserts stay outside it: the ones that keep the BSN out of the url. They
 need a url that carries one; whether the assert on the naming system can react
 depends on whether the url is recorded percent-encoded, and no run has shown
 that yet. One run answers that.

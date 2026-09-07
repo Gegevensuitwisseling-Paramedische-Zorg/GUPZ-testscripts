@@ -37,7 +37,10 @@ RuleSet: requestHeaderToken(token)
 // assert-input-variable and the base64Decode mapper function, but for a JWE
 // only the outer header is readable, which holds alg, enc and kid. That is a
 // separate set and it is not built yet.
-RuleSet: assertsIncomingBearerToken
+// The argument is the warning switch the self test needs, for the reason D-31
+// gives: a scenario built on a request without a token has to be able to end
+// green on the judgement that these two reacted. Everywhere else it is false.
+RuleSet: assertsIncomingBearerToken(soft)
 * test[=].action[+].assert
   * extension[+].url = $CL-ext-assert-additional-operators
   * extension[=].valueCode = #exists
@@ -45,7 +48,7 @@ RuleSet: assertsIncomingBearerToken
   * direction = #request
   * headerField = "Authorization"
   * stopTestOnFail = false
-  * warningOnly = false
+  * warningOnly = {soft}
 * test[=].action[+].assert
   * description = "Confirm that the Authorization header uses the Bearer scheme, as security.md prescribes."
   * direction = #request
@@ -53,7 +56,7 @@ RuleSet: assertsIncomingBearerToken
   * operator = #contains
   * value = "Bearer "
   * stopTestOnFail = false
-  * warningOnly = false
+  * warningOnly = {soft}
 
 
 // A real client resolves references when it needs to, not when the script says

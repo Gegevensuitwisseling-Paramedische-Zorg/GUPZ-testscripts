@@ -38,6 +38,17 @@ RuleSet: selfTestToken(name, token)
 // Nothing at setup can replace it: the engine only fills a header an operation
 // does not have, and the field that could supply one appears only for a Test
 // Set carrying allowCustomAuthorizationHeader, which none of ours does.
+// The same operation again, without an Authorization header. Nothing at setup
+// puts one back, so what arrives is a request with no token at all.
+RuleSet: selfTestOperationNoToken(requestId)
+* test[=].action[+].operation.type = $restful-interaction#search
+* test[=].action[=].operation.resource = "DocumentReference"
+* test[=].action[=].operation.params = "?status=current"
+* test[=].action[=].operation.requestId = "{requestId}"
+* test[=].action[=].operation.destination = 1
+* test[=].action[=].operation.origin = 1
+* test[=].action[=].operation.encodeRequestUrl = true
+
 RuleSet: selfTestTokenOperation(requestId, tokenVariable)
 * test[=].action[+].operation.type = $restful-interaction#search
 * test[=].action[=].operation.resource = "DocumentReference"
@@ -69,7 +80,7 @@ Usage: #definition
 * insert allowExtraRequests
 * insert selfTestTokenOperation(self-dva-01-request, self-dva-01-token)
 * test[=].action[=].operation.description = "Send the search DVA-01 expects, carrying a token with a conforming JWE header."
-* insert assertsIncomingBearerToken
+* insert assertsIncomingBearerToken(false)
 * insert assertTokenIsNestedJwt(true, false)
 * insert assertTokenHeaderField(alg, RSA-OAEP, the key encryption algorithm, false)
 * insert assertTokenHeaderField(enc, A256CBC-HS512, the content encryption algorithm, false)
@@ -97,7 +108,7 @@ Usage: #definition
 * insert allowExtraRequests
 * insert selfTestTokenOperation(self-dva-02-request, self-dva-02-token)
 * test[=].action[=].operation.description = "Send the same search, carrying a token that was signed but not encrypted."
-* insert assertsIncomingBearerToken
+* insert assertsIncomingBearerToken(false)
 * insert assertTokenIsNestedJwt(false, true)
 * insert assertTokenHeaderField(alg, RSA-OAEP, the key encryption algorithm, true)
 * insert assertTokenHeaderField(enc, A256CBC-HS512, the content encryption algorithm, true)
@@ -105,3 +116,24 @@ Usage: #definition
 * insert assertsNoBsnInUrl
 * insert assertManualJudgement
 * test[=].action[=].assert.description = "Confirm that the assert on the five segments warned and that the three on the JWE header warned with it. The token was a bare JWS, so all four had to react. One that stayed green is not testing what it claims. The kid assert is left out of this scenario on purpose: it is a warning in the shipped set as well, so its warning would say nothing."
+
+
+Instance: self-dva-03-no-token
+InstanceOf: TestScript
+Usage: #definition
+* insert metadata(self-dva-03-no-token)
+* name = "Self_dva_03_no_token"
+* title = "SELF-DVA-03 - The presence asserts catch a request without a token"
+* description = "Sends the same search with no Authorization header at all. The two asserts that state a Bearer token was presented must both react. This scenario is possible because the field for a custom authorization header appears only for a Test Set that asks for it, and no set here does, so nothing at setup supplies the header the operation leaves out."
+
+* insert clientAimed
+
+* test[+].id = "self-dva-03"
+* test[=].name = "SELF-DVA-03"
+* test[=].description = "Both presence asserts have to warn here. Neither the envelope asserts nor the url asserts belong in this scenario: without a token there is nothing to read, and the url is the same as everywhere else."
+* insert allowExtraRequests
+* insert selfTestOperationNoToken(self-dva-03-request)
+* test[=].action[=].operation.description = "Send the search DVA-01 expects, carrying no Authorization header."
+* insert assertsIncomingBearerToken(true)
+* insert assertManualJudgement
+* test[=].action[=].assert.description = "Confirm that both asserts on the Authorization header warned. The request carried none, so both had to react. If either stayed green, it is not testing what it claims, and the likely cause is that something supplied a header the scenario left out."

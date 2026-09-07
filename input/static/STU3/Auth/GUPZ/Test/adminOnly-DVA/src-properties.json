@@ -6,7 +6,7 @@
   "adminOnly": true,
   "role": {
     "name": "Self test - DVA token",
-    "description": "Not a conformance test. Checks that the token asserts of the Auth DVA set both pass on a conforming envelope and react to one that is only signed. Run it with Automated on: the engine then sends the requests itself and no caller is needed. Both scenarios have to end green, the second on the judgement that the expected warnings appeared."
+    "description": "Not a conformance test. Checks that the token asserts of the Auth DVA set fire: that they pass on a conforming envelope, that they react to one that is only signed, and that a request without a token is caught. Run it with Automated on: the engine then sends the requests itself and no caller is needed. All three scenarios have to end green, the last two on the judgement that the expected warnings appeared."
   },
   "serverAlias": "gupz"
 }

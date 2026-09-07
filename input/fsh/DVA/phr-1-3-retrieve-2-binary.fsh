@@ -36,7 +36,7 @@ RuleSet: phr-1-3-retrieve-2-binary-body
 * test[=].action[=].operation.origin = 1
 * test[=].action[=].operation.encodeRequestUrl = true
 * insert requestHeaderToken(121c15f1-f352-485e-979e-04a131bc6238)
-* insert assertsIncomingBearerToken
+* insert assertsIncomingBearerToken(false)
 * test[=].action[+].assert
   * description = "Confirm that query parameter 'patient=' was not present to avoid BSNs in the URL."
   * direction = #request
@@ -70,7 +70,7 @@ RuleSet: phr-1-3-retrieve-2-binary-body
 * test[=].action[=].operation.origin = 1
 * test[=].action[=].operation.encodeRequestUrl = true
 * insert requestHeaderToken(121c15f1-f352-485e-979e-04a131bc6238)
-* insert assertsIncomingBearerToken
+* insert assertsIncomingBearerToken(false)
 * test[=].action[+].assert
   * description = "Confirm that query parameter 'patient=' was not present to avoid BSNs in the URL."
   * direction = #request

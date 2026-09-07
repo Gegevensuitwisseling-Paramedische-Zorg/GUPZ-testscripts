@@ -1,0 +1,110 @@
+{
+  "resourceType": "TestScript",
+  "id": "self-dva-03-no-token",
+  "url": "http://gupz.nl/fhir/TestScript/self-dva-03-no-token",
+  "contact": [
+    {
+      "telecom": [
+        {
+          "system": "url",
+          "value": "https://github.com/Gegevensuitwisseling-Paramedische-Zorg/GUPZ-testscripts"
+        }
+      ],
+      "name": "GUPZ"
+    }
+  ],
+  "origin": [
+    {
+      "index": 1,
+      "profile": {
+        "code": "FHIR-Client",
+        "system": "http://terminology.hl7.org/CodeSystem/testscript-profile-origin-types"
+      }
+    }
+  ],
+  "destination": [
+    {
+      "extension": [
+        {
+          "url": "http://fhir.interoplab.eu/fhir/StructureDefinition/Interoplab-CL-ext-destination-title",
+          "valueString": "FHIR endpoint"
+        }
+      ],
+      "index": 1,
+      "profile": {
+        "code": "Conformancelab-Server",
+        "system": "http://fhir.interoplab.eu/fhir/CodeSystem/Interoplab-CL-destination-profile"
+      }
+    }
+  ],
+  "test": [
+    {
+      "extension": [
+        {
+          "url": "http://fhir.interoplab.eu/fhir/StructureDefinition/Interoplab-CL-ext-test-request-mode",
+          "valueCode": "extra-allowed"
+        }
+      ],
+      "action": [
+        {
+          "operation": {
+            "type": {
+              "code": "search",
+              "system": "http://hl7.org/fhir/restful-interaction"
+            },
+            "resource": "DocumentReference",
+            "params": "?status=current",
+            "requestId": "self-dva-03-request",
+            "destination": 1,
+            "origin": 1,
+            "encodeRequestUrl": true,
+            "description": "Send the search DVA-01 expects, carrying no Authorization header."
+          }
+        },
+        {
+          "assert": {
+            "extension": [
+              {
+                "url": "http://fhir.interoplab.eu/fhir/StructureDefinition/Interoplab-CL-ext-assert-additional-operators",
+                "valueCode": "exists"
+              }
+            ],
+            "description": "Confirm that the request carries an Authorization header. Its value cannot be compared to a fixed string, because a GUPZ token is encrypted and differs on every run.",
+            "direction": "request",
+            "headerField": "Authorization",
+            "stopTestOnFail": false,
+            "warningOnly": true
+          }
+        },
+        {
+          "assert": {
+            "description": "Confirm that the Authorization header uses the Bearer scheme, as security.md prescribes.",
+            "direction": "request",
+            "headerField": "Authorization",
+            "operator": "contains",
+            "value": "Bearer ",
+            "stopTestOnFail": false,
+            "warningOnly": true
+          }
+        },
+        {
+          "assert": {
+            "operator": "manualEval",
+            "stopTestOnFail": false,
+            "warningOnly": false,
+            "description": "Confirm that both asserts on the Authorization header warned. The request carried none, so both had to react. If either stayed green, it is not testing what it claims, and the likely cause is that something supplied a header the scenario left out."
+          }
+        }
+      ],
+      "id": "self-dva-03",
+      "name": "SELF-DVA-03",
+      "description": "Both presence asserts have to warn here. Neither the envelope asserts nor the url asserts belong in this scenario: without a token there is nothing to read, and the url is the same as everywhere else."
+    }
+  ],
+  "version": "0.1.0",
+  "status": "active",
+  "publisher": "GUPZ",
+  "name": "Self_dva_03_no_token",
+  "title": "SELF-DVA-03 - The presence asserts catch a request without a token",
+  "description": "Sends the same search with no Authorization header at all. The two asserts that state a Bearer token was presented must both react. This scenario is possible because the field for a custom authorization header appears only for a Test Set that asks for it, and no set here does, so nothing at setup supplies the header the operation leaves out."
+}
