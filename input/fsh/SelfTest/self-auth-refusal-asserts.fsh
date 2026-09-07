@@ -28,9 +28,25 @@ RuleSet: probeChallengeAbsent
 * test[=].action[+].assert
   * extension[+].url = $CL-ext-assert-additional-operators
   * extension[=].valueCode = #notExists
-  * description = "PROBE, not a conformance check: confirm that no WWW-Authenticate header was returned. Expected to pass only when the header is absent."
+  * description = "PROBE A, bare notExists, not a conformance check: confirm that no WWW-Authenticate header was returned. Expected to pass only when the header is absent."
   * direction = #response
   * headerField = "WWW-Authenticate"
+  * stopTestOnFail = false
+  * warningOnly = false
+
+// The same assert with a value it does not need. AssertEvaluator implements
+// notExists as "the actual value is null" and ignores the expected value, so
+// this should come out the right way round while PROBE A does not. If it does,
+// the fix is to consult the operator before falling back to a bare existence
+// check.
+RuleSet: probeChallengeAbsentWithValue
+* test[=].action[+].assert
+  * extension[+].url = $CL-ext-assert-additional-operators
+  * extension[=].valueCode = #notExists
+  * description = "PROBE B, notExists carrying a value it does not need, not a conformance check: same question as PROBE A. The value is ignored by the evaluator and only serves to reach it."
+  * direction = #response
+  * headerField = "WWW-Authenticate"
+  * value = "ignored-by-notexists"
   * stopTestOnFail = false
   * warningOnly = false
 
@@ -54,6 +70,7 @@ Usage: #definition
 * test[=].action[=].operation.description = "Answer with the refusal security.md prescribes."
 * insert assertsTokenRefused(true, false)
 * insert probeChallengeAbsent
+* insert probeChallengeAbsentWithValue
 
 Instance: self-auth-02-wrong-status
 InstanceOf: TestScript
@@ -99,6 +116,7 @@ Usage: #definition
 // header cannot be stated. The other two mutations do have one.
 * insert assertsTokenRefused(false, true)
 * insert probeChallengeAbsent
+* insert probeChallengeAbsentWithValue
 * insert assertManualJudgement
 * test[=].action[=].assert.description = "Confirm that the assert on the WWW-Authenticate header warned and that the other two did not. The answer carried no challenge at all."
 

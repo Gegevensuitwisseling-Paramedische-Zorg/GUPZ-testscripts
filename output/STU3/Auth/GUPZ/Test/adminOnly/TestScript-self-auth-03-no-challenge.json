@@ -108,9 +108,25 @@
                 "valueCode": "notExists"
               }
             ],
-            "description": "PROBE, not a conformance check: confirm that no WWW-Authenticate header was returned. Expected to pass only when the header is absent.",
+            "description": "PROBE A, bare notExists, not a conformance check: confirm that no WWW-Authenticate header was returned. Expected to pass only when the header is absent.",
             "direction": "response",
             "headerField": "WWW-Authenticate",
+            "stopTestOnFail": false,
+            "warningOnly": false
+          }
+        },
+        {
+          "assert": {
+            "extension": [
+              {
+                "url": "http://fhir.interoplab.eu/fhir/StructureDefinition/Interoplab-CL-ext-assert-additional-operators",
+                "valueCode": "notExists"
+              }
+            ],
+            "description": "PROBE B, notExists carrying a value it does not need, not a conformance check: same question as PROBE A. The value is ignored by the evaluator and only serves to reach it.",
+            "direction": "response",
+            "headerField": "WWW-Authenticate",
+            "value": "ignored-by-notexists",
             "stopTestOnFail": false,
             "warningOnly": false
           }
