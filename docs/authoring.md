@@ -46,6 +46,9 @@ Semantic Versioning, see [decisions.md D-29][d29].
 5. Cut a GitHub Release on that tag with the changelog entry as its notes.
 6. While `main` still carries the pointer README, check that what it says about
    the branch and the Test Sets is still true.
+7. In Conformancelab, check which branch the repository configuration names as
+   the Development or Default branch. A run loads that branch, so a release on
+   `main` changes nothing for a tester until it points at `main`.
 
 Every TestScript carries the version, so a run shows which release produced a
 verdict.

@@ -292,8 +292,10 @@ that has drifted is caught without anyone reading a warning column. The asserts
 of D-30 run alongside it as warnings, which do not fail a scenario.
 
 SELF-AUTH-03 has no automatic column. An assert on a header falls back to a
-plain existence check unless it carries a value, so there is no way to state
-that a header is absent. Reported to Interoplab.
+plain existence check unless it carries a value, so `notExists` on a bare header
+returns the opposite of what it says: it passes when the header is there. Giving
+the assert a value it does not use does reach the evaluator and then works, but
+that is a workaround and this set does not ship it.
 
 The question to the person is the one no assert can answer, because an assert
 cannot read another assert's outcome. An assert that stays silent where it
