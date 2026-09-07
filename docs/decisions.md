@@ -395,8 +395,8 @@ Dataplatform set would stop pointing at [OP-04][op04].
 ### D-32 The token asserts are self tested through an Automated run
 
 D-31 answers whether the refusal asserts fire. The same question stands for the
-token asserts of DVA-01, which have been seen to pass once and have never been
-seen to react.
+token asserts of DVA-01, which had been seen to pass once and never seen to
+react.
 
 They need no stub and no caller. An Automated run builds the request from the
 operation and sends it, for any operation the engine would otherwise wait for; a

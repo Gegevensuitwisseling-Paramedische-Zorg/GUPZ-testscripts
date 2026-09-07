@@ -13,7 +13,7 @@ What each set tests, which scenarios are in it and why. The grounds are in
 | Auth Dataplatform | Token and authentication | Data platform | 11 | Built, waiting on keys ([OP-05](open-points.md#op-05-key-material)) |
 | Auth DVA | Token and authentication | Calling party | 2 | Built |
 | Auth Self test | The refusal asserts of this repository | none | 4 | Built, `adminOnly` |
-| Auth DVA Self test | The token asserts of the Auth DVA set | none | 2 | Built, `adminOnly` |
+| Auth DVA Self test | The token asserts of the Auth DVA set | none | 2 | Built, both green, `adminOnly` |
 | PDF/A Self test | The DocumentManifest asserts of this repository | none | 1 | Built, `adminOnly` |
 
 Written against open-GUPZ commit `0a273ae`, 21 August 2026. A commit rather than
