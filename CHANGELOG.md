@@ -26,7 +26,7 @@ Every release names the open-GUPZ version it was written against. See
 - Three hidden self test sets that check this repository's own asserts: whether
   the refusal asserts fire and react, whether the DocumentManifest asserts can
   be satisfied at all, and whether the token asserts of the Auth DVA set do
-  both.
+  both, including the pair that states a token was presented at all.
   The first two answer from stubs and need a caller; the third prescribes a
   token and runs as an Automated run on its own.
 
