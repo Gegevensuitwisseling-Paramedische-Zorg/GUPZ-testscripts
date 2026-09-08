@@ -96,6 +96,23 @@ own PARIS, and `_LoadResources` is not expected to work there
 ([test-sets.md](test-sets.md#pdfa-_loadresources)). What is needed is a written
 specification of the test data every supplier loads. Also resolves OP-02.
 
+**The document type is part of that specification, and it is being decided by
+suppliers.** The imported fixtures type their documents with American LOINC
+discharge summaries, `68688-1` for the first test patient and `68626-1` for the
+second, which three of our scripts use to tell the two patients apart. Nothing
+paramedical about them, and `docs/terminology/documenttypes.md` in open-GUPZ is
+empty, so one supplier has picked codes of its own for the connectathon:
+
+| Document | System | Code | Display |
+|---|---|---|---|
+| Behandelplan | SNOMED CT | `11261000146100` | behandelplannotitie |
+| Paramedische diagnose | SNOMED CT | `9441000146103` | diagnostisch-onderzoek-documentatie |
+
+SNOMED is not a stretch here: two of the imported fixtures already type their
+documents with the Dutch SNOMED extension. The point is who decides. Until GUPZ
+names the codes, an assert on a document type either follows a supplier or
+follows Nictiz, and neither is the specification.
+
 ## OP-05 Key material
 
 Every Auth Dataplatform case needs a token, generated shortly before a run
