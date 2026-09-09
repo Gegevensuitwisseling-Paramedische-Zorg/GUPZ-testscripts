@@ -1,0 +1,11 @@
+{
+  "goal": "Test",
+  "fhirVersion": "STU3",
+  "informationStandard": "GUPZ Auth",
+  "usecase": "GUPZ",
+  "role": {
+    "name": "DVA",
+    "description": "For parties calling a GUPZ data platform, such as a DVA. Goal: establish that the token the calling system produces conforms to the specification. Send the token that would be sent to a live data platform."
+  },
+  "serverAlias": "gupz"
+}

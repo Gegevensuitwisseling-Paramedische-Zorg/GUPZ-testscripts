@@ -1,0 +1,16 @@
+[
+    {
+        "accessToken": "Bearer 121c15f1-f352-485e-979e-04a131bc6238",
+        "resourceId": "example-pdfa-kwalificatie1",
+        "familyName": "XXX_Baltus",
+        "bsn": "999910796",
+        "qualificationScript": "GUPZ PDF/A"
+    },
+    {
+        "accessToken": "Bearer 79339c59-4908-4b0d-8b53-4520f9e4c7d5",
+        "resourceId": "example-pdfa-kwalificatie2",
+        "familyName": "XXX_Schulte",
+        "bsn": "999910784",
+        "qualificationScript": "GUPZ PDF/A"
+    }
+]

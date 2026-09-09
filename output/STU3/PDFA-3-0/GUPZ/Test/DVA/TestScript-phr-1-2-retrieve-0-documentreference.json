@@ -1,0 +1,170 @@
+{
+  "resourceType": "TestScript",
+  "id": "phr-1-2-retrieve-0-documentreference",
+  "url": "http://gupz.nl/fhir/TestScript/phr-1-2-retrieve-0-documentreference",
+  "contact": [
+    {
+      "telecom": [
+        {
+          "system": "url",
+          "value": "https://github.com/Gegevensuitwisseling-Paramedische-Zorg/GUPZ-testscripts"
+        }
+      ],
+      "name": "GUPZ"
+    }
+  ],
+  "origin": [
+    {
+      "index": 1,
+      "profile": {
+        "code": "FHIR-Client",
+        "system": "http://terminology.hl7.org/CodeSystem/testscript-profile-origin-types"
+      }
+    }
+  ],
+  "destination": [
+    {
+      "extension": [
+        {
+          "url": "http://fhir.interoplab.eu/fhir/StructureDefinition/Interoplab-CL-ext-destination-title",
+          "valueString": "FHIR endpoint"
+        }
+      ],
+      "index": 1,
+      "profile": {
+        "code": "Conformancelab-Server",
+        "system": "http://fhir.interoplab.eu/fhir/CodeSystem/Interoplab-CL-destination-profile"
+      }
+    }
+  ],
+  "variable": [
+    {
+      "name": "T",
+      "defaultValue": "${CURRENTDATE}",
+      "description": "Date that data and queries are expected to be relative to."
+    }
+  ],
+  "test": [
+    {
+      "extension": [
+        {
+          "url": "http://fhir.interoplab.eu/fhir/StructureDefinition/Interoplab-CL-ext-test-request-mode",
+          "valueCode": "extra-allowed"
+        }
+      ],
+      "action": [
+        {
+          "operation": {
+            "requestHeader": [
+              {
+                "field": "Authorization",
+                "value": "Bearer 121c15f1-f352-485e-979e-04a131bc6238"
+              }
+            ],
+            "type": {
+              "code": "search",
+              "system": "http://hl7.org/fhir/restful-interaction"
+            },
+            "resource": "DocumentReference",
+            "description": "Test PHR client to retrieve DocumentReference resources.",
+            "params": "?status=current&indexed=ge${DATE, T, D, -730}&indexed=le${DATE, T, D, -365}",
+            "destination": 1,
+            "origin": 1,
+            "encodeRequestUrl": true
+          }
+        },
+        {
+          "assert": {
+            "extension": [
+              {
+                "url": "http://fhir.interoplab.eu/fhir/StructureDefinition/Interoplab-CL-ext-assert-additional-operators",
+                "valueCode": "exists"
+              }
+            ],
+            "description": "Confirm that the request carries an Authorization header. Its value cannot be compared to a fixed string, because a GUPZ token is encrypted and differs on every run.",
+            "direction": "request",
+            "headerField": "Authorization",
+            "stopTestOnFail": false,
+            "warningOnly": false
+          }
+        },
+        {
+          "assert": {
+            "description": "Confirm that the Authorization header uses the Bearer scheme, as security.md prescribes.",
+            "direction": "request",
+            "headerField": "Authorization",
+            "operator": "contains",
+            "value": "Bearer ",
+            "stopTestOnFail": false,
+            "warningOnly": false
+          }
+        },
+        {
+          "assert": {
+            "description": "Confirm that query parameter 'patient=' was not present to avoid BSNs in the URL.",
+            "direction": "request",
+            "operator": "notContains",
+            "requestURL": "patient=",
+            "stopTestOnFail": false,
+            "warningOnly": false
+          }
+        },
+        {
+          "assert": {
+            "description": "Confirm that query parameter 'subject=' was not present to avoid BSNs in the URL.",
+            "direction": "request",
+            "operator": "notContains",
+            "requestURL": "subject=",
+            "stopTestOnFail": false,
+            "warningOnly": false
+          }
+        },
+        {
+          "assert": {
+            "description": "Make sure that the server of the test simulator gives a success response.",
+            "operator": "in",
+            "responseCode": "200,201",
+            "stopTestOnFail": true,
+            "warningOnly": false
+          }
+        },
+        {
+          "assert": {
+            "description": "Confirm that the server of the test simulator returns a Bundle.",
+            "direction": "response",
+            "resource": "Bundle",
+            "stopTestOnFail": false,
+            "warningOnly": false
+          }
+        },
+        {
+          "assert": {
+            "description": "Confirm that the response Bundle contains 0 DocumentReference resource(s).",
+            "direction": "response",
+            "expression": "Bundle.entry.where(resource.is(DocumentReference)).count() = 0",
+            "stopTestOnFail": false,
+            "warningOnly": false
+          }
+        },
+        {
+          "assert": {
+            "description": "Confirm that the returned searchset Bundle contains 0 entries or an OperationOutcome.",
+            "direction": "response",
+            "expression": "Bundle.entry.where(resource.is(OperationOutcome).not()).count() = 0",
+            "stopTestOnFail": false,
+            "warningOnly": false
+          }
+        }
+      ],
+      "id": "scenario1-2-retrieve-0-documentreference",
+      "name": "Scenario 1.2",
+      "description": "Query all current DocumentReference resources of XXX-Baltus that are indexed/created in the period from T-730 to T-365."
+    }
+  ],
+  "version": "0.1.0",
+  "status": "active",
+  "publisher": "GUPZ",
+  "name": "Phr_1_2_retrieve_0_documentreference",
+  "title": "Scenario 1.2 - Retrieve zero DocumentReference resources",
+  "description": "Scenario 1.2 - Retrieve DocumentReference resources of XXX-Baltus that are indexed/created in the period from T-730 to T-365."
+}

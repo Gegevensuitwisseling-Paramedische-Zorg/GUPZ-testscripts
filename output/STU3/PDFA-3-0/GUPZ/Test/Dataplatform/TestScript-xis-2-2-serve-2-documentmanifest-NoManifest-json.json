@@ -1,0 +1,145 @@
+{
+  "resourceType": "TestScript",
+  "id": "xis-2-2-serve-2-documentmanifest-NoManifest-json",
+  "url": "http://gupz.nl/fhir/TestScript/xis-2-2-serve-2-documentmanifest-NoManifest-json",
+  "contact": [
+    {
+      "telecom": [
+        {
+          "system": "url",
+          "value": "https://github.com/Gegevensuitwisseling-Paramedische-Zorg/GUPZ-testscripts"
+        }
+      ],
+      "name": "GUPZ"
+    }
+  ],
+  "origin": [
+    {
+      "index": 1,
+      "profile": {
+        "code": "Conformancelab-Client",
+        "system": "http://fhir.interoplab.eu/fhir/CodeSystem/Interoplab-CL-origin-profile"
+      }
+    }
+  ],
+  "destination": [
+    {
+      "extension": [
+        {
+          "url": "http://fhir.interoplab.eu/fhir/StructureDefinition/Interoplab-CL-ext-destination-title",
+          "valueString": "Data platform"
+        }
+      ],
+      "index": 1,
+      "profile": {
+        "code": "FHIR-Server",
+        "system": "http://terminology.hl7.org/CodeSystem/testscript-profile-destination-types"
+      }
+    }
+  ],
+  "profile": [
+    "http://hl7.org/fhir/StructureDefinition/OperationOutcome"
+  ],
+  "_profile": [
+    {
+      "id": "OperationOutcome-profile"
+    }
+  ],
+  "variable": [
+    {
+      "name": "patient-token-XXX_Schulte",
+      "description": "GUPZ token for test patient 'XXX_Schulte'. Paste the nested JWT issued for this patient; the script adds the Bearer prefix. A token used in a patient bound request is patient specific since open-GUPZ issue #73 closed on 18 August, so each test patient needs a token of their own."
+    }
+  ],
+  "test": [
+    {
+      "action": [
+        {
+          "operation": {
+            "requestHeader": [
+              {
+                "field": "Authorization",
+                "value": "Bearer ${patient-token-XXX_Schulte}"
+              }
+            ],
+            "type": {
+              "code": "search",
+              "system": "http://hl7.org/fhir/restful-interaction"
+            },
+            "resource": "DocumentManifest",
+            "description": "Test XIS server to serve DocumentManifest resources.",
+            "params": "?status=current",
+            "destination": 1,
+            "origin": 1,
+            "encodeRequestUrl": true,
+            "accept": "json"
+          }
+        },
+        {
+          "assert": {
+            "description": "Confirm that the returned HTTP status is 404 (Not Found).",
+            "direction": "response",
+            "operator": "equals",
+            "responseCode": "404",
+            "stopTestOnFail": true,
+            "warningOnly": false
+          }
+        },
+        {
+          "assert": {
+            "description": "Confirm that the returned resource type is OperationOutcome.",
+            "direction": "response",
+            "resource": "OperationOutcome",
+            "stopTestOnFail": true,
+            "warningOnly": false
+          }
+        },
+        {
+          "assert": {
+            "description": "Confirm that the returned OperationOutcome conforms to the base FHIR specification.",
+            "direction": "response",
+            "stopTestOnFail": false,
+            "validateProfileId": "OperationOutcome-profile",
+            "warningOnly": false
+          }
+        },
+        {
+          "assert": {
+            "description": "Confirm that the OperationOutcome has .code set to not-supported.",
+            "direction": "response",
+            "expression": "OperationOutcome.issue.code = 'not-supported'",
+            "stopTestOnFail": false,
+            "warningOnly": false
+          }
+        },
+        {
+          "assert": {
+            "description": "Confirm that the OperationOutcome has .severity set to fatal or error.",
+            "direction": "response",
+            "expression": "OperationOutcome.issue.severity = 'fatal' or OperationOutcome.issue.severity = 'error'",
+            "stopTestOnFail": false,
+            "warningOnly": false
+          }
+        },
+        {
+          "assert": {
+            "description": "Although not required, a human-readable description of the problem is strongly encouraged.",
+            "direction": "response",
+            "expression": "OperationOutcome.issue.diagnostics.exists() or OperationOutcome.issue.details.text.exists()",
+            "stopTestOnFail": false,
+            "warningOnly": true
+          }
+        }
+      ],
+      "id": "scenario2-2-serve-2-documentmanifest",
+      "name": "Scenario 2.2",
+      "description": "Handle unsupported request for DocumentManifest resources."
+    }
+  ],
+  "version": "0.1.0",
+  "status": "active",
+  "publisher": "GUPZ",
+  "name": "Xis_2_2_serve_2_documentmanifest_NoManifest_json",
+  "title": "Scenario 2.2 - Serve two DocumentManifest resources - target NoManifest - JSON Format",
+  "description": "Scenario 2.2 - Serve two DocumentManifest resources of XXX-Schulte."
+}
