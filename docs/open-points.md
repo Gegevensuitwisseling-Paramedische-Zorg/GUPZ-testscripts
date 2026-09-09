@@ -98,8 +98,8 @@ specification of the test data every supplier loads. Also resolves OP-02.
 
 **Relative dates need margin, and the specification is where that is decided.**
 The imported fixtures carry dates relative to the moment they are loaded, and
-the scenarios search in windows relative to the day of the run. Those two are the
-same `T` only for as long as nobody waits. Two of Baltus' documents are indexed
+the scenarios search in windows relative to the day of the run. Those two are
+the same `T` only for as long as nobody waits. Two of Baltus' documents are indexed
 at `T-355` while scenario 1.2 asks for the window `T-730` to `T-365`: ten days
 between loading and running is enough to move them into a window that has to be
 empty. It happened, and a caller found it before we did.
