@@ -100,10 +100,9 @@ specification of the test data every supplier loads. Also resolves OP-02.
 The imported fixtures carry dates relative to the moment they are loaded, and
 the scenarios search in windows relative to the day of the run. Those two are
 the same `T` only for as long as nobody waits. Two of Baltus' documents are
-indexed at `T-355` while scenario 1.2 asks for the window `T-730` to `T-365`: ten
-days
-between loading and running is enough to move them into a window that has to be
-empty. It happened, and a caller found it before we did.
+indexed at `T-355` while scenario 1.2 asks for the window `T-730` to `T-365`.
+Ten days between loading and running is enough to move them into a window that
+has to be empty. It happened, and a caller found it before we did.
 
 The engine offers three places to correct it. `T` is a variable on the run as
 well, so filling in the date the data was loaded restores the window. Loading
