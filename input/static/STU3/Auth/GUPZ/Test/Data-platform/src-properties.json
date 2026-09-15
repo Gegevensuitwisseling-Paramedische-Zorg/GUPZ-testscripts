@@ -5,6 +5,6 @@
   "usecase": "GUPZ",
   "role": {
     "name": "Data platform",
-    "description": "For parties implementing a GUPZ data platform. Goal: establish that a valid token is accepted and that invalid tokens are refused as the specification requires. The tester supplies the tokens."
+    "description": "For parties acting as a GUPZ data platform. Goal: establish that a valid token is accepted and that invalid tokens are refused as the specification requires. The tester supplies the tokens."
   }
 }
