@@ -45,7 +45,7 @@ rm -rf "$OUT"
 echo "=== 2/4 Copying the static files"
 mkdir -p "$OUT"
 cp -R input/static/. "$OUT"/
-for f in $(find "$OUT" -name src-properties.json); do
+find "$OUT" -name src-properties.json -print0 | while IFS= read -r -d '' f; do
   mv "$f" "$(dirname "$f")/properties.json"
 done
 echo "  $(find "$OUT" -type f | wc -l | tr -d ' ') files, of which $(find "$OUT" -name properties.json | wc -l | tr -d ' ') Test Set properties"
@@ -59,9 +59,9 @@ count=0
 for f in "$SRC"/TestScript-*.json; do
   name=$(basename "$f")
   case "$name" in
-    TestScript-xis-*)  dest="$OUT/STU3/PDFA-3-0/GUPZ/Test/Dataplatform" ;;
+    TestScript-xis-*)  dest="$OUT/STU3/PDFA-3-0/GUPZ/Test/Data-platform" ;;
     TestScript-phr-*)  dest="$OUT/STU3/PDFA-3-0/GUPZ/Test/DVA" ;;
-    TestScript-auth-*) dest="$OUT/STU3/Auth/GUPZ/Test/Dataplatform" ;;
+    TestScript-auth-*) dest="$OUT/STU3/Auth/GUPZ/Test/Data-platform" ;;
     TestScript-dva-*)  dest="$OUT/STU3/Auth/GUPZ/Test/DVA" ;;
     TestScript-self-auth-*) dest="$OUT/STU3/Auth/GUPZ/Test/adminOnly" ;;
     TestScript-self-dva-*) dest="$OUT/STU3/Auth/GUPZ/Test/adminOnly-DVA" ;;

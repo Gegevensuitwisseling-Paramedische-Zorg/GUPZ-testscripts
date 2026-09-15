@@ -6,10 +6,10 @@ in [decisions.md](decisions.md).
 | Id | Subject | Blocks | Owner |
 |---|---|---|---|
 | [OP-01](#op-01-the-challenge-when-no-credentials-are-presented) | The challenge when no credentials are presented | the error code in AUTH-04 and AUTH-05, AUTH-12, a case for a token that asks beyond its scope | open-GUPZ [#70][i70] |
-| [OP-02](#op-02-two-roles-disagree-on-the-document-count) | Two roles disagree on the document count | PDF/A Dataplatform 1.1 | test data specification |
+| [OP-02](#op-02-two-roles-disagree-on-the-document-count) | Two roles disagree on the document count | PDF/A Data platform 1.1 | test data specification |
 | [OP-03](#op-03-scenario-25) | Scenario 2.5 | nothing; it is out of the set | GUPZ |
 | [OP-04](#op-04-test-data-specification) | Test data specification | all three PDF/A sets against a supplier | GUPZ |
-| [OP-05](#op-05-key-material) | Key material | every Auth Dataplatform case | GUPZ |
+| [OP-05](#op-05-key-material) | Key material | every Auth Data platform case | GUPZ |
 | [OP-06](#op-06-the-unsigned-token) | The unsigned token | AUTH-03 | open-GUPZ [#79][i79] |
 | [OP-07](#op-07-pdfa-version) | PDF/A version | the Binary fixtures | open-GUPZ [#66][i66] |
 | [OP-08](#op-08-gupz-canonical) | GUPZ canonical | the `url` of every script | GUPZ |
@@ -135,7 +135,7 @@ follows Nictiz, and neither is the specification.
 
 ## OP-05 Key material
 
-Every Auth Dataplatform case needs a token, generated shortly before a run
+Every Auth Data platform case needs a token, generated shortly before a run
 because [#69][i69] made explicit that testing should not use static tokens. What
 the testers need is therefore key material and claim values, not finished
 tokens. GUPZ supplies the PEM files. The recipe is in
@@ -220,7 +220,7 @@ been worked through.
 
 ## OP-12 Directory names under `input/fsh`
 
-`Dataplatform` and `DVA` are the two PDF/A sets, `Auth` and `DVA-Auth` the two
+`Data platform` and `DVA` are the two PDF/A sets, `Auth` and `DVA-Auth` the two
 authentication ones, so the same word names a role in one place and a standard
 in another. Nothing depends on it: `build.sh` routes on the filename prefix, not
 on the directory. Straighten it when the branch is merged.

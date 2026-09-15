@@ -11,7 +11,7 @@
 //
 // Nothing in the imported set tests this. A platform that returns the PDF
 // inline, base64 encoded in DocumentReference.content.attachment.data, passes
-// every other assert in the Dataplatform set. Scenario 1.4 does read a Binary,
+// every other assert in the Data platform set. Scenario 1.4 does read a Binary,
 // but it reads whatever url the response gave it, so serving a plain http url
 // gets through there as well. That is scenario 2.5, which exists for servers
 // that work that way; for GUPZ it is not conformant.

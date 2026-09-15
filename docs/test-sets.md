@@ -7,10 +7,10 @@ What each set tests, which scenarios are in it and why. The grounds are in
 
 | Test Set | Aim | System under test | Scripts | State |
 |---|---|---|---|---|
-| PDF/A Dataplatform | Document interface | Data platform | 20 | Built |
+| PDF/A Data platform | Document interface | Data platform | 20 | Built |
 | PDF/A DVA | Document interface | Calling party | 5 | Built, four of five green |
 | PDF/A _LoadResources | Provisioning | none | 1 | Built |
-| Auth Dataplatform | Token and authentication | Data platform | 11 | Built, waiting on keys ([OP-05](open-points.md#op-05-key-material)) |
+| Auth Data platform | Token and authentication | Data platform | 11 | Built, waiting on keys ([OP-05](open-points.md#op-05-key-material)) |
 | Auth DVA | Token and authentication | Calling party | 2 | Built |
 | Auth Self test | The refusal asserts of this repository | none | 4 | Built, `adminOnly` |
 | Auth DVA Self test | The token asserts of the Auth DVA set | none | 4 | Built, `adminOnly` |
@@ -61,7 +61,7 @@ Three consequences:
   so the generic profile is a baseline and not a fallback. It takes one test set
   per counterparty.
 
-## PDF/A Dataplatform
+## PDF/A Data platform
 
 Imported from the Nictiz `XIS-Server-NoManifest` variant (D-02). Server aimed:
 the data platform answers, Conformancelab calls.
@@ -117,7 +117,7 @@ DVA set.
 
 Writes the fixtures to the target server: two patients, seven DocumentReference
 and four Binary resources, purged first and then PUT with client assigned ids
-(D-13). Run it before the Dataplatform set, or every scenario fails on missing
+(D-13). Run it before the Data platform set, or every scenario fails on missing
 data rather than on behaviour. It also feeds the client aimed set, which reads
 from the same server.
 
@@ -134,10 +134,10 @@ Generated from FSH in `input/fsh/LoadResources/`, with its building blocks in
 come down to a handful of parameterised inserts, which matters because this file
 gets rewritten wholesale once GUPZ has test data of its own.
 
-## Auth Dataplatform
+## Auth Data platform
 
 Situation 1. Server aimed: the data platform is under test and Conformancelab is
-the caller. Eleven cases in `output/STU3/Auth/GUPZ/Test/Dataplatform`.
+the caller. Eleven cases in `output/STU3/Auth/GUPZ/Test/Data-platform`.
 
 | Case | What Conformancelab does | Expected | Requirement | Blocked by |
 |---|---|---|---|---|

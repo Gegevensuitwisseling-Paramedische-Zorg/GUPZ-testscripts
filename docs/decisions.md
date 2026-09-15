@@ -46,10 +46,10 @@ support. [`pdfa.md`][pdfa] prescribes 404 with an OperationOutcome carrying
 `severity` `error` and `code` `not-supported`, added on request in [#72][i72],
 and that is what they assert.
 
-### D-05 The roles are Dataplatform and DVA
+### D-05 The roles are Data platform and DVA
 
 The imported material calls them `XIS-Server-NoManifest` and `PHR-Client`. The
-rename of 14 August 2026 produced `Dataplatform` and `DVA-Client`; the suffix
+rename of 14 August 2026 produced `Data platform` and `DVA-Client`; the suffix
 came off on 27 August. Two grounds: the pair was asymmetric, one name for a
 party and one for a party plus its role; and `DVA-Client` reads as either the
 DVA in the client role or the client of a DVA, which is the PGO and is not on
@@ -137,7 +137,7 @@ template, so what is pasted is the bare token. Mechanics in
 [authoring.md](authoring.md#tokens).
 
 Raised as point 3 of [#80][i80], where it was written up as affecting five
-client scripts; it affects all eighteen Dataplatform scripts and the loader as
+client scripts; it affects all eighteen Data platform scripts and the loader as
 well.
 
 ### D-12 Two asserts are added on documents offered as a Binary reference
@@ -388,7 +388,7 @@ outcome is positive, so the engine can judge it.
 
 These sets never relax an assert so that the server behind the tests passes. A
 green would then say something about that server and not about the
-specification, and the two red asserts in the PDF/A Dataplatform set would stop
+specification, and the two red asserts in the PDF/A Data platform set would stop
 pointing at [OP-04][op04].
 
 ### D-32 The token asserts are self tested through an Automated run

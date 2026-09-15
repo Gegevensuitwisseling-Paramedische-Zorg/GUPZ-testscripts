@@ -1,47 +1,22 @@
 # GUPZ-testscripts
 
-FHIR TestScript resources and fixtures that test the GUPZ data platform against
-the [open-GUPZ][opengupz] specification. Both sides of the interface are
-covered: the platform and the calling party.
-
-The first target is the connectathon of 22 September 2026.
-
-Everything here is written in English, including commit messages. Documentation
-is written with the help of AI and read by a human before it is merged;
-responsibility for the content rests with the authors. Report a mistake as an
-issue.
+Test specification, FHIR TestScript resources and FHIR fixtures that test the GUPZ data platform against
+the [open-GUPZ][opengupz] specification.
 
 ## Test sets
 
-Forty-eight TestScripts in eight Test Sets.
-
 | Test Set | Aim | System under test | Scripts |
 |---|---|---|---|
-| PDF/A Dataplatform | Document interface | Data platform | 20 |
+| PDF/A Data platform | Document interface | Data platform | 20 |
 | PDF/A DVA | Document interface | Calling party | 5 |
 | PDF/A _LoadResources | Provisioning, run it first | none | 1 |
-| Auth Dataplatform | Token and authentication | Data platform | 11 |
+| Auth Data platform | Token and authentication | Data platform | 11 |
 | Auth DVA | Token and authentication | Calling party | 2 |
 | Auth Self test | The refusal asserts of this repository, `adminOnly` | none | 4 |
 | Auth DVA Self test | The token asserts of the Auth DVA set, `adminOnly` | none | 4 |
 | PDF/A Self test | The DocumentManifest asserts of this repository, `adminOnly` | none | 1 |
 
 Scope, scenarios and cases: [docs/test-sets.md](docs/test-sets.md).
-
-## Tokens
-
-| Set | Token source |
-|---|---|
-| PDF/A Dataplatform | operator input, one per test patient (two) |
-| Auth Dataplatform | operator input, one per case |
-| PDF/A DVA | sent by the system under test, fixed value, selects the patient |
-| Auth DVA | sent by the system under test, and is itself the subject |
-| PDF/A _LoadResources | fixed in the script, resolved through `Configuration/` |
-
-Conformancelab cannot produce the nested JWT that open-GUPZ prescribes, so a
-token is made outside the engine with the `jwtcli` tool in open-GUPZ and pasted
-in. A token used in a patient bound request is patient specific, so the PDF/A
-Dataplatform set takes two.
 
 ## Layout
 
@@ -52,7 +27,7 @@ input/
   fsh/               TestScripts in FSH
     aliases.fsh
     components/      reusable RuleSets
-    Dataplatform/    PDF/A, server aimed. One file per scenario, two variants
+    Data platform/    PDF/A, server aimed. One file per scenario, two variants
     DVA/             PDF/A, client aimed
     Auth/            token and authentication, server aimed
     DVA-Auth/        token and authentication, client aimed
@@ -68,12 +43,12 @@ overwrites it.
 
 ```
 output/STU3/PDFA-3-0/GUPZ/Test/
-  Dataplatform/      server aimed: the data platform is under test
+  Data platform/      server aimed: the data platform is under test
   DVA/               client aimed: the calling party is under test
   _reference/        fixtures and Groovy rules
   _LoadResources/    the script that writes the fixtures to a server
 output/STU3/Auth/GUPZ/Test/
-  Dataplatform/      server aimed: token and authentication behaviour
+  Data platform/      server aimed: token and authentication behaviour
   DVA/               client aimed: the token the caller produces
   _stub/             WireMock mappings for the refusal scenarios
 ```

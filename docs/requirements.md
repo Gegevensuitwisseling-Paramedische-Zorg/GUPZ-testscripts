@@ -27,7 +27,7 @@ in this repository. Three of them appear here:
 |---|---|---|
 | peer-1 | GUPZ Auth, direct test | both parties, per pair and per direction |
 | peer-2 | GUPZ PDF/A, direct test | both parties, per pair |
-| decl | GUPZ PARIS and document content, declaration | the Dataplatform, once |
+| decl | GUPZ PARIS and document content, declaration | the Data platform, once |
 
 Where a row says "recorded and not judged", the specification leaves the point
 open, so the Quest asks for the observation and states no requirement. Those
@@ -160,7 +160,7 @@ PARIS keeps, the version history a practitioner can open, parallel current
 treatment plans per diagnosis, the reference sets, and the rules for
 correspondence. None of it is visible in a FHIR response. What reaches the
 interface is the result, which documents come back and what status they carry.
-All of it is recorded in the declaration Quest, which a Dataplatform fills in
+All of it is recorded in the declaration Quest, which a Data platform fills in
 once: it does not depend on which counterparty was connected.
 
 **Whether a caller validates the server certificate.** Not visible in a request.

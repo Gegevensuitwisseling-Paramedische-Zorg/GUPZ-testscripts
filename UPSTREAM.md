@@ -64,7 +64,7 @@ Every difference is deliberate and argued in
 | The MedMij tracing headers are no longer sent | all converted scripts | D-08 |
 | The system under test is marked with a profile instead of the deprecated SUT extension | all converted scripts | D-09 |
 | Version, publisher and `url` carry GUPZ identity | all scripts | D-10 |
-| The token is operator input; the MedMij qualification token is gone and the `Bearer` prefix moved into the header | all PDF/A Dataplatform scripts and scenario 2.5 | D-11 |
+| The token is operator input; the MedMij qualification token is gone and the `Bearer` prefix moved into the header | all PDF/A Data platform scripts and scenario 2.5 | D-11 |
 | Two asserts added: a document is offered as a reference to a Binary, not inline | scenarios 1.1, 1.4, 2.1 | D-12 |
 | The provisioning script is trimmed to what the scenarios need, and generated from FSH | `_LoadResources` | D-13 |
 | The client side token assert checks presence and scheme instead of a fixed value | the five PDF/A DVA scripts | D-15 |

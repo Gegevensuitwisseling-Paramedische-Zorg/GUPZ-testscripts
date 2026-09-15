@@ -6,7 +6,7 @@ This document was split up. Nothing was dropped; every section has a new home.
 |---|---|
 | Current state | [test-sets.md](test-sets.md) |
 | The deciding constraints | [decisions.md D-01](decisions.md#d-01-only-find-and-retrieve-are-in-scope) |
-| Server aimed set: Dataplatform | [test-sets.md](test-sets.md#pdfa-dataplatform) |
+| Server aimed set: Data platform | [test-sets.md](test-sets.md#pdfa-dataplatform) |
 | Why the role is called DVA and not DVA-Client | [decisions.md D-05](decisions.md#d-05-the-roles-are-dataplatform-and-dva) |
 | Client aimed set: DVA | [test-sets.md](test-sets.md#pdfa-dva) |
 | What the declared FHIR package says, and what enforces it | [open-points.md OP-11](open-points.md#op-11-no-assert-validates-against-an-mhd-profile) |
