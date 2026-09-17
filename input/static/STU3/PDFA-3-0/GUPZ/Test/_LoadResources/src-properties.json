@@ -1,0 +1,7 @@
+{
+  "goal": "Test",
+  "fhirVersion": "STU3",
+  "informationStandard": "GUPZ PDF/A",
+  "usecase": "GUPZ",
+  "serverAlias": "gupz"
+}
