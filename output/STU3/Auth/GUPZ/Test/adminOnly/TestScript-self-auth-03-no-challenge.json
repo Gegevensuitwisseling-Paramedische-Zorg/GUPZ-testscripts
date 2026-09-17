@@ -114,7 +114,7 @@
       "description": "The assert on the WWW-Authenticate header has to warn here."
     }
   ],
-  "version": "0.1.0",
+  "version": "0.1.0-connectathon.1",
   "status": "active",
   "publisher": "GUPZ",
   "name": "Self_auth_03_no_challenge",

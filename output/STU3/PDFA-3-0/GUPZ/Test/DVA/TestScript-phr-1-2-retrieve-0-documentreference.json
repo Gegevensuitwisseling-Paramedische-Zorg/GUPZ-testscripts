@@ -161,7 +161,7 @@
       "description": "Query all current DocumentReference resources of XXX-Baltus that are indexed/created in the period from T-730 to T-365."
     }
   ],
-  "version": "0.1.0",
+  "version": "0.1.0-connectathon.1",
   "status": "active",
   "publisher": "GUPZ",
   "name": "Phr_1_2_retrieve_0_documentreference",

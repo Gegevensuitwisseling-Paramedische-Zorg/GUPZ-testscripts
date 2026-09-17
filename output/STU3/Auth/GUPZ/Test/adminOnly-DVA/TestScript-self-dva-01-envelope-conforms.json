@@ -338,7 +338,7 @@
       "description": "The envelope conforms, so every assert should be green. A warning on the kid is a defect here, because this token carries one."
     }
   ],
-  "version": "0.1.0",
+  "version": "0.1.0-connectathon.1",
   "status": "active",
   "publisher": "GUPZ",
   "name": "Self_dva_01_envelope_conforms",

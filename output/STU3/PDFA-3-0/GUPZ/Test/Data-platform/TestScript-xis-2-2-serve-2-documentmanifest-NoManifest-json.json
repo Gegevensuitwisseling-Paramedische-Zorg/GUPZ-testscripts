@@ -136,7 +136,7 @@
       "description": "Handle unsupported request for DocumentManifest resources."
     }
   ],
-  "version": "0.1.0",
+  "version": "0.1.0-connectathon.1",
   "status": "active",
   "publisher": "GUPZ",
   "name": "Xis_2_2_serve_2_documentmanifest_NoManifest_json",

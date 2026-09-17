@@ -109,7 +109,7 @@
       "description": "Serve OperationOutcome resource for the incorrect search request."
     }
   ],
-  "version": "0.1.0",
+  "version": "0.1.0-connectathon.1",
   "status": "active",
   "publisher": "GUPZ",
   "name": "Xis_1_3_serve_0_documentreference_NoManifest_xml",

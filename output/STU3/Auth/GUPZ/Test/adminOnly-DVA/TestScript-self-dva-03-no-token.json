@@ -101,7 +101,7 @@
       "description": "Both presence asserts have to warn here. Neither the envelope asserts nor the url asserts belong in this scenario: without a token there is nothing to read, and the url is the same as everywhere else."
     }
   ],
-  "version": "0.1.0",
+  "version": "0.1.0-connectathon.1",
   "status": "active",
   "publisher": "GUPZ",
   "name": "Self_dva_03_no_token",

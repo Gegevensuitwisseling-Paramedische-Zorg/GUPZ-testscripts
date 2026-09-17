@@ -126,7 +126,7 @@
       "description": "The request falls outside the scope in the token. The caller receives a 403 with error=insufficient_scope, a scope parameter naming what is needed, and an OperationOutcome with code forbidden."
     }
   ],
-  "version": "0.1.0",
+  "version": "0.1.0-connectathon.1",
   "status": "active",
   "publisher": "GUPZ",
   "name": "Dva_02_handles_refusal",

@@ -380,7 +380,7 @@
       "description": "Test XIS Server to have control over the reference obtained from the DocumentReference.content.attachment.url. This test resolves the fullURL without an authorization header. The request should fail to confirm that the XIS has control over the context. The expected response code is not 200 (OK) but should be e.g. 401, 403 or 404."
     }
   ],
-  "version": "0.1.0",
+  "version": "0.1.0-connectathon.1",
   "status": "active",
   "publisher": "GUPZ",
   "name": "Xis_2_5_serve_1_pdfa_NoManifest_json",

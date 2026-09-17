@@ -320,7 +320,7 @@
       "description": "Four asserts have to warn here and two have to stay green: the header is there and it uses the Bearer scheme, so those two say nothing about the envelope."
     }
   ],
-  "version": "0.1.0",
+  "version": "0.1.0-connectathon.1",
   "status": "active",
   "publisher": "GUPZ",
   "name": "Self_dva_02_bare_jws",

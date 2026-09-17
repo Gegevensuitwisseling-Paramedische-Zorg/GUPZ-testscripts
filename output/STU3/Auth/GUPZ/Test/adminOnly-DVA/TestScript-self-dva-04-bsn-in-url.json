@@ -170,7 +170,7 @@
       "description": "Three asserts have to warn: the one on patient, the one on subject:identifier, and the one on the naming system. The two on subject and patient:identifier have to stay green, because those parameters are not in this url."
     }
   ],
-  "version": "0.1.0",
+  "version": "0.1.0-connectathon.1",
   "status": "active",
   "publisher": "GUPZ",
   "name": "Self_dva_04_bsn_in_url",

@@ -92,7 +92,7 @@
       "description": "A signed and encrypted token is accepted"
     }
   ],
-  "version": "0.1.0",
+  "version": "0.1.0-connectathon.1",
   "status": "active",
   "publisher": "GUPZ",
   "name": "Auth_01_signed_and_encrypted_token",

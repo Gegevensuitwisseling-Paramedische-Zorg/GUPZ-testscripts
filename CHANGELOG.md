@@ -10,6 +10,8 @@ Every release names the open-GUPZ version it was written against. See
 
 ## Unreleased
 
+## [0.1.0-connectathon.1] - 2026-09-17
+
 ### Changed
 
 - A refused token is now asserted on the status, the `WWW-Authenticate`

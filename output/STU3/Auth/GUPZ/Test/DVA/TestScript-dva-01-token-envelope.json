@@ -327,7 +327,7 @@
       "description": "Any search on DocumentReference will do. The request is incidental; the token the caller chose to send with it is the subject. Nothing is asserted about the response."
     }
   ],
-  "version": "0.1.0",
+  "version": "0.1.0-connectathon.1",
   "status": "active",
   "publisher": "GUPZ",
   "name": "Dva_01_token_envelope",

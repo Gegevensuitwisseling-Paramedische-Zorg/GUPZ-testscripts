@@ -15,7 +15,7 @@ canonical: http://gupz.nl/fhir
 name: GUPZTestscripts
 title: GUPZ TestScripts
 status: draft
-version: 0.1.0
+version: 0.1.0-connectathon.1
 fhirVersion: 5.0.0
 copyrightYear: 2026+
 releaseLabel: ci-build

@@ -97,7 +97,7 @@
       "description": "A request without an Authorization header is refused"
     }
   ],
-  "version": "0.1.0",
+  "version": "0.1.0-connectathon.1",
   "status": "active",
   "publisher": "GUPZ",
   "name": "Auth_04_no_authorization_header",

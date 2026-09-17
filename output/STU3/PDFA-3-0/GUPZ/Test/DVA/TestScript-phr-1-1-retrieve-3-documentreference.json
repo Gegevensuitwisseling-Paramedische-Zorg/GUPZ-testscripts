@@ -145,7 +145,7 @@
       "description": "Query all current DocumentReference resources."
     }
   ],
-  "version": "0.1.0",
+  "version": "0.1.0-connectathon.1",
   "status": "active",
   "publisher": "GUPZ",
   "name": "Phr_1_1_retrieve_3_documentreference",

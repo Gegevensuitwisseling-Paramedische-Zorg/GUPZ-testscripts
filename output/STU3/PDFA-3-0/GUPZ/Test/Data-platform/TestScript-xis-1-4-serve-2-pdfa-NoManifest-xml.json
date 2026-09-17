@@ -430,7 +430,7 @@
       "description": "Serve second PDFA document through a Binary resource."
     }
   ],
-  "version": "0.1.0",
+  "version": "0.1.0-connectathon.1",
   "status": "active",
   "publisher": "GUPZ",
   "name": "Xis_1_4_serve_2_pdfa_NoManifest_xml",

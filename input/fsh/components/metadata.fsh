@@ -11,7 +11,7 @@
 
 RuleSet: metadata(id)
 * id = "{id}"
-* version = "0.1.0"
+* version = "0.1.0-connectathon.1"
 * status = #active
 * publisher = "GUPZ"
 * contact.name = "GUPZ"

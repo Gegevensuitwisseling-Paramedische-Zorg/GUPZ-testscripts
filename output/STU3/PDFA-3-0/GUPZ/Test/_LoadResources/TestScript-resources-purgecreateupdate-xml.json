@@ -650,7 +650,7 @@
       "description": "Load test resources using the update (PUT) operation of the target FHIR server for use in testing. All resource ids are pre-defined. The target FHIR server is expected to support resource create via the update (PUT) operation for client assigned ids."
     }
   ],
-  "version": "0.1.0",
+  "version": "0.1.0-connectathon.1",
   "status": "active",
   "publisher": "GUPZ",
   "name": "Load_Test_Resources_Purge_Create_Update_XML",

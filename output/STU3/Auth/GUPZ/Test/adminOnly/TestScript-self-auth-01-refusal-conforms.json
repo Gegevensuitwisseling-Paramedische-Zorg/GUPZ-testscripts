@@ -106,7 +106,7 @@
       "description": "The answer conforms, so every assert should be green."
     }
   ],
-  "version": "0.1.0",
+  "version": "0.1.0-connectathon.1",
   "status": "active",
   "publisher": "GUPZ",
   "name": "Self_auth_01_refusal_conforms",

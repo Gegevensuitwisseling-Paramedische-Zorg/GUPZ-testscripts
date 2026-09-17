@@ -179,7 +179,7 @@
       "description": "The same search with the token of the second patient returns that patient's documents"
     }
   ],
-  "version": "0.1.0",
+  "version": "0.1.0-connectathon.1",
   "status": "active",
   "publisher": "GUPZ",
   "name": "Auth_11_patient_scoping",

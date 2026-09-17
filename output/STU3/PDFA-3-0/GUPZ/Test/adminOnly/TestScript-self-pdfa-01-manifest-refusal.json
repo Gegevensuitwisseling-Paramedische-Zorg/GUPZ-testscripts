@@ -139,7 +139,7 @@
       "description": "Every assert has to pass, except the one on the profile. That one cannot run here: profile validation reads the payload from the proxy log and a stub never reaches the proxy. It is a warning for that reason."
     }
   ],
-  "version": "0.1.0",
+  "version": "0.1.0-connectathon.1",
   "status": "active",
   "publisher": "GUPZ",
   "name": "Self_pdfa_01_manifest_refusal",

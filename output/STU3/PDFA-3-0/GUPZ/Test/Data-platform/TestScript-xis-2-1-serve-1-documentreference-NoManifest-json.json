@@ -316,7 +316,7 @@
       "description": "Serve all current DocumentReference resources."
     }
   ],
-  "version": "0.1.0",
+  "version": "0.1.0-connectathon.1",
   "status": "active",
   "publisher": "GUPZ",
   "name": "Xis_2_1_serve_1_documentreference_NoManifest_json",
