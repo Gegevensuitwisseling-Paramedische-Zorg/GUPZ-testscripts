@@ -25,6 +25,9 @@ Every release names the open-GUPZ version it was written against. See
   script that provisions the fixtures.
 - Documentation in `docs/`: test sets, requirement coverage, decisions, open
   points and authoring.
+- `UPSTREAM.md` names what the PDF/A sets test against: the MedMij PDF/A
+  information standard 3.0, its functional and technical design, and the FHIR
+  package `nictiz.fhir.nl.stu3.zib2017` 2.3.2.
 - Three hidden self test sets that check this repository's own asserts: whether
   the refusal asserts fire and react, whether the DocumentManifest asserts can
   be satisfied at all, and whether the token asserts of the Auth DVA set do

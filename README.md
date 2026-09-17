@@ -21,6 +21,10 @@ describes three self test sets, for an admin to run: they check the asserts of
 this repository against stubbed answers instead of a real system, and
 `adminOnly` hides them from everyone else.
 
+The PDF/A sets test the MedMij PDF/A information standard 3.0 on FHIR STU3; the
+Auth sets derive from `security.md` in open-GUPZ. The designs and the FHIR
+package are named in [UPSTREAM.md](UPSTREAM.md).
+
 ## Layout
 
 ```

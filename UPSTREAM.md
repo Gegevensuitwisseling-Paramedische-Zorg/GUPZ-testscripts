@@ -5,6 +5,22 @@ Nictiz. This file records what was imported, so that our changes stay separable
 and so that an update from Nictiz, or a contribution back to them, stays
 possible.
 
+## What is tested
+
+| What | Value |
+|---|---|
+| Information standard | MedMij PDF/A 3.0, the version the `PDFA-3-0` path names |
+| Functional design | [MedMij:V2020.01/OntwerpPDFA](https://informatiestandaarden.nictiz.nl/wiki/MedMij:V2020.01/OntwerpPDFA) |
+| Technical design | [MedMij:V2020.01/FHIR_PDFA](https://informatiestandaarden.nictiz.nl/wiki/MedMij:V2020.01/FHIR_PDFA) |
+| FHIR version | STU3 |
+| FHIR package | `nictiz.fhir.nl.stu3.zib2017` 2.3.2, declared in every `properties.json` |
+
+Two numbers that are easy to confuse: 3.0 is the version of the information
+standard, 2026.30 is the Nictiz patchrelease the scripts were taken from.
+
+This covers the PDF/A sets. The Auth sets are not part of an information
+standard: they derive from `security.md` in open-GUPZ.
+
 ## What was imported
 
 | Property | Value |
