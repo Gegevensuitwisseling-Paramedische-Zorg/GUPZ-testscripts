@@ -158,7 +158,8 @@ The warning becomes hard if GUPZ confirms that inline data is not allowed.
 ### D-13 The provisioning set is trimmed
 
 Down from three patients, nine DocumentReference and six Binary resources to two
-patients, seven DocumentReference and four Binary resources.
+patients, seven DocumentReference and six Binary resources. The last two
+Binary resources were left out until D-34 gave them to `XXX_Schulte`.
 
 - The five DocumentManifest fixtures are out. No GUPZ scenario reads them; 2.2
   and 2.3 assert a 404 (D-04) and never retrieve a manifest by id. A conformant
@@ -448,6 +449,58 @@ one that catches a BSN passed under a name nobody thought of.
 SELF-DVA-04 exercises all five. Whether the naming system can be caught at all
 depends on how the recorded url is encoded, which is what that scenario answers.
 
+### D-34 The fixtures use the GUPZ document types and disciplines
+
+[`pdfa.md`][pdfa-types] prescribes six LOINC codes for `DocumentReference.type`,
+seven [Vektis codes][pdfa-disc] for `context.practiceSetting`, and a [readable
+title][pdfa-title] in `description` and `attachment.title`. The imported
+fixtures carried American LOINC discharge summaries and consult notes, no
+practiceSetting and English titles. The seven loaded DocumentReference fixtures
+follow the specification instead:
+
+| Fixture | Patient | Status | Type | practiceSetting |
+|---|---|---|---|---|
+| `kwalificatie1` | XXX_Baltus | current | `18776-5` Behandelplan | `0400` Fysiotherapie |
+| `kwalificatie2` | XXX_Baltus | current | `51848-0` Paramedische diagnose | `0400` Fysiotherapie |
+| `kwalificatie3` | XXX_Baltus | current | `11488-4` Antwoord op uw vraag | `0400` Fysiotherapie |
+| `kwalificatie4` | XXX_Schulte | current | `51847-2` Diagnostiekplan | `0500` Logopedie |
+| `kwalificatie5` | XXX_Schulte | entered-in-error | `34133-9` Update | `0500` Logopedie |
+| `kwalificatie6` | XXX_Schulte | superseded | `51847-2` Diagnostiekplan | `0500` Logopedie |
+| `kwalificatie7` | XXX_Schulte | superseded | `86530-3` DT-bericht | `0500` Logopedie |
+
+- No type occurs for both patients, so a code still tells them apart. AUTH-11
+  relies on `18776-5` for XXX_Baltus and `51847-2` for XXX_Schulte.
+- The title is the GUPZ name of the type, a space and the Vektis display, for
+  example `Behandelplan Fysiotherapeuten, niet nader gespecificeerd`.
+- `pdfa.md` names the Vektis codes but not their system. The fixtures use
+  `urn:oid:2.16.840.1.113883.2.4.6.7`, the Vektis list of care provider
+  specialisms (COD016-VEKT). That is a choice of this repository, so no assert
+  checks the system.
+- `DocumentReference.class` is not touched. `pdfa.md` says nothing about it.
+- `kwalificatie4` and `kwalificatie5` pointed at a PDF on the Nictiz website.
+  They now point at `Binary/pdfa-binary5` and `Binary/pdfa-binary6`, which
+  `_LoadResources` loads, because [`pdfa.md`][pdfa] requires a `Binary`
+  (D-01.3). Those two Binary fixtures came with the import and were not
+  loaded before.
+- The fixtures of `XXX_Ellens`, the DocumentManifest and the Bundle fixtures are
+  not loaded (D-13) and are left as imported.
+
+The asserts in AUTH-11 and in scenarios 1.1, 1.4, 2.1 and 2.5 that identified a
+document by its imported code use the new codes. Those scenarios no longer
+compare identical to the Nictiz original.
+
+### D-35 Three asserts test how a document is coded
+
+The rules of D-34 are a MUST and say what has to be there, so they are asserted
+hard on scenarios 1.1, 1.4 and 2.1, next to the two of D-12. The asserts sit in
+`components/asserts-gupz.fsh`.
+
+| Assert | Ground |
+|---|---|
+| Every `type` carries one of the six LOINC codes | [Document types][pdfa-types] |
+| Every `context.practiceSetting` carries one of the seven Vektis codes, matched on the code alone | [Disciplines coderen][pdfa-disc]. The system is not named (D-34) |
+| `description` and every `attachment.title` equal the GUPZ name of the type, a space and the Vektis display | [Leesbare document titels][pdfa-title]. The expected title is built from the codes, not from the displays in the response |
+
 ### D-25 Everything is in English
 
 Documentation, comments, commit messages and the TestScripts themselves. The
@@ -457,6 +510,9 @@ specifications in Dutch.
 [op04]: open-points.md#op-04-test-data-specification
 [semver]: https://semver.org/spec/v2.0.0.html
 [pdfa]: https://github.com/Gegevensuitwisseling-Paramedische-Zorg/open-GUPZ/blob/main/docs/api/pdfa.md
+[pdfa-types]: https://github.com/Gegevensuitwisseling-Paramedische-Zorg/open-GUPZ/blob/main/docs/api/pdfa.md#document-types
+[pdfa-disc]: https://github.com/Gegevensuitwisseling-Paramedische-Zorg/open-GUPZ/blob/main/docs/api/pdfa.md#disciplines-coderen
+[pdfa-title]: https://github.com/Gegevensuitwisseling-Paramedische-Zorg/open-GUPZ/blob/main/docs/api/pdfa.md#leesbare-document-titels
 [security]: https://github.com/Gegevensuitwisseling-Paramedische-Zorg/open-GUPZ/blob/main/docs/api/security.md
 [medmij]: https://github.com/Gegevensuitwisseling-Paramedische-Zorg/open-GUPZ/blob/main/docs/architecture/medmij.md
 [i27]: https://github.com/Gegevensuitwisseling-Paramedische-Zorg/open-GUPZ/issues/27

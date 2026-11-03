@@ -13,7 +13,7 @@
           <tr>
             <th>Type</th>
             <td>
-              <span title="Neurological surgery Discharge summary (68688-1 - LOINC)">Neurological surgery Discharge summary</span>
+              <span title="Plan of Care Note (18776-5 - LOINC)">Plan of Care Note</span>
             </td>
           </tr>
           <tr>
@@ -26,12 +26,12 @@
           </tr>
           <tr>
             <th>Omschrijving</th>
-            <td>Anterior Cervical Discectomy Fusion - Discharge Summary</td>
+            <td>Behandelplan Fysiotherapeuten, niet nader gespecificeerd</td>
           </tr>
           <tr>
             <th>Inhoud</th>
             <td>
-              <img src="Binary/pdfa-binary1" alt="" title="Example PDF - Anterior Cervical Discectomy Fusion - Discharge Summary"/>
+              <img src="Binary/pdfa-binary1" alt="" title="Behandelplan Fysiotherapeuten, niet nader gespecificeerd"/>
             </td>
           </tr>
         </tbody>
@@ -67,8 +67,8 @@
   <type>
     <coding>
       <system value="http://loinc.org"/>
-      <code value="68688-1"/>
-      <display value="Neurological surgery Discharge summary"/>
+      <code value="18776-5"/>
+      <display value="Plan of Care Note"/>
     </coding>
   </type>
   <class>
@@ -87,7 +87,7 @@
     <reference value="#p1"/>
     <display value="A.F. Snijder"/>
   </author>
-  <description value="Anterior Cervical Discectomy Fusion - Discharge Summary"/>
+  <description value="Behandelplan Fysiotherapeuten, niet nader gespecificeerd"/>
   <securityLabel>
     <coding>
       <system value="http://hl7.org/fhir/v3/Confidentiality"/>
@@ -100,7 +100,16 @@
       <contentType value="application/pdf"/>
       <language value="en"/>
       <url value="Binary/pdfa-binary1"/>
-      <title value="Example PDF - Anterior Cervical Discectomy Fusion - Discharge Summary"/>
+      <title value="Behandelplan Fysiotherapeuten, niet nader gespecificeerd"/>
     </attachment>
   </content>
+  <context>
+    <practiceSetting>
+      <coding>
+        <system value="urn:oid:2.16.840.1.113883.2.4.6.7"/>
+        <code value="0400"/>
+        <display value="Fysiotherapeuten, niet nader gespecificeerd"/>
+      </coding>
+    </practiceSetting>
+  </context>
 </DocumentReference>

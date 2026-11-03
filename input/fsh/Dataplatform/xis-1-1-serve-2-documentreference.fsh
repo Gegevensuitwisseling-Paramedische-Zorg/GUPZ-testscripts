@@ -42,21 +42,21 @@ RuleSet: xis-1-1-serve-2-documentreference-NoManifest-body
   * stopTestOnFail = false
   * warningOnly = false
 * test[=].action[+].assert
-  * description = "Confirm that the returned Bundle contains a DocumentReference with LOINC code 68688-1."
+  * description = "Confirm that the returned Bundle contains a DocumentReference with LOINC code 18776-5."
   * direction = #response
-  * expression = "Bundle.entry.select(resource as DocumentReference).where(type.coding.where(code = '68688-1')).exists()"
+  * expression = "Bundle.entry.select(resource as DocumentReference).where(type.coding.where(code = '18776-5')).exists()"
   * stopTestOnFail = false
   * warningOnly = true
 * test[=].action[+].assert
-  * description = "Confirm that the returned Bundle contains a DocumentReference with LOINC code 34781-5."
+  * description = "Confirm that the returned Bundle contains a DocumentReference with LOINC code 51848-0."
   * direction = #response
-  * expression = "Bundle.entry.select(resource as DocumentReference).where(type.coding.where(code = '34781-5')).exists()"
+  * expression = "Bundle.entry.select(resource as DocumentReference).where(type.coding.where(code = '51848-0')).exists()"
   * stopTestOnFail = false
   * warningOnly = true
 * test[=].action[+].assert
   * description = "Confirm that the returned DocumentReference does not have a similar masterIdentifier as the corresponding fixture."
   * direction = #response
-  * expression = "Bundle.entry.select(resource as DocumentReference).where(type.coding.where(code ='68688-1')).masterIdentifier.value"
+  * expression = "Bundle.entry.select(resource as DocumentReference).where(type.coding.where(code ='18776-5')).masterIdentifier.value"
   * operator = #notEquals
   * stopTestOnFail = false
   * value = "urn:oid:1.2.276.0.7230010.3.1.2.1787205428.3024.1522314975.220898"
@@ -64,13 +64,14 @@ RuleSet: xis-1-1-serve-2-documentreference-NoManifest-body
 * test[=].action[+].assert
   * description = "Confirm that the returned DocumentReference does not have a similar masterIdentifier as the corresponding fixture."
   * direction = #response
-  * expression = "Bundle.entry.select(resource as DocumentReference).where(type.coding.where(code ='34781-5')).masterIdentifier.value"
+  * expression = "Bundle.entry.select(resource as DocumentReference).where(type.coding.where(code ='51848-0')).masterIdentifier.value"
   * operator = #notEquals
   * stopTestOnFail = false
   * value = "urn:oid:1.2.276.0.7230010.3.1.2.1787205428.3024.1522314975.220899"
   * warningOnly = true
 
 * insert assertsDocumentByBinaryReference
+* insert assertsDocumentCoding
 
 Instance: xis-1-1-serve-2-documentreference-NoManifest-json
 InstanceOf: TestScript

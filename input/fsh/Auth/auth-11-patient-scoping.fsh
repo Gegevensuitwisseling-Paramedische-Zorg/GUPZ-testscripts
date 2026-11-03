@@ -19,15 +19,15 @@ Usage: #definition
 * insert headersWithBearerToken(auth-11-token-patient-1)
 * insert assertsRequestAccepted
 * test[=].action[+].assert
-  * description = "Confirm that the returned Bundle contains a DocumentReference with LOINC code 68688-1, which belongs to the first test patient."
+  * description = "Confirm that the returned Bundle contains a DocumentReference with LOINC code 18776-5, which belongs to the first test patient."
   * direction = #response
-  * expression = "Bundle.entry.select(resource as DocumentReference).where(type.coding.where(code = '68688-1')).exists()"
+  * expression = "Bundle.entry.select(resource as DocumentReference).where(type.coding.where(code = '18776-5')).exists()"
   * stopTestOnFail = false
   * warningOnly = false
 * test[=].action[+].assert
-  * description = "Confirm that the returned Bundle contains no DocumentReference with LOINC code 68626-1, which belongs to the second test patient. The specification requires a patient specific token, so a response holding the other patient's documents is not conformant."
+  * description = "Confirm that the returned Bundle contains no DocumentReference with LOINC code 51847-2, which belongs to the second test patient. The specification requires a patient specific token, so a response holding the other patient's documents is not conformant."
   * direction = #response
-  * expression = "Bundle.entry.select(resource as DocumentReference).where(type.coding.where(code = '68626-1')).exists().not()"
+  * expression = "Bundle.entry.select(resource as DocumentReference).where(type.coding.where(code = '51847-2')).exists().not()"
   * stopTestOnFail = false
   * warningOnly = false
 
@@ -38,14 +38,14 @@ Usage: #definition
 * insert headersWithBearerToken(auth-11-token-patient-2)
 * insert assertsRequestAccepted
 * test[=].action[+].assert
-  * description = "Confirm that the returned Bundle contains a DocumentReference with LOINC code 68626-1, which belongs to the second test patient."
+  * description = "Confirm that the returned Bundle contains a DocumentReference with LOINC code 51847-2, which belongs to the second test patient."
   * direction = #response
-  * expression = "Bundle.entry.select(resource as DocumentReference).where(type.coding.where(code = '68626-1')).exists()"
+  * expression = "Bundle.entry.select(resource as DocumentReference).where(type.coding.where(code = '51847-2')).exists()"
   * stopTestOnFail = false
   * warningOnly = false
 * test[=].action[+].assert
-  * description = "Confirm that the returned Bundle contains no DocumentReference with LOINC code 68688-1, which belongs to the first test patient. Not conformant for the same reason as in AUTH-11a."
+  * description = "Confirm that the returned Bundle contains no DocumentReference with LOINC code 18776-5, which belongs to the first test patient. Not conformant for the same reason as in AUTH-11a."
   * direction = #response
-  * expression = "Bundle.entry.select(resource as DocumentReference).where(type.coding.where(code = '68688-1')).exists().not()"
+  * expression = "Bundle.entry.select(resource as DocumentReference).where(type.coding.where(code = '18776-5')).exists().not()"
   * stopTestOnFail = false
   * warningOnly = false

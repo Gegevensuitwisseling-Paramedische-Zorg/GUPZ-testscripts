@@ -58,17 +58,17 @@ scenario reports three.
 
 ## OP-03 Scenario 2.5
 
-Scenario 2.5 serves a document over an ordinary HTTP URL instead of a `Binary`.
-A platform implementing [`pdfa.md`][pdfa] cannot pass it (D-01.3), and one that
-does pass it is serving documents in a way GUPZ has ruled out. The run of 21
-August 2026 confirmed it from the other side: the scenario failed on its control
-test, a request without an `Authorization` header. That check is worth having
-and does not depend on how the document is served.
+Scenario 2.5 is written for a document served over an ordinary HTTP URL instead
+of a `Binary`, which a platform implementing [`pdfa.md`][pdfa] does not do
+(D-01.3). The run of 21 August 2026 confirmed it from the other side: the
+scenario failed on its control test, a request without an `Authorization`
+header. That check is worth having and does not depend on how the document is
+served.
 
-There is a second obstacle. The url the scenario follows
-comes from the fixture and points at a host outside the test environment, so the
-operation fails before an assert is reached. The scenario cannot be exercised
-here at all.
+The url the scenario follows comes from the first current document of
+`XXX_Schulte`. Since D-34 that is a `Binary` on the server behind the tests, so
+the scenario reaches its asserts there; it then retrieves a `Binary` the way 1.4
+does.
 
 Three options, none chosen:
 
@@ -84,12 +84,8 @@ decided in favour of 1.4 without saying what should happen to 2.5.
 
 ## OP-04 Test data specification
 
-The imported fixtures cannot all be conformant at once. `XXX_Baltus` follows the
-GUPZ rule; `XXX_Schulte` deliberately breaks it, because her only current
-document, DocumentReference `kwalificatie4`, carries a plain HTTPS URL to a PDF
-on the Nictiz website rather than a Binary reference. Nictiz built that patient
-for the 2.5 flow. So scenario 2.1 has one red assert (D-12) that says something
-about the fixture and nothing about the platform, as a run confirms.
+The fixtures follow [`pdfa.md`][pdfa] on the document reference, the type, the
+discipline and the title (D-34).
 
 Against a supplier the fixtures do not apply at all: the data comes out of their
 own PARIS, and `_LoadResources` is not expected to work there
@@ -116,22 +112,10 @@ and
 instead of ten days. Same for the other date windows, in `xis-1-2`, `xis-2-3`
 and `xis-2-4`.
 
-**The document type is part of that specification, and it is being decided by
-suppliers.** The imported fixtures type their documents with American LOINC
-discharge summaries, `68688-1` for the first test patient and `68626-1` for the
-second, which three of our scripts use to tell the two patients apart. Nothing
-paramedical about them, and `docs/terminology/documenttypes.md` in open-GUPZ is
-empty, so one supplier has picked codes of its own for the connectathon:
-
-| Document | System | Code | Display |
-|---|---|---|---|
-| Behandelplan | SNOMED CT | `11261000146100` | behandelplannotitie |
-| Paramedische diagnose | SNOMED CT | `9441000146103` | diagnostisch-onderzoek-documentatie |
-
-SNOMED is not a stretch here: two of the imported fixtures already type their
-documents with the Dutch SNOMED extension. The point is who decides. Until GUPZ
-names the codes, an assert on a document type either follows a supplier or
-follows Nictiz, and neither is the specification.
+**The document type is settled.** [`pdfa.md`][pdfa] prescribes the codes and
+the fixtures use them (D-34). A supplier's test data needs a document of each
+patient with a type the other patient does not have, or AUTH-11 cannot tell
+the responses apart.
 
 ## OP-05 Key material
 

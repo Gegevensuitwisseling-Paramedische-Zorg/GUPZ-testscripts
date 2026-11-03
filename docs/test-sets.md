@@ -81,14 +81,26 @@ the data platform answers, Conformancelab calls.
 | 3.1 Receive one document | the server receives a document | [PDF/A Ontvangen][no] | no | D-01.1 |
 | 3.2 Receive two documents | the server receives two documents | [PDF/A Ontvangen][no] | no | D-01.1 |
 
-Test data: two fictional persons from the Nictiz qualification. Ellen XXX_Baltus
-(fBSN 999910796) with two DocumentReferences and no manifest, and Eva
-XXX_Schulte (fBSN 999910784) with two DocumentReferences and three
-DocumentManifests. Fixtures in `_reference/resources`. See
+Test data: two fictional persons from the Nictiz qualification, Ellen
+XXX_Baltus (fBSN 999910796) and Eva XXX_Schulte (fBSN 999910784). Their
+documents are coded the GUPZ way (D-34):
+
+| Patient | Status | Type | practiceSetting | Binary |
+|---|---|---|---|---|
+| XXX_Baltus | current | `18776-5` Behandelplan | `0400` | `pdfa-binary1` |
+| XXX_Baltus | current | `51848-0` Paramedische diagnose | `0400` | `pdfa-binary2` |
+| XXX_Baltus | current | `11488-4` Antwoord op uw vraag | `0400` | an unknown id, on purpose |
+| XXX_Schulte | current | `51847-2` Diagnostiekplan | `0500` | `pdfa-binary5` |
+| XXX_Schulte | entered-in-error | `34133-9` Update | `0500` | `pdfa-binary6` |
+| XXX_Schulte | superseded | `51847-2` Diagnostiekplan | `0500` | `pdfa-binary3` |
+| XXX_Schulte | superseded | `86530-3` DT-bericht | `0500` | `pdfa-binary4` |
+
+Fixtures in `_reference/resources`. See
 [OP-04](open-points.md#op-04-test-data-specification) for why these do not hold
 against a supplier.
 
-Two GUPZ asserts are added to 1.1, 1.4 and 2.1, see D-12.
+GUPZ asserts are added to 1.1, 1.4 and 2.1: two on the Binary reference (D-12)
+and three on the type, the discipline and the title (D-35).
 
 ## PDF/A DVA
 
@@ -116,7 +128,7 @@ DVA set.
 ## PDF/A _LoadResources
 
 Writes the fixtures to the target server: two patients, seven DocumentReference
-and four Binary resources, purged first and then PUT with client assigned ids
+and six Binary resources, purged first and then PUT with client assigned ids
 (D-13). Run it before the Data platform set, or every scenario fails on missing
 data rather than on behaviour. It also feeds the client aimed set, which reads
 from the same server.
@@ -130,7 +142,7 @@ test data comes out of their own PARIS; see
 [OP-04](open-points.md#op-04-test-data-specification).
 
 Generated from FSH in `input/fsh/LoadResources/`, with its building blocks in
-`components/provisioning.fsh`. Twelve fixtures, twelve writes and two purges
+`components/provisioning.fsh`. Fifteen fixtures, fifteen writes and two purges
 come down to a handful of parameterised inserts, which matters because this file
 gets rewritten wholesale once GUPZ has test data of its own.
 
@@ -173,9 +185,9 @@ The token is the only thing that selects a patient, so the same request sent
 with two different tokens has to produce two different result sets. AUTH-11
 sends `?status=current` twice, once per test patient, and checks each response
 both for a document that patient has and for the absence of a document only the
-other patient has. Ellen XXX_Baltus is identified by LOINC 68688-1 and Eva
-XXX_Schulte by 68626-1; both codes appear for one patient only in the Nictiz
-fixtures.
+other patient has. Ellen XXX_Baltus is identified by LOINC 18776-5 and Eva
+XXX_Schulte by 51847-2; each code appears for one patient only in the fixtures
+(D-34).
 
 All four asserts are hard. It began as a refusal case, sending a request about
 one patient with a token for another, until [#73][i73] closed on 18 August 2026

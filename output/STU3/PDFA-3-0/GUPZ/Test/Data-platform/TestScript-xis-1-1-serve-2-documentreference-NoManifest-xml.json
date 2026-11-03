@@ -265,18 +265,18 @@
         },
         {
           "assert": {
-            "description": "Confirm that the returned Bundle contains a DocumentReference with LOINC code 68688-1.",
+            "description": "Confirm that the returned Bundle contains a DocumentReference with LOINC code 18776-5.",
             "direction": "response",
-            "expression": "Bundle.entry.select(resource as DocumentReference).where(type.coding.where(code = '68688-1')).exists()",
+            "expression": "Bundle.entry.select(resource as DocumentReference).where(type.coding.where(code = '18776-5')).exists()",
             "stopTestOnFail": false,
             "warningOnly": true
           }
         },
         {
           "assert": {
-            "description": "Confirm that the returned Bundle contains a DocumentReference with LOINC code 34781-5.",
+            "description": "Confirm that the returned Bundle contains a DocumentReference with LOINC code 51848-0.",
             "direction": "response",
-            "expression": "Bundle.entry.select(resource as DocumentReference).where(type.coding.where(code = '34781-5')).exists()",
+            "expression": "Bundle.entry.select(resource as DocumentReference).where(type.coding.where(code = '51848-0')).exists()",
             "stopTestOnFail": false,
             "warningOnly": true
           }
@@ -285,7 +285,7 @@
           "assert": {
             "description": "Confirm that the returned DocumentReference does not have a similar masterIdentifier as the corresponding fixture.",
             "direction": "response",
-            "expression": "Bundle.entry.select(resource as DocumentReference).where(type.coding.where(code ='68688-1')).masterIdentifier.value",
+            "expression": "Bundle.entry.select(resource as DocumentReference).where(type.coding.where(code ='18776-5')).masterIdentifier.value",
             "operator": "notEquals",
             "stopTestOnFail": false,
             "value": "urn:oid:1.2.276.0.7230010.3.1.2.1787205428.3024.1522314975.220898",
@@ -296,7 +296,7 @@
           "assert": {
             "description": "Confirm that the returned DocumentReference does not have a similar masterIdentifier as the corresponding fixture.",
             "direction": "response",
-            "expression": "Bundle.entry.select(resource as DocumentReference).where(type.coding.where(code ='34781-5')).masterIdentifier.value",
+            "expression": "Bundle.entry.select(resource as DocumentReference).where(type.coding.where(code ='51848-0')).masterIdentifier.value",
             "operator": "notEquals",
             "stopTestOnFail": false,
             "value": "urn:oid:1.2.276.0.7230010.3.1.2.1787205428.3024.1522314975.220899",
@@ -319,6 +319,33 @@
             "expression": "Bundle.entry.select(resource as DocumentReference).content.attachment.data.exists().not()",
             "stopTestOnFail": false,
             "warningOnly": true
+          }
+        },
+        {
+          "assert": {
+            "description": "Confirm that every returned DocumentReference codes its type with one of the six LOINC codes pdfa.md prescribes: 18776-5, 51847-2, 51848-0, 86530-3, 34133-9 or 11488-4.",
+            "direction": "response",
+            "expression": "Bundle.entry.select(resource as DocumentReference).all(type.coding.where(system = 'http://loinc.org' and code in ('18776-5' | '51847-2' | '51848-0' | '86530-3' | '34133-9' | '11488-4')).exists())",
+            "stopTestOnFail": false,
+            "warningOnly": false
+          }
+        },
+        {
+          "assert": {
+            "description": "Confirm that every returned DocumentReference codes context.practiceSetting with one of the seven Vektis codes pdfa.md prescribes: 0400, 0500, 0725, 2405, 8805, 4405 or 9013.",
+            "direction": "response",
+            "expression": "Bundle.entry.select(resource as DocumentReference).all(context.practiceSetting.coding.where(code in ('0400' | '0500' | '0725' | '2405' | '8805' | '4405' | '9013')).exists())",
+            "stopTestOnFail": false,
+            "warningOnly": false
+          }
+        },
+        {
+          "assert": {
+            "description": "Confirm that every returned DocumentReference carries the readable title pdfa.md prescribes, in description and in every attachment.title: the GUPZ name of the document type, a space, and the display of the practiceSetting, for example 'Behandelplan Fysiotherapeuten, niet nader gespecificeerd'.",
+            "direction": "response",
+            "expression": "Bundle.entry.select(resource as DocumentReference).all(description = (iif(type.coding.where(code = '18776-5').exists(), 'Behandelplan', iif(type.coding.where(code = '51847-2').exists(), 'Diagnostiekplan', iif(type.coding.where(code = '51848-0').exists(), 'Paramedische diagnose', iif(type.coding.where(code = '86530-3').exists(), 'DT-bericht', iif(type.coding.where(code = '34133-9').exists(), 'Update', iif(type.coding.where(code = '11488-4').exists(), 'Antwoord op uw vraag', '')))))) + ' ' + iif(context.practiceSetting.coding.where(code = '0400').exists(), 'Fysiotherapeuten, niet nader gespecificeerd', iif(context.practiceSetting.coding.where(code = '0500').exists(), 'Logopedisten, niet nader gespecificeerd', iif(context.practiceSetting.coding.where(code = '0725').exists(), 'Oefentherapeuten', iif(context.practiceSetting.coding.where(code = '2405').exists(), 'Diëtetiek', iif(context.practiceSetting.coding.where(code = '8805').exists(), 'Ergotherapie', iif(context.practiceSetting.coding.where(code = '4405').exists(), 'Optometrie', iif(context.practiceSetting.coding.where(code = '9013').exists(), 'Huidtherapie', '')))))))) and content.attachment.title.distinct() = description)",
+            "stopTestOnFail": false,
+            "warningOnly": false
           }
         }
       ],
