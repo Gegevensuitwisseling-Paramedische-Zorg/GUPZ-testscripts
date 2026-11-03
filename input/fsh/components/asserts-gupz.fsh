@@ -32,14 +32,6 @@
 // hard would make a Nictiz artefact normative for GUPZ. It is a warning
 // instead. If GUPZ confirms that inline data is not allowed, this becomes a
 // hard assert.
-//
-// Be aware of what the hard assert does to scenario 2.1 with the imported
-// fixtures. The only current document of XXX_Schulte, DocumentReference
-// kwalificatie4, carries a plain https url to a PDF on the Nictiz site rather
-// than a Binary reference, because Nictiz built that patient for the scenario
-// 2.5 flow. Under the GUPZ rule that data is not conformant, so scenario 2.1
-// fails on it, and it fails on the test data and not on the platform. The fix
-// is GUPZ test data, not a softer assert. See docs/open-points.md OP-04.
 RuleSet: assertsDocumentByBinaryReference
 * test[=].action[+].assert
   * description = "Confirm that every returned DocumentReference offers its document as a reference to a Binary resource. pdfa.md requires the data platform to offer all document references this way, so that the Retrieve Document transaction reads the Binary."
@@ -53,3 +45,39 @@ RuleSet: assertsDocumentByBinaryReference
   * expression = "Bundle.entry.select(resource as DocumentReference).content.attachment.data.exists().not()"
   * stopTestOnFail = false
   * warningOnly = true
+
+
+// pdfa.md prescribes how a document reference is coded: DocumentReference.type
+// carries one of six LOINC codes, context.practiceSetting one of seven Vektis
+// codes, and description and attachment.title a readable title built from the
+// GUPZ name of the document type, a space, and the display of the discipline.
+// All three are a MUST and say what has to be there, so all three asserts are
+// hard. See docs/decisions.md D-35.
+//
+// The practiceSetting assert matches on the code alone. pdfa.md names the
+// Vektis codes but not the system they belong to, so asserting a system would
+// make our choice in the fixtures normative (D-34).
+//
+// The title is rebuilt from the codes rather than read from the displays in the
+// response, so a wrong display does not make a wrong title look right. A type
+// or discipline outside the tables yields no expected title, and the assert
+// fails on that document, which the two asserts before it already report.
+RuleSet: assertsDocumentCoding
+* test[=].action[+].assert
+  * description = "Confirm that every returned DocumentReference codes its type with one of the six LOINC codes pdfa.md prescribes: 18776-5, 51847-2, 51848-0, 86530-3, 34133-9 or 11488-4."
+  * direction = #response
+  * expression = "Bundle.entry.select(resource as DocumentReference).all(type.coding.where(system = 'http://loinc.org' and code in ('18776-5' | '51847-2' | '51848-0' | '86530-3' | '34133-9' | '11488-4')).exists())"
+  * stopTestOnFail = false
+  * warningOnly = false
+* test[=].action[+].assert
+  * description = "Confirm that every returned DocumentReference codes context.practiceSetting with one of the seven Vektis codes pdfa.md prescribes: 0400, 0500, 0725, 2405, 8805, 4405 or 9013."
+  * direction = #response
+  * expression = "Bundle.entry.select(resource as DocumentReference).all(context.practiceSetting.coding.where(code in ('0400' | '0500' | '0725' | '2405' | '8805' | '4405' | '9013')).exists())"
+  * stopTestOnFail = false
+  * warningOnly = false
+* test[=].action[+].assert
+  * description = "Confirm that every returned DocumentReference carries the readable title pdfa.md prescribes, in description and in every attachment.title: the GUPZ name of the document type, a space, and the display of the practiceSetting, for example 'Behandelplan Fysiotherapeuten, niet nader gespecificeerd'."
+  * direction = #response
+  * expression = "Bundle.entry.select(resource as DocumentReference).all(description = (iif(type.coding.where(code = '18776-5').exists(), 'Behandelplan', iif(type.coding.where(code = '51847-2').exists(), 'Diagnostiekplan', iif(type.coding.where(code = '51848-0').exists(), 'Paramedische diagnose', iif(type.coding.where(code = '86530-3').exists(), 'DT-bericht', iif(type.coding.where(code = '34133-9').exists(), 'Update', iif(type.coding.where(code = '11488-4').exists(), 'Antwoord op uw vraag', '')))))) + ' ' + iif(context.practiceSetting.coding.where(code = '0400').exists(), 'Fysiotherapeuten, niet nader gespecificeerd', iif(context.practiceSetting.coding.where(code = '0500').exists(), 'Logopedisten, niet nader gespecificeerd', iif(context.practiceSetting.coding.where(code = '0725').exists(), 'Oefentherapeuten', iif(context.practiceSetting.coding.where(code = '2405').exists(), 'Diëtetiek', iif(context.practiceSetting.coding.where(code = '8805').exists(), 'Ergotherapie', iif(context.practiceSetting.coding.where(code = '4405').exists(), 'Optometrie', iif(context.practiceSetting.coding.where(code = '9013').exists(), 'Huidtherapie', '')))))))) and content.attachment.title.distinct() = description)"
+  * stopTestOnFail = false
+  * warningOnly = false

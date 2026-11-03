@@ -13,7 +13,7 @@
           <tr>
             <th>Type</th>
             <td>
-              <span title="Neurology Consult note (34797-1 - LOINC)">Neurology Consult note</span>
+              <span title="Consult Note (11488-4 - LOINC)">Consult Note</span>
             </td>
           </tr>
           <tr>
@@ -26,12 +26,12 @@
           </tr>
           <tr>
             <th>Omschrijving</th>
-            <td>Neurology Consult note</td>
+            <td>Antwoord op uw vraag Fysiotherapeuten, niet nader gespecificeerd</td>
           </tr>
           <tr>
             <th>Inhoud</th>
             <td>
-              <img src="Binary/foutieve-en-onbekend-id" alt="" title="Example PDF - Neurology Consult note"/>
+              <img src="Binary/foutieve-en-onbekend-id" alt="" title="Antwoord op uw vraag Fysiotherapeuten, niet nader gespecificeerd"/>
             </td>
           </tr>
         </tbody>
@@ -67,8 +67,8 @@
   <type>
     <coding>
       <system value="http://loinc.org"/>
-      <code value="34797-1"/>
-      <display value="Neurology Consult note"/>
+      <code value="11488-4"/>
+      <display value="Consult Note"/>
     </coding>
   </type>
   <class>
@@ -87,7 +87,7 @@
     <reference value="#p1"/>
     <display value="F. Kiek"/>
   </author>
-  <description value="Neurology Consult note"/>
+  <description value="Antwoord op uw vraag Fysiotherapeuten, niet nader gespecificeerd"/>
   <securityLabel>
     <coding>
       <system value="http://hl7.org/fhir/v3/Confidentiality"/>
@@ -100,7 +100,16 @@
       <contentType value="application/pdf"/>
       <language value="en"/>
       <url value="Binary/foutieve-en-onbekend-id"/>
-      <title value="Example PDF - Neurology Consult note"/>
+      <title value="Antwoord op uw vraag Fysiotherapeuten, niet nader gespecificeerd"/>
     </attachment>
   </content>
+  <context>
+    <practiceSetting>
+      <coding>
+        <system value="urn:oid:2.16.840.1.113883.2.4.6.7"/>
+        <code value="0400"/>
+        <display value="Fysiotherapeuten, niet nader gespecificeerd"/>
+      </coding>
+    </practiceSetting>
+  </context>
 </DocumentReference>

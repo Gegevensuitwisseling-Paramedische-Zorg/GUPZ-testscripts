@@ -48,21 +48,22 @@ RuleSet: xis-2-1-serve-1-documentreference-NoManifest-body
   * stopTestOnFail = false
   * warningOnly = false
 * test[=].action[+].assert
-  * description = "Confirm that the returned Bundle contains a DocumentReference with LOINC code 68626-1."
+  * description = "Confirm that the returned Bundle contains a DocumentReference with LOINC code 51847-2."
   * direction = #response
-  * expression = "Bundle.entry.select(resource as DocumentReference).where(type.coding.where(code = '68626-1')).exists()"
+  * expression = "Bundle.entry.select(resource as DocumentReference).where(type.coding.where(code = '51847-2')).exists()"
   * stopTestOnFail = false
   * warningOnly = true
 * test[=].action[+].assert
   * description = "Confirm that the returned DocumentReference does not have a similar masterIdentifier as the corresponding fixture."
   * direction = #response
-  * expression = "Bundle.entry.select(resource as DocumentReference).where(type.coding.where(code ='68626-1')).masterIdentifier.value"
+  * expression = "Bundle.entry.select(resource as DocumentReference).where(type.coding.where(code ='51847-2')).masterIdentifier.value"
   * operator = #notEquals
   * stopTestOnFail = false
   * value = "urn:oid:1.2.276.0.7230010.3.1.2.1787205428.3024.1522314975.287798"
   * warningOnly = true
 
 * insert assertsDocumentByBinaryReference
+* insert assertsDocumentCoding
 
 Instance: xis-2-1-serve-1-documentreference-NoManifest-json
 InstanceOf: TestScript

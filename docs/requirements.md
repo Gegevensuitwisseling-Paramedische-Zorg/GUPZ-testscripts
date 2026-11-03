@@ -88,6 +88,9 @@ nothing to point at and the section of the specification does the identifying.
 | The platform is an MHD Document Responder for Find Document Reference and Retrieve Document, following MedMij FHIR IG PDF/A 3.0.53 | MUST | [FHIR Implementation Guide][pdfa-ig] | PDF/A 1.1, 1.2, 1.3, 1.5 and 2.1, and 1.4 for the retrieve half | peer-2 `dva-zoeken`, `dva-binary`, `dp-zoeken`, `dp-binary`, `dp-profiel` |
 | A request on DocumentManifest is answered with 404 and an OperationOutcome carrying `severity` error and `code` `not-supported` | MUST, and the source contradicts itself, see below | [Afhandeling van DocumentManifest requests][pdfa-dm] | PDF/A 2.2, 2.3 and 2.4 (D-04) | peer-2 `dva-geen-manifest`, `dp-manifest` |
 | Every document reference points at a `Binary`, so Retrieve Document queries that `Binary` | MUST | [Document referenties][pdfa-ref] | PDF/A 1.1, 1.4 and 2.1, through the two asserts of D-12 | peer-2 `dva-binary`, `dp-binary` |
+| `DocumentReference.type` carries one of the six GUPZ LOINC codes | MUST | [Document types][pdfa-types] | PDF/A 1.1, 1.4 and 2.1 (D-35) | decl `paris-documenttypen`, recorded and not judged |
+| `DocumentReference.context.practiceSetting` carries one of the seven Vektis codes | MUST; the system is not named | [Disciplines coderen][pdfa-disc] | PDF/A 1.1, 1.4 and 2.1, on the code alone (D-35) | Not recorded |
+| `description` and `attachment.title` carry the GUPZ document type, a space and the display of the practiceSetting | MUST | [Leesbare document titels][pdfa-title] | PDF/A 1.1, 1.4 and 2.1 (D-35) | Not recorded |
 | `DocumentReference.status` carries the Nictiz coding | MUST | [Document status][pdfa-status] | PDF/A 1.1 and 2.1 search on `status=current`; the filtering is what 2.1 checks (D-13) | peer-2 `dp-status`, all four statuses |
 | A document with GUPZ status Concept is never offered through the PDF/A API | MUST | [Document status][pdfa-status] | Not covered. Absence shows only if the test data holds a Concept document, see [OP-04](open-points.md#op-04-test-data-specification) | decl `status-concept-niet-beschikbaar` |
 | A new current version archives the one it replaces, and may point at it with `relatesTo` `replaces` | MUST to archive, MAY for `relatesTo` | [Document status][pdfa-status] | Not covered. It is PARIS behaviour over time and a single run does not show it | decl `status-nieuwe-versie`, and `status-relatesto` recorded and not judged |
@@ -218,6 +221,9 @@ which is why the case is still worth building.
 [pdfa-dm]: https://github.com/Gegevensuitwisseling-Paramedische-Zorg/open-GUPZ/blob/main/docs/api/pdfa.md#afhandeling-van-documentmanifest-requests
 [pdfa-ref]: https://github.com/Gegevensuitwisseling-Paramedische-Zorg/open-GUPZ/blob/main/docs/api/pdfa.md#document-referenties
 [pdfa-status]: https://github.com/Gegevensuitwisseling-Paramedische-Zorg/open-GUPZ/blob/main/docs/api/pdfa.md#document-status
+[pdfa-types]: https://github.com/Gegevensuitwisseling-Paramedische-Zorg/open-GUPZ/blob/main/docs/api/pdfa.md#document-types
+[pdfa-disc]: https://github.com/Gegevensuitwisseling-Paramedische-Zorg/open-GUPZ/blob/main/docs/api/pdfa.md#disciplines-coderen
+[pdfa-title]: https://github.com/Gegevensuitwisseling-Paramedische-Zorg/open-GUPZ/blob/main/docs/api/pdfa.md#leesbare-document-titels
 [mm-own]: https://github.com/Gegevensuitwisseling-Paramedische-Zorg/open-GUPZ/blob/main/docs/requirements/Medmij-pdfa.md#alleen-documenten-die-de-paramedicus-zelf-heeft-gegenereerd-worden-aan-het-pgo-beschikbaargesteld
 [mm-head]: https://github.com/Gegevensuitwisseling-Paramedische-Zorg/open-GUPZ/blob/main/docs/requirements/Medmij-pdfa.md#iedere-dossiersamenvatting-bevat-een-briefhoofd-met-identificatie-van-de-auteur-en-de-patiënt
 [mm-empty]: https://github.com/Gegevensuitwisseling-Paramedische-Zorg/open-GUPZ/blob/main/docs/requirements/Medmij-pdfa.md#niet-ingevulde-velden-worden-niet-opgenomen-in-de-dossiersamenvattingen
