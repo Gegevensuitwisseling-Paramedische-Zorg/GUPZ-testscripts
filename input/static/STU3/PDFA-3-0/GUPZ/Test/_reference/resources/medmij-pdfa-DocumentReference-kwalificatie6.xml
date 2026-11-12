@@ -13,7 +13,7 @@
           <tr>
             <th>Type</th>
             <td>
-              <span title="ontslagbrief (11071000146104 - SNOMED CT)">ontslagbrief</span>
+              <span title="Evaluation + Plan Note (51847-2 - LOINC)">Evaluation + Plan Note</span>
             </td>
           </tr>
           <tr>
@@ -22,12 +22,12 @@
           </tr>
           <tr>
             <th>Omschrijving</th>
-            <td>Kopie van ontslagbrief</td>
+            <td>Diagnostiekplan Logopedisten, niet nader gespecificeerd</td>
           </tr>
           <tr>
             <th>Inhoud</th>
             <td>
-              <img src="Binary/pdfa-binary3" alt="" title="Example PDF - Kopie van ontslagbrief"/>
+              <img src="Binary/pdfa-binary3" alt="" title="Diagnostiekplan Logopedisten, niet nader gespecificeerd"/>
             </td>
           </tr>
         </tbody>
@@ -53,9 +53,9 @@
   <status value="superseded"/>
   <type>
     <coding>
-      <system value="http://snomed.info/sct"/>
-      <code value="11071000146104"/>
-      <display value="ontslagbrief"/>
+      <system value="http://loinc.org"/>
+      <code value="51847-2"/>
+      <display value="Evaluation + Plan Note"/>
     </coding>
   </type>
   <subject>
@@ -67,13 +67,22 @@
     <reference value="#p1"/>
     <display value="De Hoed"/>
   </author>
-  <description value="Kopie van ontslagbrief"/>
+  <description value="Diagnostiekplan Logopedisten, niet nader gespecificeerd"/>
   <content>
     <attachment>
       <contentType value="application/pdf"/>
       <language value="nl"/>
       <url value="Binary/pdfa-binary3"/>
-      <title value="Example PDF - Kopie van ontslagbrief"/>
+      <title value="Diagnostiekplan Logopedisten, niet nader gespecificeerd"/>
     </attachment>
   </content>
+  <context>
+    <practiceSetting>
+      <coding>
+        <system value="urn:oid:2.16.840.1.113883.2.4.6.7"/>
+        <code value="0500"/>
+        <display value="Logopedisten, niet nader gespecificeerd"/>
+      </coding>
+    </practiceSetting>
+  </context>
 </DocumentReference>

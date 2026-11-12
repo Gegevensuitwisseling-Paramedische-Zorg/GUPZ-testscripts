@@ -13,7 +13,7 @@
           <tr>
             <th>Type</th>
             <td>
-              <span title="verwijsbrief (11051000146107 - SNOMED CT)">verwijsbrief</span>
+              <span title="Visit Notification Note (86530-3 - LOINC)">Visit Notification Note</span>
             </td>
           </tr>
           <tr>
@@ -22,12 +22,12 @@
           </tr>
           <tr>
             <th>Omschrijving</th>
-            <td>Verwijsbrief Arts</td>
+            <td>DT-bericht Logopedisten, niet nader gespecificeerd</td>
           </tr>
           <tr>
             <th>Inhoud</th>
             <td>
-              <img src="Binary/pdfa-binary4" alt="" title="Example PDF - Verwijsbrief Arts"/>
+              <img src="Binary/pdfa-binary4" alt="" title="DT-bericht Logopedisten, niet nader gespecificeerd"/>
             </td>
           </tr>
         </tbody>
@@ -57,9 +57,9 @@
   <status value="superseded"/>
   <type>
     <coding>
-      <system value="http://snomed.info/sct"/>
-      <code value="11051000146107"/>
-      <display value="verwijsbrief"/>
+      <system value="http://loinc.org"/>
+      <code value="86530-3"/>
+      <display value="Visit Notification Note"/>
     </coding>
   </type>
   <subject>
@@ -71,13 +71,22 @@
     <reference value="#p1"/>
     <display value="De Hoed"/>
   </author>
-  <description value="Verwijsbrief Arts"/>
+  <description value="DT-bericht Logopedisten, niet nader gespecificeerd"/>
   <content>
     <attachment>
       <contentType value="application/pdf"/>
       <language value="nl"/>
       <url value="Binary/pdfa-binary4"/>
-      <title value="Example PDF - Verwijsbrief Arts"/>
+      <title value="DT-bericht Logopedisten, niet nader gespecificeerd"/>
     </attachment>
   </content>
+  <context>
+    <practiceSetting>
+      <coding>
+        <system value="urn:oid:2.16.840.1.113883.2.4.6.7"/>
+        <code value="0500"/>
+        <display value="Logopedisten, niet nader gespecificeerd"/>
+      </coding>
+    </practiceSetting>
+  </context>
 </DocumentReference>

@@ -50,19 +50,20 @@ RuleSet: xis-1-4-serve-2-pdfa-NoManifest-body
   * stopTestOnFail = false
   * warningOnly = false
 * test[=].action[+].assert
-  * description = "Confirm that the returned Bundle contains a DocumentReference with LOINC code 68688-1."
+  * description = "Confirm that the returned Bundle contains a DocumentReference with LOINC code 18776-5."
   * direction = #response
-  * expression = "Bundle.entry.select(resource as DocumentReference).where(type.coding.where(code = '68688-1')).exists()"
+  * expression = "Bundle.entry.select(resource as DocumentReference).where(type.coding.where(code = '18776-5')).exists()"
   * stopTestOnFail = false
   * warningOnly = true
 * test[=].action[+].assert
-  * description = "Confirm that the returned Bundle contains a DocumentReference with LOINC code 34781-5."
+  * description = "Confirm that the returned Bundle contains a DocumentReference with LOINC code 51848-0."
   * direction = #response
-  * expression = "Bundle.entry.select(resource as DocumentReference).where(type.coding.where(code = '34781-5')).exists()"
+  * expression = "Bundle.entry.select(resource as DocumentReference).where(type.coding.where(code = '51848-0')).exists()"
   * stopTestOnFail = false
   * warningOnly = true
 
 * insert assertsDocumentByBinaryReference
+* insert assertsDocumentCoding
 
 * test[+].id = "scenario1-4-serve-pdfa-document-1"
 * test[=].name = "Scenario 1.4 - Serve first PDFA document"

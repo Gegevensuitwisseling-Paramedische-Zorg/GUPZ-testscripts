@@ -13,7 +13,7 @@
           <tr>
             <th>Type</th>
             <td>
-              <span title="Infectious disease Consult note (34781-5 - LOINC)">Infectious disease Consult note</span>
+              <span title="Evaluation Note (51848-0 - LOINC)">Evaluation Note</span>
             </td>
           </tr>
           <tr>
@@ -26,12 +26,12 @@
           </tr>
           <tr>
             <th>Omschrijving</th>
-            <td>Infectious disease Consult note</td>
+            <td>Paramedische diagnose Fysiotherapeuten, niet nader gespecificeerd</td>
           </tr>
           <tr>
             <th>Inhoud</th>
             <td>
-              <img src="Binary/pdfa-binary2" alt="" title="Example PDF - Infectious disease Consult note"/>
+              <img src="Binary/pdfa-binary2" alt="" title="Paramedische diagnose Fysiotherapeuten, niet nader gespecificeerd"/>
             </td>
           </tr>
         </tbody>
@@ -67,8 +67,8 @@
   <type>
     <coding>
       <system value="http://loinc.org"/>
-      <code value="34781-5"/>
-      <display value="Infectious disease Consult note"/>
+      <code value="51848-0"/>
+      <display value="Evaluation Note"/>
     </coding>
   </type>
   <class>
@@ -87,7 +87,7 @@
     <reference value="#p1"/>
     <display value="B. Kneder"/>
   </author>
-  <description value="Infectious disease Consult note"/>
+  <description value="Paramedische diagnose Fysiotherapeuten, niet nader gespecificeerd"/>
   <securityLabel>
     <coding>
       <system value="http://hl7.org/fhir/v3/Confidentiality"/>
@@ -100,7 +100,16 @@
       <contentType value="application/pdf"/>
       <language value="en"/>
       <url value="Binary/pdfa-binary2"/>
-      <title value="Example PDF - Infectious disease Consult note"/>
+      <title value="Paramedische diagnose Fysiotherapeuten, niet nader gespecificeerd"/>
     </attachment>
   </content>
+  <context>
+    <practiceSetting>
+      <coding>
+        <system value="urn:oid:2.16.840.1.113883.2.4.6.7"/>
+        <code value="0400"/>
+        <display value="Fysiotherapeuten, niet nader gespecificeerd"/>
+      </coding>
+    </practiceSetting>
+  </context>
 </DocumentReference>

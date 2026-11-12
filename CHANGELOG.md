@@ -10,6 +10,19 @@ Every release names the open-GUPZ version it was written against. See
 
 ## Unreleased
 
+### Changed
+
+- The loaded DocumentReference fixtures carry the document types, disciplines
+  and readable titles that `pdfa.md` prescribes, and the two documents of
+  XXX_Schulte that pointed at the Nictiz website now point at a Binary. AUTH-11
+  and scenarios 1.1, 1.4, 2.1 and 2.5 identify the documents by the new codes.
+  open-GUPZ [#105][i105].
+
+### Added
+
+- Scenarios 1.1, 1.4 and 2.1 assert the document type, the discipline and the
+  readable title.
+
 ## [0.1.0-connectathon.1] - 2026-09-17
 
 ### Changed
@@ -39,3 +52,4 @@ Tested against: open-GUPZ `0a273ae`.
 
 [d29]: docs/decisions.md#d-29-semantic-versioning
 [i70]: https://github.com/Gegevensuitwisseling-Paramedische-Zorg/open-GUPZ/issues/70
+[i105]: https://github.com/Gegevensuitwisseling-Paramedische-Zorg/open-GUPZ/issues/105

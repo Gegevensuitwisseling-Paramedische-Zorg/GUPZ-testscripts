@@ -60,9 +60,9 @@ RuleSet: xis-2-5-serve-1-pdfa-NoManifest-body
   * stopTestOnFail = false
   * warningOnly = false
 * test[=].action[+].assert
-  * description = "Confirm that the returned Bundle contains a DocumentReference with LOINC code 68626-1."
+  * description = "Confirm that the returned Bundle contains a DocumentReference with LOINC code 51847-2."
   * direction = #response
-  * expression = "Bundle.entry.select(resource as DocumentReference).where(type.coding.where(code = '68626-1')).exists()"
+  * expression = "Bundle.entry.select(resource as DocumentReference).where(type.coding.where(code = '51847-2')).exists()"
   * stopTestOnFail = false
   * warningOnly = true
 

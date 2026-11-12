@@ -13,7 +13,7 @@
           <tr>
             <th>Type</th>
             <td>
-              <span title="Allergy and Immunology Discharge summary (68626-1 - LOINC)">Allergy and Immunology Discharge summary</span>
+              <span title="Summary of Episode Note (34133-9 - LOINC)">Summary of Episode Note</span>
             </td>
           </tr>
           <tr>
@@ -26,12 +26,12 @@
           </tr>
           <tr>
             <th>Omschrijving</th>
-            <td>Discharge Summary</td>
+            <td>Update Logopedisten, niet nader gespecificeerd</td>
           </tr>
           <tr>
             <th>Inhoud</th>
             <td>
-              <img src="https://informatiestandaarden.nictiz.nl/images/2/29/Example_PDF_-_Discharge_Summary.pdf" alt="" title="Example PDF - Discharge Summary"/>
+              <img src="Binary/pdfa-binary6" alt="" title="Update Logopedisten, niet nader gespecificeerd"/>
             </td>
           </tr>
         </tbody>
@@ -67,8 +67,8 @@
   <type>
     <coding>
       <system value="http://loinc.org"/>
-      <code value="68626-1"/>
-      <display value="Allergy and Immunology Discharge summary"/>
+      <code value="34133-9"/>
+      <display value="Summary of Episode Note"/>
     </coding>
   </type>
   <class>
@@ -87,7 +87,7 @@
     <reference value="#p1"/>
     <display value="A.F. Snijder"/>
   </author>
-  <description value="Discharge Summary"/>
+  <description value="Update Logopedisten, niet nader gespecificeerd"/>
   <securityLabel>
     <coding>
       <system value="http://hl7.org/fhir/v3/Confidentiality"/>
@@ -99,8 +99,17 @@
     <attachment>
       <contentType value="application/pdf"/>
       <language value="en"/>
-      <url value="https://informatiestandaarden.nictiz.nl/images/2/29/Example_PDF_-_Discharge_Summary.pdf"/>
-      <title value="Example PDF - Discharge Summary"/>
+      <url value="Binary/pdfa-binary6"/>
+      <title value="Update Logopedisten, niet nader gespecificeerd"/>
     </attachment>
   </content>
+  <context>
+    <practiceSetting>
+      <coding>
+        <system value="urn:oid:2.16.840.1.113883.2.4.6.7"/>
+        <code value="0500"/>
+        <display value="Logopedisten, niet nader gespecificeerd"/>
+      </coding>
+    </practiceSetting>
+  </context>
 </DocumentReference>

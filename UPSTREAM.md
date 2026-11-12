@@ -83,6 +83,8 @@ Every difference is deliberate and argued in
 | The token is operator input; the MedMij qualification token is gone and the `Bearer` prefix moved into the header | all PDF/A Data platform scripts and scenario 2.5 | D-11 |
 | Two asserts added: a document is offered as a reference to a Binary, not inline | scenarios 1.1, 1.4, 2.1 | D-12 |
 | The provisioning script is trimmed to what the scenarios need, and generated from FSH | `_LoadResources` | D-13 |
+| The loaded DocumentReference fixtures carry the GUPZ document types, disciplines and titles, and all point at a Binary; the asserts that identify a document by its code follow | seven DocumentReference fixtures, `_LoadResources`, AUTH-11, scenarios 1.1, 1.4, 2.1, 2.5 | D-34 |
+| Three asserts added: the type, the discipline and the title of a document | scenarios 1.1, 1.4, 2.1 | D-35 |
 | The client side token assert checks presence and scheme instead of a fixed value | the five PDF/A DVA scripts | D-15 |
 | The client scripts allow extra requests between operations | the five PDF/A DVA scripts | D-16 |
 | `Configuration/QualificationTokens.json` is carried over, restricted to the PDF/A patients | the whole repository | D-14 |
